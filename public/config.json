@@ -5,7 +5,7 @@
     {
       "path": "/poi",
       "title": "Points of interest",
-      "apiRoute": "/poi",
+      "apiRoute": "/poi/",
       "fields": [
         {
           "title": "Name",
@@ -19,7 +19,7 @@
     {
       "path": "/users",
       "title": "Volunteers",
-      "apiRoute": "/users",
+      "apiRoute": "/users/",
       "fields": [
         {
           "title": "Name",

@@ -6,6 +6,10 @@
 # Node artifact files
 node_modules/
 dist/
+.next
+.next/
+
+.env.local
 
 # Compiled Java class files
 *.class
@@ -48,5 +52,3 @@ Thumbs.db
 *.mov
 *.wmv
 
-
-.next/
