@@ -24,7 +24,7 @@ export default function Home(props) {
 
   return (
     <div className={styles.container}>
-      <main>HOME:</main>
+      <main>New HOME:</main>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
