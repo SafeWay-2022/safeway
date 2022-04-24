@@ -79,7 +79,7 @@ export default ({ data, fields }) => {
     setLocalData(
       localData.map((r) => {
         if (r._id === rowId) {
-          return formValue[rowId];
+          return { ...r, ...formValue[rowId] };
         }
         return r;
       })
