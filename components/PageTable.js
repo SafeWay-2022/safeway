@@ -1,15 +1,9 @@
 import EditableFormTable from "./ui-components/EditableTable";
-import { API_HOST } from "../config";
 import { useSomething } from "../hooks/useSomething";
 import styles from "../styles/Home.module.css";
 
 export default function PageTable({ route, fields }) {
-  const {
-    data: tableData,
-    isLoading,
-    isError,
-    error,
-  } = useSomething(API_HOST + route);
+  const { data: tableData, isLoading, isError, error } = useSomething(route);
 
   if (isError) {
     return <h1>Error getting table data:{JSON.stringify(error)}</h1>;
