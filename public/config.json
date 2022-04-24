@@ -1,11 +1,11 @@
 {
   "menu": ["users", "poi"],
-  "defaultMenu": "poi",
+  "defaultPath": "/poi",
   "tables": [
     {
+      "path": "/poi",
       "title": "Points of interest",
-      "menu": "poi",
-      "apiRoute": "poi",
+      "apiRoute": "/poi",
       "fields": [
         {
           "title": "Name",
@@ -17,9 +17,9 @@
       ]
     },
     {
+      "path": "/users",
       "title": "Volunteers",
-      "menu": "users",
-      "apiRoute": "users",
+      "apiRoute": "/users",
       "fields": [
         {
           "title": "Name",

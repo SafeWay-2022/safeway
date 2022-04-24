@@ -1,18 +1,11 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { API_POI } from "../config";
 
-const fetchData = async () => {
-  const { data } = await axios("config.json");
-  return data;
+const fetchSomething = async (url) => {
+  const { data } = await axios(url);
+  return Array.isArray(data) ? data : data.items;
 };
 
-const fetchSomething = async () => {
-  const { data } = await axios(API_POI);
-  return data?.items || [];
-};
+const useSomething = (url) => useQuery("something", () => fetchSomething(url));
 
-const useData = () => useQuery("data", () => fetchData());
-const useSomething = () => useQuery("something", () => fetchSomething());
-
-export { useSomething, fetchSomething, useData };
+export { useSomething, fetchSomething };
