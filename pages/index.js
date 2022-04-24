@@ -13,7 +13,7 @@ export default function Home(props) {
 
   return (
     <div className={styles.container}>
-      <h1>Volia42 it works</h1>
+      <h1>it works indeed</h1>
       <main>
         {isLoading ? "loading..." : <EditableFormTable data={data} />}
       </main>
