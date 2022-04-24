@@ -1,0 +1,41 @@
+{
+  "menu": ["users", "poi"],
+  "defaultMenu": "poi",
+  "tables": [
+    {
+      "title": "Points of interest",
+      "menu": "poi",
+      "apiRoute": "poi",
+      "fields": [
+        {
+          "title": "Name",
+          "dataIndex": "name",
+          "width": "50%",
+          "editable": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "title": "Volunteers",
+      "menu": "users",
+      "apiRoute": "users",
+      "fields": [
+        {
+          "title": "Name",
+          "dataIndex": "name",
+          "width": "50%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Email",
+          "dataIndex": "email",
+          "width": "50%",
+          "editable": true,
+          "type": "email"
+        }
+      ]
+    }
+  ]
+}

@@ -1,2 +1,2 @@
-export const API_HOST = "http://c4u-match-org.ew.r.appspot.com";
-export const CLIENT_HOST = "api/hello";
+export const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
+export const CONFIG_HOST = process.env.NEXT_PUBLIC_CONFIG_HOST;
