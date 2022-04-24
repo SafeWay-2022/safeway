@@ -54,3 +54,5 @@ Thumbs.db
 *.wmv
 
 .vercel
+.next
+.next/
