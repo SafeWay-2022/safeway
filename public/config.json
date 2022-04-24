@@ -10,7 +10,7 @@
         {
           "title": "Name",
           "dataIndex": "name",
-          "width": "50%",
+          "width": "30%",
           "editable": true,
           "type": "string"
         }
@@ -24,14 +24,14 @@
         {
           "title": "Name",
           "dataIndex": "name",
-          "width": "50%",
+          "width": "30%",
           "editable": true,
           "type": "string"
         },
         {
           "title": "Email",
           "dataIndex": "email",
-          "width": "50%",
+          "width": "30%",
           "editable": true,
           "type": "email"
         }
