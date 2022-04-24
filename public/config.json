@@ -1,5 +1,5 @@
 {
-  "menu": ["users", "poi"],
+  "menu": [0, 1],
   "defaultPath": "/poi",
   "tables": [
     {

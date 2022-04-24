@@ -1,14 +1,10 @@
-/* import Head from "next/head";
-import Image from "next/image";
-import EditableFormTable from "../components/Table"; */
-//import { useSomething } from "../hooks/useSomething";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import useConfig from "../hooks/useConfig";
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
-  const { data, isLoading, isError, error } = useConfig();
+  const { data: config, isLoading, isError, error } = useConfig();
 
   const { route } = useRouter();
 
@@ -20,12 +16,21 @@ export default function Home(props) {
     return <h1>loading... </h1>;
   }
 
-  const currentTable = route || data.defaultMenu;
+  const currentTable = route || config.defaultMenu;
 
   return (
     <div className={styles.container}>
-      <main>New HOME:</main>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <main className="text-xl text-red-500">WELCOME HOME:</main>
+
+      {config.menu.map((menuIndex) => (
+        <Link href={config.tables[menuIndex].apiRoute}>
+          <a className="bg-gray-200 p-3 m-3 inline-block cursor-pointer">
+            {config.tables[menuIndex].title}{" "}
+          </a>
+        </Link>
+      ))}
+
+      <pre>{JSON.stringify(config, null, 2)}</pre>
     </div>
   );
 }
