@@ -9,6 +9,7 @@ dist/
 .next
 .next/
 
+.env
 .env.local
 
 # Compiled Java class files
@@ -52,3 +53,4 @@ Thumbs.db
 *.mov
 *.wmv
 
+.vercel
