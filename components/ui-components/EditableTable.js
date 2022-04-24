@@ -4,19 +4,17 @@ import { Table, Input, InputNumber, Popconfirm, Typography } from "antd";
 const mapData = (data) =>
   data.map((dataRow) => ({ key: dataRow._id, ...dataRow }));
 
-const mapColumns = (fields, isEditing, handleFormChange, formValue) =>
+const mapColumns = (fields, { isEditing, handleFormChange, formValue }) =>
   fields.map((field) => {
     return {
       ...field,
-      onCell: (record) => {
-        return {
-          record,
-          handleFormChange,
-          formValue,
-          editing: isEditing(record),
-          dataIndex: field.dataIndex,
-        };
-      },
+      onCell: (record) => ({
+        record,
+        handleFormChange,
+        formValue,
+        editing: isEditing(record),
+        dataIndex: field.dataIndex,
+      }),
     };
   });
 
@@ -35,20 +33,22 @@ const EditableCell = ({
   const onChangeHandler = (e) => {
     handleFormChange(record.key, dataIndex, e.target.value);
   };
+
+  const getCellValue = () => {
+    const current = record[dataIndex];
+    const changed = formValue[record.key]
+      ? formValue[record.key][dataIndex]
+      : null;
+
+    if (!editing || !changed) return current;
+
+    return changed;
+  };
+
   return (
     <td {...restProps}>
       {editing ? (
-        <input
-          value={
-            formValue[record.key]
-              ? formValue[record.key][dataIndex]
-                ? formValue[record.key][dataIndex]
-                : record[dataIndex]
-              : record[dataIndex]
-          }
-          type="text"
-          onChange={onChangeHandler}
-        />
+        <input value={getCellValue()} type="text" onChange={onChangeHandler} />
       ) : (
         children
       )}
@@ -75,61 +75,56 @@ export default ({ data, fields }) => {
 
   const save = (rowId) => {
     setEditingKey("");
-    const index = localData.findIndex((row) => row._id === rowId);
     setLocalData(
-      localData.map((r) => {
-        if (r._id === rowId) {
-          return { ...r, ...formValue[rowId] };
-        }
-        return r;
-      })
+      localData.map((dataRow) =>
+        dataRow._id === rowId ? { ...dataRow, ...formValue[rowId] } : dataRow
+      )
     );
-    // insert(localData, index, formValue[rowId]));
-    console.log(index);
   };
 
   const handleFormChange = (rowId, cellId, value) => {
-    console.log({ rowId, cellId, value });
     setFormValue({
       ...formValue,
       [rowId]: { ...formValue[rowId], [cellId]: value },
     });
   };
 
+  const renderActionsColumn = (_, record) => {
+    const editable = isEditing(record);
+    return editable ? (
+      <span>
+        <Typography.Link
+          onClick={() => save(record.key)}
+          style={{ marginRight: 8 }}
+        >
+          Save
+        </Typography.Link>
+        <Popconfirm
+          title="Sure to cancel?"
+          onConfirm={() => cancel(record.key)}
+        >
+          <a>Cancel</a>
+        </Popconfirm>
+      </span>
+    ) : (
+      <Typography.Link
+        disabled={editingKey !== ""}
+        onClick={() => edit(record)}
+      >
+        Edit
+      </Typography.Link>
+    );
+  };
+
   const actionsColumn = {
     title: "Actions",
     dataIndex: "action",
-    width: "50%",
-    render: (_, record) => {
-      const editable = isEditing(record);
-      return editable ? (
-        <span>
-          <Typography.Link
-            onClick={() => save(record.key)}
-            style={{ marginRight: 8 }}
-          >
-            Save
-          </Typography.Link>
-          <Popconfirm
-            title="Sure to cancel?"
-            onConfirm={() => cancel(record.key)}
-          >
-            <a>Cancel</a>
-          </Popconfirm>
-        </span>
-      ) : (
-        <Typography.Link
-          disabled={editingKey !== ""}
-          onClick={() => edit(record)}
-        >
-          Edit
-        </Typography.Link>
-      );
-    },
+    width: "10%",
+    render: renderActionsColumn,
   };
 
   const columns = [
-    ...mapColumns(fields, isEditing, handleFormChange, formValue),
+    ...mapColumns(fields, { isEditing, handleFormChange, formValue }),
     actionsColumn,
   ];
 
