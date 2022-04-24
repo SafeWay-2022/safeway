@@ -4,7 +4,7 @@ import { CLIENT_HOST } from "../config";
 
 const fetchSomething = async () => {
   const { data } = await axios(CLIENT_HOST);
-  return data;
+  return data?.items || [];
 };
 
 const useSomething = () => useQuery("something", () => fetchSomething());
