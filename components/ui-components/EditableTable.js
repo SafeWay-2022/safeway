@@ -142,7 +142,7 @@ export default ({ data, fields }) => {
         <span>
           <Typography.Link
             onClick={() => save(record.key)}
-            style={{ marginRight: 8 }}
+            style={{ marginRight: 9 }}
           >
             Save
           </Typography.Link>
