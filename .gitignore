@@ -54,3 +54,7 @@ Thumbs.db
 .next
 .next/
 package-lock.json
+
+
+out
+out/
