@@ -30,114 +30,6 @@ const getBlankData = (fields) => ({
   ...Object.fromEntries(fields.map(({ dataIndex }) => [dataIndex, null])),
 });
 
-const ActionColumn = ({
-  row,
-  save,
-  addRecord,
-  edit,
-  editable,
-  editingKey,
-  cancel,
-  route,
-}) => {
-  const mutate = useMutateSomething("rowEdit", route + row._id);
-  const addNew = row.key === NEW_RECORD_KEY;
-
-  if (addNew) {
-    return (
-      <span>
-        <Typography.Link
-          disabled={editingKey !== ""}
-          onClick={() => addRecord(row.key)}
-          style={{ marginRight: 8 }}
-        >
-          Add
-        </Typography.Link>
-        <Popconfirm
-          disabled={editingKey !== ""}
-          title="Sure to cancel?"
-          onConfirm={() => cancel(row.key)}
-        >
-          <a>Clear</a>
-        </Popconfirm>
-      </span>
-    );
-  }
-
-  if (editable) {
-    return (
-      <span>
-        <Typography.Link
-          onClick={() => save(row.key, mutate)}
-          style={{ marginRight: 9 }}
-        >
-          Save
-        </Typography.Link>
-        <Popconfirm title="Sure to cancel?" onConfirm={() => cancel(row.key)}>
-          <a>Cancel</a>
-        </Popconfirm>
-      </span>
-    );
-  }
-
-  return (
-    <span>
-      <Typography.Link
-        disabled={editingKey !== ""}
-        onClick={() => edit(row)}
-        style={{ marginRight: 8 }}
-      >
-        Edit
-      </Typography.Link>
-      <Typography.Link
-        disabled={editingKey !== ""}
-        onClick={() => deleteRecord(row._id)}
-      >
-        Delete
-      </Typography.Link>
-    </span>
-  );
-};
-
-const EditableCell = ({
-  editing,
-  isNew,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  handleFormChange,
-  formValue,
-  ...restProps
-}) => {
-  const onChangeHandler = (e) => {
-    handleFormChange(record.key, dataIndex, e.target.value);
-  };
-
-  const getCellValue = () => {
-    const current = record[dataIndex];
-    const changed = formValue[record.key]
-      ? formValue[record.key][dataIndex]
-      : null;
-
-    if (!editing || !changed) return current;
-
-    return changed;
-  };
-
-  return (
-    <td {...restProps}>
-      {editing || isNew ? (
-        <input value={getCellValue()} type="text" onChange={onChangeHandler} />
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
 export default ({ data, fields, route }) => {
   const [localData, setLocalData] = useState(data);
   const [editingKey, setEditingKey] = useState("");
@@ -204,6 +96,7 @@ export default ({ data, fields, route }) => {
         editable={isEditing(record)}
         editingKey={editingKey}
         route={route}
+        deleteRecord={deleteRecord}
       />
     ),
   };
@@ -226,4 +119,121 @@ export default ({ data, fields, route }) => {
       }}
     />
   );
-};;;;;
+};
+
+const EditableCell = ({
+  editing,
+  isNew,
+  dataIndex,
+  title,
+  inputType,
+  record,
+  index,
+  children,
+  handleFormChange,
+  formValue,
+  ...restProps
+}) => {
+  const onChangeHandler = (e) => {
+    handleFormChange(record.key, dataIndex, e.target.value);
+  };
+
+  const getCellValue = () => {
+    const current = record[dataIndex];
+    const changed = formValue[record.key]
+      ? formValue[record.key][dataIndex]
+      : null;
+
+    if (!editing || !changed) return current;
+
+    return changed;
+  };
+
+  return (
+    <td {...restProps}>
+      {editing || isNew ? (
+        <input value={getCellValue()} type="text" onChange={onChangeHandler} />
+      ) : (
+        children
+      )}
+    </td>
+  );
+};
+
+const ActionColumn = ({
+  row,
+  save,
+  addRecord,
+  edit,
+  editable,
+  editingKey,
+  cancel,
+  route,
+}) => {
+  const mutateUpdate = useMutateSomething(
+    `rowEdit_${row._id}`,
+    route + row._id
+  );
+  const mutateAdd = useMutateSomething(`rowAdd_${row._id}`, route + row._id);
+  const mutateDelete = useMutateSomething(
+    `rowEdit_${row._id}`,
+    route + row._id
+  );
+
+  const addNew = row.key === NEW_RECORD_KEY;
+
+  if (addNew) {
+    return (
+      <span>
+        <Typography.Link
+          disabled={editingKey !== ""}
+          onClick={() => addRecord(row.key, mutateAdd)}
+          style={{ marginRight: 8 }}
+        >
+          Add
+        </Typography.Link>
+        <Popconfirm
+          disabled={editingKey !== ""}
+          title="Sure to cancel?"
+          onConfirm={() => cancel(row.key)}
+        >
+          <a>Clear</a>
+        </Popconfirm>
+      </span>
+    );
+  }
+
+  if (editable) {
+    return (
+      <span>
+        <Typography.Link
+          onClick={() => save(row.key, mutateUpdate)}
+          style={{ marginRight: 9 }}
+        >
+          Save
+        </Typography.Link>
+        <Popconfirm title="Sure to cancel?" onConfirm={() => cancel(row.key)}>
+          <a>Cancel</a>
+        </Popconfirm>
+      </span>
+    );
+  }
+
+  return (
+    <span>
+      <Typography.Link
+        disabled={editingKey !== ""}
+        onClick={() => edit(row)}
+        style={{ marginRight: 8 }}
+      >
+        Edit
+      </Typography.Link>
+      <Typography.Link
+        disabled={editingKey !== ""}
+        onClick={() => deleteRecord(row._id, mutateDelete)}
+      >
+        Delete
+      </Typography.Link>
+    </span>
+  );
+};
