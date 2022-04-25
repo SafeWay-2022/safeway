@@ -4,7 +4,10 @@ import { Table, Input, InputNumber, Popconfirm, Typography } from "antd";
 const mapData = (data) =>
   data.map((dataRow) => ({ key: dataRow._id, ...dataRow }));
 
-const mapColumns = (fields, { isEditing, handleFormChange, formValue }) =>
+const mapColumns = (
+  fields,
+  { isEditing, isNew, handleFormChange, formValue }
+) =>
   fields.map((field) => {
     return {
       ...field,
@@ -13,13 +16,22 @@ const mapColumns = (fields, { isEditing, handleFormChange, formValue }) =>
         handleFormChange,
         formValue,
         editing: isEditing(record),
+        isNew: isNew(record),
         dataIndex: field.dataIndex,
       }),
     };
   });
 
+const NEW_RECORD_KEY = "add_new_record";
+const getBlankData = (fields) => ({
+  _id: NEW_RECORD_KEY,
+  key: NEW_RECORD_KEY,
+  ...Object.fromEntries(fields.map(({ dataIndex }) => [dataIndex, null])),
+});
+
 const EditableCell = ({
   editing,
+  isNew,
   dataIndex,
   title,
   inputType,
@@ -47,7 +59,7 @@ const EditableCell = ({
 
   return (
     <td {...restProps}>
-      {editing ? (
+      {editing || isNew ? (
         <input value={getCellValue()} type="text" onChange={onChangeHandler} />
       ) : (
         children
@@ -61,6 +73,7 @@ export default ({ data, fields }) => {
   const [editingKey, setEditingKey] = useState("");
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
+  const isNew = (row) => row.key === NEW_RECORD_KEY;
 
   const edit = (record) => {
     setEditingKey(record.key);
@@ -82,7 +95,15 @@ export default ({ data, fields }) => {
 
   const deleteRecord = (rowId) => {
     setEditingKey("");
+    setFormValue({});
     setLocalData(localData.filter((dataRow) => dataRow._id !== rowId));
+  };
+
+  const addRecord = () => {
+    setLocalData([
+      { ...formValue[NEW_RECORD_KEY], key: "added", _id: "added" },
+      ...localData,
+    ]);
   };
 
   const handleFormChange = (rowId, cellId, value) => {
@@ -93,7 +114,29 @@ export default ({ data, fields }) => {
   };
 
   const renderActionsColumn = (_, record) => {
+    const addNew = record.key === NEW_RECORD_KEY;
     const editable = isEditing(record);
+    if (addNew) {
+      return (
+        <span>
+          <Typography.Link
+            disabled={editingKey !== ""}
+            onClick={() => addRecord(record.key)}
+            style={{ marginRight: 8 }}
+          >
+            Add
+          </Typography.Link>
+          <Popconfirm
+            disabled={editingKey !== ""}
+            title="Sure to cancel?"
+            onConfirm={() => cancel(record.key)}
+          >
+            <a>Clear</a>
+          </Popconfirm>
+        </span>
+      );
+    }
+
     if (editable) {
       return (
         <span>
@@ -140,12 +183,14 @@ export default ({ data, fields }) => {
   };
 
   const columns = [
-    ...mapColumns(fields, { isEditing, handleFormChange, formValue }),
+    ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue }),
     actionsColumn,
   ];
 
-  const dataSource = mapData(localData);
-
+  const dataSource = [getBlankData(fields), ...mapData(localData)];
+  console.log(formValue);
+  console.log(dataSource);
+  console.log(columns);
   return (
     <Table
       dataSource={dataSource}
