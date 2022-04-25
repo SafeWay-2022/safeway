@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Table, Input, InputNumber, Popconfirm, Typography } from "antd";
+import useMutateSomething from "../../hooks/useUpdate";
 
 const mapData = (data) =>
   data.map((dataRow) => ({ key: dataRow._id, ...dataRow }));
@@ -28,6 +29,75 @@ const getBlankData = (fields) => ({
   key: NEW_RECORD_KEY,
   ...Object.fromEntries(fields.map(({ dataIndex }) => [dataIndex, null])),
 });
+
+const ActionColumn = ({
+  row,
+  save,
+  addRecord,
+  edit,
+  editable,
+  editingKey,
+  cancel,
+  route,
+}) => {
+  const mutate = useMutateSomething("rowEdit", route + row._id);
+  const addNew = row.key === NEW_RECORD_KEY;
+
+  if (addNew) {
+    return (
+      <span>
+        <Typography.Link
+          disabled={editingKey !== ""}
+          onClick={() => addRecord(row.key)}
+          style={{ marginRight: 8 }}
+        >
+          Add
+        </Typography.Link>
+        <Popconfirm
+          disabled={editingKey !== ""}
+          title="Sure to cancel?"
+          onConfirm={() => cancel(row.key)}
+        >
+          <a>Clear</a>
+        </Popconfirm>
+      </span>
+    );
+  }
+
+  if (editable) {
+    return (
+      <span>
+        <Typography.Link
+          onClick={() => save(row.key, mutate)}
+          style={{ marginRight: 9 }}
+        >
+          Save
+        </Typography.Link>
+        <Popconfirm title="Sure to cancel?" onConfirm={() => cancel(row.key)}>
+          <a>Cancel</a>
+        </Popconfirm>
+      </span>
+    );
+  }
+
+  return (
+    <span>
+      <Typography.Link
+        disabled={editingKey !== ""}
+        onClick={() => edit(row)}
+        style={{ marginRight: 8 }}
+      >
+        Edit
+      </Typography.Link>
+      <Typography.Link
+        disabled={editingKey !== ""}
+        onClick={() => deleteRecord(row._id)}
+      >
+        Delete
+      </Typography.Link>
+    </span>
+  );
+};
 
 const EditableCell = ({
   editing,
@@ -68,7 +138,7 @@ const EditableCell = ({
   );
 };
 
-export default ({ data, fields }) => {
+export default ({ data, fields, route }) => {
   const [localData, setLocalData] = useState(data);
   const [editingKey, setEditingKey] = useState("");
   const [formValue, setFormValue] = useState({});
@@ -84,13 +154,20 @@ export default ({ data, fields }) => {
     setFormValue({ [rowId]: undefined });
   };
 
-  const save = (rowId) => {
+  const save = (rowId, mutate) => {
     setEditingKey("");
+    let rowToSave;
     setLocalData(
-      localData.map((dataRow) =>
-        dataRow._id === rowId ? { ...dataRow, ...formValue[rowId] } : dataRow
-      )
+      localData.map((dataRow) => {
+        if (dataRow._id === rowId) {
+          rowToSave = { ...dataRow, ...formValue[rowId] };
+          return rowToSave;
+        }
+
+        return dataRow;
+      })
     );
+    mutate(rowToSave);
   };
 
   const deleteRecord = (rowId) => {
@@ -113,73 +190,22 @@ export default ({ data, fields }) => {
     });
   };
 
-  const renderActionsColumn = (_, record) => {
-    const addNew = record.key === NEW_RECORD_KEY;
-    const editable = isEditing(record);
-    if (addNew) {
-      return (
-        <span>
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => addRecord(record.key)}
-            style={{ marginRight: 8 }}
-          >
-            Add
-          </Typography.Link>
-          <Popconfirm
-            disabled={editingKey !== ""}
-            title="Sure to cancel?"
-            onConfirm={() => cancel(record.key)}
-          >
-            <a>Clear</a>
-          </Popconfirm>
-        </span>
-      );
-    }
-
-    if (editable) {
-      return (
-        <span>
-          <Typography.Link
-            onClick={() => save(record.key)}
-            style={{ marginRight: 9 }}
-          >
-            Save
-          </Typography.Link>
-          <Popconfirm
-            title="Sure to cancel?"
-            onConfirm={() => cancel(record.key)}
-          >
-            <a>Cancel</a>
-          </Popconfirm>
-        </span>
-      );
-    }
-
-    return (
-      <span>
-        <Typography.Link
-          disabled={editingKey !== ""}
-          onClick={() => edit(record)}
-          style={{ marginRight: 8 }}
-        >
-          Edit
-        </Typography.Link>
-        <Typography.Link
-          disabled={editingKey !== ""}
-          onClick={() => deleteRecord(record._id)}
-        >
-          Delete
-        </Typography.Link>
-      </span>
-    );
-  };
-
   const actionsColumn = {
     title: "Actions",
     dataIndex: "action",
     width: "10%",
-    render: renderActionsColumn,
+    render: (_, record) => (
+      <ActionColumn
+        row={record}
+        save={save}
+        addRecord={addRecord}
+        edit={edit}
+        cancel={cancel}
+        editable={isEditing(record)}
+        editingKey={editingKey}
+        route={route}
+      />
+    ),
   };
 
   const columns = [
@@ -188,9 +214,7 @@ export default ({ data, fields }) => {
   ];
 
   const dataSource = [getBlankData(fields), ...mapData(localData)];
-  console.log(formValue);
-  console.log(dataSource);
-  console.log(columns);
+
   return (
     <Table
       dataSource={dataSource}
@@ -202,4 +226,4 @@ export default ({ data, fields }) => {
       }}
     />
   );
-};
+};;;;;

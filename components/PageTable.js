@@ -16,7 +16,7 @@ export default function PageTable({ route, fields }) {
   return (
     <div className={styles.container}>
       <main>
-        <EditableFormTable data={tableData} fields={fields} />
+        <EditableFormTable data={tableData} fields={fields} route={route} />
       </main>
     </div>
   );
