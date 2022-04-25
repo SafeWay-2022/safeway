@@ -1,38 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Table, Input, InputNumber, Popconfirm, Typography } from "antd";
-import useMutateSomething from "../../hooks/useUpdate";
-
-const mapData = (data) =>
-  data.map((dataRow) => ({ key: dataRow._id, ...dataRow }));
-
-const mapColumns = (
-  fields,
-  { isEditing, isNew, handleFormChange, formValue }
-) =>
-  fields.map((field) => {
-    return {
-      ...field,
-      onCell: (record) => ({
-        record,
-        handleFormChange,
-        formValue,
-        editing: isEditing(record),
-        isNew: isNew(record),
-        dataIndex: field.dataIndex,
-      }),
-    };
-  });
-
-const NEW_RECORD_KEY = "add_new_record";
-const getBlankData = (fields) => ({
-  _id: NEW_RECORD_KEY,
-  key: NEW_RECORD_KEY,
-  ...Object.fromEntries(fields.map(({ dataIndex }) => [dataIndex, null])),
-});
+import { Table, Popconfirm, Typography } from 'antd';
+import useMutateSomething from '../../hooks/useUpdate';
+import { dataMappers, inputsMapping } from './Inputs/config';
 
 export default ({ data, fields, route }) => {
   const [localData, setLocalData] = useState(data);
-  const [editingKey, setEditingKey] = useState("");
+  const [editingKey, setEditingKey] = useState('');
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
   const isNew = (row) => row.key === NEW_RECORD_KEY;
@@ -46,12 +19,12 @@ export default ({ data, fields, route }) => {
   };
 
   const cancel = (rowId) => {
-    setEditingKey("");
+    setEditingKey('');
     setFormValue({ [rowId]: undefined });
   };
 
   const save = (rowId, mutate) => {
-    setEditingKey("");
+    setEditingKey('');
     let rowToSave;
     setLocalData(
       localData.map((dataRow) => {
@@ -61,22 +34,19 @@ export default ({ data, fields, route }) => {
         }
 
         return dataRow;
-      })
+      }),
     );
     mutate(rowToSave);
   };
 
   const deleteRecord = (rowId) => {
-    setEditingKey("");
+    setEditingKey('');
     setFormValue({});
     setLocalData(localData.filter((dataRow) => dataRow._id !== rowId));
   };
 
   const addRecord = () => {
-    setLocalData([
-      { ...formValue[NEW_RECORD_KEY], key: "added", _id: "added" },
-      ...localData,
-    ]);
+    setLocalData([{ ...formValue[NEW_RECORD_KEY], key: 'added', _id: 'added' }, ...localData]);
   };
 
   const handleFormChange = (rowId, cellId, value) => {
@@ -87,9 +57,9 @@ export default ({ data, fields, route }) => {
   };
 
   const actionsColumn = {
-    title: "Actions",
-    dataIndex: "action",
-    width: "10%",
+    title: 'Actions',
+    dataIndex: 'action',
+    width: '10%',
     render: (_, record) => (
       <ActionColumn
         row={record}
@@ -125,6 +95,30 @@ export default ({ data, fields, route }) => {
   );
 };
 
+const mapData = (data) => data.map((dataRow) => ({ key: dataRow._id, ...dataRow }));
+
+const mapColumns = (fields, { isEditing, isNew, handleFormChange, formValue }) =>
+  fields.map((field) => {
+    return {
+      ...field,
+      onCell: (record) => ({
+        record,
+        handleFormChange,
+        formValue,
+        editing: isEditing(record),
+        isNew: isNew(record),
+        ...field,
+      }),
+    };
+  });
+
+const NEW_RECORD_KEY = 'add_new_record';
+const getBlankData = (fields) => ({
+  _id: NEW_RECORD_KEY,
+  key: NEW_RECORD_KEY,
+  ...Object.fromEntries(fields.map(({ dataIndex }) => [dataIndex, null])),
+});
+
 const EditableCell = ({
   editing,
   isNew,
@@ -136,27 +130,31 @@ const EditableCell = ({
   children,
   handleFormChange,
   formValue,
+  type,
   ...restProps
 }) => {
   const onChangeHandler = (e) => {
     handleFormChange(record.key, dataIndex, e.target.value);
   };
 
+  const dataMapper = dataMappers[type];
+  const InputComponent = inputsMapping[type];
+
   const getCellValue = () => {
     const current = record[dataIndex];
-    const changed = formValue[record.key]
-      ? formValue[record.key][dataIndex]
-      : null;
+    const changed = formValue[record.key] ? formValue[record.key][dataIndex] : null;
 
-    if (!editing || !changed) return current;
+    if (!editing || !changed) return dataMapper(current);
 
-    return changed;
+    return dataMapper(changed);
   };
 
   return (
     <td {...restProps}>
       {editing || isNew ? (
-        <input value={getCellValue()} type="text" onChange={onChangeHandler} />
+        <InputComponent value={getCellValue()} onChange={onChangeHandler} />
+      ) : type === 'geo' ? (
+        <InputComponent {...getCellValue()} readonly />
       ) : (
         children
       )}
