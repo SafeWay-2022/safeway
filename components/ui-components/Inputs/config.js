@@ -11,7 +11,7 @@ export const inputsMapping = {
 };
 
 export const defaultGeo = { lg: '', lat: '', type: null };
-export const mapGeo = (geo) => {
+export const mapGeoToInputProps = (geo) => {
   if (!geo) return defaultGeo;
 
   return {
@@ -21,9 +21,14 @@ export const mapGeo = (geo) => {
   };
 };
 
+export const mapInputPropsToGeo = ({ lg, lat, type }) => ({
+  coordinates: [lg, lat],
+  type,
+});
+
 export const dataMappers = {
   string: (text) => text,
   email: (text) => text,
   phone: (text) => text,
-  geo: mapGeo,
+  geo: mapGeoToInputProps,
 };

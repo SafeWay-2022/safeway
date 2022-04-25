@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm, Typography } from 'antd';
 import useMutateSomething from '../../hooks/useUpdate';
 import { dataMappers, inputsMapping } from './Inputs/config';
@@ -133,9 +133,13 @@ const EditableCell = ({
   type,
   ...restProps
 }) => {
-  const onChangeHandler = (e) => {
-    handleFormChange(record.key, dataIndex, e.target.value);
+  const isGeo = type === 'geo';
+
+  const onChangeHandler = (value) => {
+    handleFormChange(record.key, dataIndex, value);
   };
+
+  const onInputChangeHandler = (e) => onChangeHandler(e.target.value);
 
   const dataMapper = dataMappers[type];
   const InputComponent = inputsMapping[type];
@@ -149,11 +153,17 @@ const EditableCell = ({
     return dataMapper(changed);
   };
 
+  const getChangeHandler = () => {
+    if (isGeo) return onChangeHandler;
+
+    return onInputChangeHandler;
+  };
+
   return (
     <td {...restProps}>
       {editing || isNew ? (
-        <InputComponent value={getCellValue()} onChange={onChangeHandler} />
-      ) : type === 'geo' ? (
+        <InputComponent value={getCellValue()} onChange={getChangeHandler()} />
+      ) : isGeo ? (
         <InputComponent {...getCellValue()} readonly />
       ) : (
         children
@@ -163,30 +173,19 @@ const EditableCell = ({
 };
 
 const ActionColumn = ({
-  row,
-  save,
   addRecord,
+  save,
   edit,
+  deleteRecord,
+  row,
   editable,
   editingKey,
   cancel,
   route,
 }) => {
-  const mutateUpdate = useMutateSomething(
-    `rowEdit_${row._id}`,
-    route + row._id,
-    route
-  );
-  const mutateAdd = useMutateSomething(
-    `rowAdd_${row._id}`,
-    route + row._id,
-    route
-  );
-  const mutateDelete = useMutateSomething(
-    `rowEdit_${row._id}`,
-    route + row._id,
-    route
-  );
+  const mutateUpdate = useMutateSomething(`rowEdit_${row._id}`, route + row._id, route);
+  const mutateAdd = useMutateSomething(`rowAdd_${row._id}`, route + row._id, route);
+  const mutateDelete = useMutateSomething(`rowEdit_${row._id}`, route + row._id, route);
 
   const addNew = row.key === NEW_RECORD_KEY;
 
@@ -194,14 +193,14 @@ const ActionColumn = ({
     return (
       <span>
         <Typography.Link
-          disabled={editingKey !== ""}
+          disabled={editingKey !== ''}
           onClick={() => addRecord(row.key, mutateAdd)}
           style={{ marginRight: 8 }}
         >
           Add
         </Typography.Link>
         <Popconfirm
-          disabled={editingKey !== ""}
+          disabled={editingKey !== ''}
           title="Sure to cancel?"
           onConfirm={() => cancel(row.key)}
         >
@@ -214,15 +213,14 @@ const ActionColumn = ({
   if (editable) {
     return (
       <span>
-        <Typography.Link
-          onClick={() => save(row.key, mutateUpdate)}
-          style={{ marginRight: 9 }}
-        >
+        <Typography.Link onClick={() => save(row.key, mutateUpdate)} style={{ marginRight: 8 }}>
           Save
         </Typography.Link>
-        <Popconfirm title="Sure to cancel?" onConfirm={() => cancel(row.key)}>
-          <a>Cancel</a>
-        </Popconfirm>
+        <Typography.Link
+          onClick={() => cancel(row.key)}
+         >
+          Cancel
+          </Typography.Link>
       </span>
     );
   }
@@ -230,14 +228,14 @@ const ActionColumn = ({
   return (
     <span>
       <Typography.Link
-        disabled={editingKey !== ""}
+        disabled={editingKey !== ''}
         onClick={() => edit(row)}
         style={{ marginRight: 8 }}
       >
         Edit
       </Typography.Link>
       <Typography.Link
-        disabled={editingKey !== ""}
+        disabled={editingKey !== ''}
         onClick={() => deleteRecord(row._id, mutateDelete)}
       >
         Delete
