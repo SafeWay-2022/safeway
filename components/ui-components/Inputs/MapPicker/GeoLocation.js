@@ -37,6 +37,7 @@ function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, r
         style={{ width: 'calc(50% - 17px)' }}
         {...inputProps}
         {...readonlyProps}
+        placeholder="latitude..."
       />
       <Input
         type="number"
@@ -45,6 +46,7 @@ function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, r
         style={{ width: 'calc(50% - 17px)' }}
         {...inputProps}
         {...readonlyProps}
+        placeholder="longtitude..."
       />
       <Tooltip title="select on the map">
         <Button icon={<AimOutlined />} />

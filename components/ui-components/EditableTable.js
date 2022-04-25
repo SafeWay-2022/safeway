@@ -162,7 +162,7 @@ const EditableCell = ({
   return (
     <td {...restProps}>
       {editing || isNew ? (
-        <InputComponent value={getCellValue()} onChange={getChangeHandler()} />
+        <InputComponent value={getCellValue()} onChange={getChangeHandler()} placeholder={`${dataIndex}...`} />
       ) : isGeo ? (
         <InputComponent {...getCellValue()} readonly />
       ) : (
@@ -199,13 +199,7 @@ const ActionColumn = ({
         >
           Add
         </Typography.Link>
-        <Popconfirm
-          disabled={editingKey !== ''}
-          title="Sure to cancel?"
-          onConfirm={() => cancel(row.key)}
-        >
-          <a>Clear</a>
-        </Popconfirm>
+        <Typography.Link onClick={() => cancel(row.key)}>Clear</Typography.Link>
       </span>
     );
   }
@@ -216,11 +210,7 @@ const ActionColumn = ({
         <Typography.Link onClick={() => save(row.key, mutateUpdate)} style={{ marginRight: 8 }}>
           Save
         </Typography.Link>
-        <Typography.Link
-          onClick={() => cancel(row.key)}
-         >
-          Cancel
-          </Typography.Link>
+        <Typography.Link onClick={() => cancel(row.key)}>Cancel</Typography.Link>
       </span>
     );
   }
