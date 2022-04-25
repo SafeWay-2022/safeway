@@ -62,8 +62,6 @@ export default ({ data, fields }) => {
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
 
-  const dataSource = mapData(localData);
-
   const edit = (record) => {
     setEditingKey(record.key);
   };
@@ -82,6 +80,11 @@ export default ({ data, fields }) => {
     );
   };
 
+  const deleteRecord = (rowId) => {
+    setEditingKey("");
+    setLocalData(localData.filter((dataRow) => dataRow._id !== rowId));
+  };
+
   const handleFormChange = (rowId, cellId, value) => {
     setFormValue({
       ...formValue,
@@ -91,28 +94,41 @@ export default ({ data, fields }) => {
 
   const renderActionsColumn = (_, record) => {
     const editable = isEditing(record);
-    return editable ? (
+    if (editable) {
+      return (
+        <span>
+          <Typography.Link
+            onClick={() => save(record.key)}
+            style={{ marginRight: 8 }}
+          >
+            Save
+          </Typography.Link>
+          <Popconfirm
+            title="Sure to cancel?"
+            onConfirm={() => cancel(record.key)}
+          >
+            <a>Cancel</a>
+          </Popconfirm>
+        </span>
+      );
+    }
+
+    return (
       <span>
         <Typography.Link
-          onClick={() => save(record.key)}
+          disabled={editingKey !== ""}
+          onClick={() => edit(record)}
           style={{ marginRight: 8 }}
         >
-          Save
+          Edit
         </Typography.Link>
-        <Popconfirm
-          title="Sure to cancel?"
-          onConfirm={() => cancel(record.key)}
+        <Typography.Link
+          disabled={editingKey !== ""}
+          onClick={() => deleteRecord(record._id)}
         >
-          <a>Cancel</a>
-        </Popconfirm>
+          Delete
+        </Typography.Link>
       </span>
-    ) : (
-      <Typography.Link
-        disabled={editingKey !== ""}
-        onClick={() => edit(record)}
-      >
-        Edit
-      </Typography.Link>
     );
   };
 
@@ -127,6 +143,8 @@ export default ({ data, fields }) => {
     ...mapColumns(fields, { isEditing, handleFormChange, formValue }),
     actionsColumn,
   ];
+
+  const dataSource = mapData(localData);
 
   return (
     <Table
