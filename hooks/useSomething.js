@@ -7,6 +7,6 @@ const fetchSomething = async (url) => {
   return Array.isArray(data) ? data : data.items;
 };
 
-const useSomething = (url) => useQuery("something", () => fetchSomething(url));
+const useSomething = (url) => useQuery(url, () => fetchSomething(url));
 
 export { useSomething, fetchSomething };

@@ -1,9 +1,14 @@
 import EditableFormTable from "./ui-components/EditableTable";
 import { useSomething } from "../hooks/useSomething";
 import styles from "../styles/Home.module.css";
+import { useEffect } from "react";
 
 export default function PageTable({ route, fields }) {
   const { data: tableData, isLoading, isError, error } = useSomething(route);
+
+  useEffect(() => {
+    console.log("--- 3 ----", tableData);
+  }, [tableData]);
 
   if (isError) {
     return <h1>Error getting table data:{JSON.stringify(error)}</h1>;
@@ -12,7 +17,6 @@ export default function PageTable({ route, fields }) {
   if (isLoading) {
     return <h1>loading table data... </h1>;
   }
-
   return (
     <div className={styles.container}>
       <main>

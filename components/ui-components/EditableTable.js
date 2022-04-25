@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Input, InputNumber, Popconfirm, Typography } from "antd";
 import useMutateSomething from "../../hooks/useUpdate";
 
@@ -36,6 +36,10 @@ export default ({ data, fields, route }) => {
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
   const isNew = (row) => row.key === NEW_RECORD_KEY;
+
+  useEffect(() => {
+    data && setLocalData(data);
+  }, [data]);
 
   const edit = (record) => {
     setEditingKey(record.key);
@@ -172,12 +176,18 @@ const ActionColumn = ({
 }) => {
   const mutateUpdate = useMutateSomething(
     `rowEdit_${row._id}`,
-    route + row._id
+    route + row._id,
+    route
   );
-  const mutateAdd = useMutateSomething(`rowAdd_${row._id}`, route + row._id);
+  const mutateAdd = useMutateSomething(
+    `rowAdd_${row._id}`,
+    route + row._id,
+    route
+  );
   const mutateDelete = useMutateSomething(
     `rowEdit_${row._id}`,
-    route + row._id
+    route + row._id,
+    route
   );
 
   const addNew = row.key === NEW_RECORD_KEY;
