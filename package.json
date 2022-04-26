@@ -13,9 +13,11 @@
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.19.5",
     "axios": "^0.26.1",
+    "leaflet": "^1.8.0",
     "next": "latest",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "react-leaflet": "^4.0.0",
     "react-query": "^3.35.0"
   },
   "devDependencies": {

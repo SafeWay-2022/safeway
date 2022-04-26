@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps }) {
         <title>Admin</title>
         <meta name="description" content="yes" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
       </Head>
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />

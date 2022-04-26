@@ -2,7 +2,12 @@ import { AimOutlined } from '@ant-design/icons';
 import { Button, Input, Tooltip, Drawer } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { mapInputPropsToGeo } from '../config';
-import MapDrawer from './MapDrawer';
+
+import dynamic from 'next/dynamic';
+
+const MapDrawerNoSSR = dynamic(() => import('./MapDrawer'), {
+  ssr: false
+});
 
 function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, readonly }) {
   const readonlyProps = readonly
@@ -61,13 +66,11 @@ function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, r
         placement="top"
         visible={isVisibleDrawer}
         onClose={() => setIsVisibleDrawer(false)}
+        size="large"
         style={{ position: 'absolute' }}
-      >
-        <p>
-          There goes the map. Center it at: <br />
-          lat: {lat}, lg: {lg}
-        </p>
-        <MapDrawer center={{ lat, lg }} />
+      > 
+          <MapDrawerNoSSR center={[ lat, lg ]} readonly={readonly} />
+          {!readonly && <Button onClick={() => setIsVisibleDrawer(false)} type="secondary">Save</Button>}
       </Drawer>
     </>
   );
