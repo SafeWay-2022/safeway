@@ -2,12 +2,14 @@ import GeoLocation from './MapPicker/GeoLocation';
 import InputEmail from './InputEmail';
 import InputText from './InputText';
 import InputPhone from './InputPhone';
+import SelectCountry from './SelectCountry';
 
 export const inputsMapping = {
   string: InputText,
   email: InputEmail,
   geo: GeoLocation,
   phone: InputPhone,
+  country: SelectCountry
 };
 
 export const defaultGeo = { lg: '', lat: '', type: null };
@@ -30,5 +32,6 @@ export const dataMappers = {
   string: (text) => text,
   email: (text) => text,
   phone: (text) => text,
+  country: (text) => text,
   geo: mapGeoToInputProps,
 };

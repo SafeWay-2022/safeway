@@ -26,7 +26,7 @@
           "dataIndex": "country",
           "width": "10%",
           "editable": true,
-          "type": "string"
+          "type": "country"
         }
       ]
     },
