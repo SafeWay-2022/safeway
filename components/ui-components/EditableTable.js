@@ -162,7 +162,11 @@ const EditableCell = ({
   return (
     <td {...restProps}>
       {editing || isNew ? (
-        <InputComponent value={getCellValue()} onChange={getChangeHandler()} placeholder={`${dataIndex}...`} />
+        <InputComponent
+          value={getCellValue()}
+          onChange={getChangeHandler()}
+          placeholder={`Enter ${dataIndex}`}
+        />
       ) : isGeo ? (
         <InputComponent {...getCellValue()} readonly />
       ) : (

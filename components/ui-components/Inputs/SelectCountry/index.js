@@ -22,7 +22,7 @@ function SelectCountry({ value = '', onChange = () => {} }) {
     >
       {countries.map(({ label, value, flagUrl }) => {
         return (
-          <Option value={value}>
+          <Option key={value} value={value}>
             {label}
             {/* <img src={flagUrl} aria-label={label} /> */}
           </Option>
