@@ -1,5 +1,5 @@
 {
-  "menu": [0, 1],
+  "menu": [0, 1, 2, 3, 4],
   "defaultPath": "/poi",
   "tables": [
     {
@@ -55,6 +55,97 @@
           "width": "20%",
           "editable": true,
           "type": "phone"
+        }
+      ]
+    },
+    {
+      "path": "/org",
+      "title": "Organizations",
+      "apiRoute": "/org/",
+      "fields": [
+        {
+          "title": "Name",
+          "dataIndex": "name",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Email",
+          "dataIndex": "email",
+          "width": "20%",
+          "editable": true,
+          "type": "email"
+        },
+        {
+          "title": "Phone",
+          "dataIndex": "phone",
+          "width": "20%",
+          "editable": true,
+          "type": "phone"
+        }
+      ]
+    },
+    {
+      "path": "/common",
+      "title": "Common terms",
+      "apiRoute": "/common/",
+      "fields": [
+        {
+          "title": "Russian",
+          "dataIndex": "ru",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Ukrainian",
+          "dataIndex": "ua",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "English",
+          "dataIndex": "en",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "dataIndex": "description",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "path": "/need",
+      "title": "Needs",
+      "apiRoute": "/need/",
+      "fields": [
+        {
+          "title": "Category",
+          "dataIndex": "category",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Geolocation",
+          "dataIndex": "latilong",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Country",
+          "dataIndex": "country",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
         }
       ]
     }

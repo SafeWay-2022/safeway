@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Popconfirm, Typography } from 'antd';
+import { Table, Typography } from 'antd';
 import useMutateSomething from '../../hooks/useUpdate';
 import { dataMappers, inputsMapping } from './Inputs/config';
 
