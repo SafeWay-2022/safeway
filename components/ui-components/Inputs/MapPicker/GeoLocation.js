@@ -1,15 +1,14 @@
 import { AimOutlined } from '@ant-design/icons';
-import { Button, Input, Tooltip, Drawer } from 'antd';
-import React, { useState, useEffect } from 'react';
+import { Button, Drawer, Input, Tooltip } from 'antd';
+import dynamic from 'next/dynamic';
+import React, { useEffect, useState } from 'react';
 import { mapInputPropsToGeo } from '../config';
 
-import dynamic from 'next/dynamic';
-
 const MapDrawerNoSSR = dynamic(() => import('./MapDrawer'), {
-  ssr: false
+  ssr: false,
 });
 
-function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, readonly }) {
+function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, readonly, label }) {
   const readonlyProps = readonly
     ? { bordered: false, disabled: false, readOnly: true, allowClear: false }
     : {};
@@ -62,15 +61,19 @@ function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, r
         </Tooltip>
       </Input.Group>
       <Drawer
-        title="Select place on the map"
+        title="Place selection"
         placement="top"
         visible={isVisibleDrawer}
         onClose={() => setIsVisibleDrawer(false)}
         size="large"
         style={{ position: 'absolute' }}
-      > 
-          <MapDrawerNoSSR center={[ lat, lg ]} readonly={readonly} />
-          {!readonly && <Button onClick={() => setIsVisibleDrawer(false)} type="secondary">Save</Button>}
+      >
+        {!readonly ? 'Drag the marker around to change the coordinates.' : `Press "edit" in actions column to change the position`}
+        <MapDrawerNoSSR
+          center={[localLat, localLg]}
+          readonly={readonly}
+          updatePosition={({ lat, lng }) => setLocalValue({ lat, lg: lng })}
+        />
       </Drawer>
     </>
   );

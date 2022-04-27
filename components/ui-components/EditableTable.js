@@ -166,9 +166,10 @@ const EditableCell = ({
           value={getCellValue()}
           onChange={getChangeHandler()}
           placeholder={`Enter ${dataIndex}`}
+          label={record.name}
         />
       ) : isGeo ? (
-        <InputComponent {...getCellValue()} readonly />
+        <InputComponent {...getCellValue()} label={record.name} readonly />
       ) : (
         children
       )}
