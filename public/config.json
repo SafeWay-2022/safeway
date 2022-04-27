@@ -28,7 +28,20 @@
           "editable": true,
           "type": "country"
         }
-      ]
+      ],
+      "schema": {
+        "name": "testing Galați Night Camp",
+        "address": "E87 Road",
+        "city": "Galați",
+        "country": "Romania",
+        "latilong": [45.4579, 28.1578],
+        "categories": ["Clothes", "Accommodation"],
+        "organizations": ["unhelp", "ilhelp"],
+        "description": "Get help here",
+        "phone": "+38-123-4567",
+        "open_hours": "Monday-Friday: 10-19\nSaturday: 10-17\nSunday: Closed",
+        "tags": ["Pets friendly", "ID required"]
+      }
     },
     {
       "path": "/users",
@@ -56,7 +69,8 @@
           "editable": true,
           "type": "phone"
         }
-      ]
+      ],
+      "schema": { "password": "$uper_admin_123" }
     },
     {
       "path": "/org",

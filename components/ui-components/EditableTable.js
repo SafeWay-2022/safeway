@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import { Table, Typography } from 'antd';
+import React, { useState } from 'react';
+import useAdd from '../../hooks/useAdd';
+import useDelete from '../../hooks/useDelete';
 import useUpdate from '../../hooks/useUpdate';
 import { dataMappers, inputsMapping } from './Inputs/config';
 
-export default ({ data, fields, route }) => {
-  const [localData, setLocalData] = useState(data);
+export default ({ schema, data, fields, route }) => {
   const [editingKey, setEditingKey] = useState('');
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
   const isNew = (row) => row.key === NEW_RECORD_KEY;
-
-  useEffect(() => {
-    data && setLocalData(data);
-  }, [data]);
 
   const edit = (record) => {
     setEditingKey(record.key);
@@ -28,14 +25,15 @@ export default ({ data, fields, route }) => {
     setEditingKey('');
   };
 
-  const deleteRecord = (rowId) => {
+  const deleteRecord = (row, mutate) => {
     setEditingKey('');
     setFormValue({});
-    setLocalData(localData.filter((dataRow) => dataRow._id !== rowId));
+    mutate(row._id);
   };
 
-  const addRecord = () => {
-    setLocalData([{ ...formValue[NEW_RECORD_KEY], key: 'added', _id: 'added' }, ...localData]);
+  const addRecord = (row, mutate) => {
+    setFormValue({});
+    mutate({ ...schema, ...row, key: undefined, _id: undefined });
   };
 
   const handleFormChange = (rowId, cellId, value) => {
@@ -182,15 +180,15 @@ const ActionColumn = ({
     tableKey: route,
     url: route + row._id,
   });
-  const mutateAdd = useUpdate({
-    url: route + row._id,
+  const mutateAdd = useAdd({
+    url: route,
     tableKey: route,
-    mutationKey: `rowEdit_${row._id}`,
+    mutationKey: `rowAdd_${row._id}`,
   });
-  const mutateDelete = useUpdate({
+  const mutateDelete = useDelete({
     url: route + row._id,
     tableKey: route,
-    mutationKey: `rowEdit_${row._id}`,
+    mutationKey: `rowDelete_${row._id}`,
   });
 
   const addNew = row.key === NEW_RECORD_KEY;
@@ -200,7 +198,7 @@ const ActionColumn = ({
       <span>
         <Typography.Link
           disabled={editingKey !== ''}
-          onClick={() => addRecord(row.key, mutateAdd)}
+          onClick={() => addRecord(row, mutateAdd)}
           style={{ marginRight: 8 }}
         >
           Add
@@ -230,10 +228,7 @@ const ActionColumn = ({
       >
         Edit
       </Typography.Link>
-      <Typography.Link
-        disabled={editingKey !== ''}
-        onClick={() => deleteRecord(row._id, mutateDelete)}
-      >
+      <Typography.Link disabled={editingKey !== ''} onClick={() => deleteRecord(row, mutateDelete)}>
         Delete
       </Typography.Link>
     </span>

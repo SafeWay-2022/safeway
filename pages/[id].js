@@ -1,10 +1,9 @@
-import { useRouter } from "next/router";
-import useConfig from "../hooks/useConfig";
-import styles from "../styles/Home.module.css";
-import PageTable from "../components/PageTable";
+import { useRouter } from 'next/router';
+import useConfig from '../hooks/useConfig';
+import styles from '../styles/Home.module.css';
+import PageTable from '../components/PageTable';
 
-const getTable = ({ tables }, route) =>
-  tables.find(({ path }) => path === route);
+const getTable = ({ tables }, route) => tables.find(({ path }) => path === route);
 
 export default function DynamicPage() {
   const { data: config, isLoading, isError, error } = useConfig();
@@ -29,7 +28,7 @@ export default function DynamicPage() {
   return (
     <div className={styles.container}>
       <main>
-        <PageTable route={currentTable.apiRoute} fields={currentTable.fields} />
+        <PageTable table={currentTable} />
       </main>
     </div>
   );
