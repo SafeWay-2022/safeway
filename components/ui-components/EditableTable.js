@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Typography } from 'antd';
-import useMutateSomething from '../../hooks/useUpdate';
+import useUpdate from '../../hooks/useUpdate';
 import { dataMappers, inputsMapping } from './Inputs/config';
 
 export default ({ data, fields, route }) => {
@@ -188,9 +188,9 @@ const ActionColumn = ({
   cancel,
   route,
 }) => {
-  const mutateUpdate = useMutateSomething(`rowEdit_${row._id}`, route + row._id, route);
-  const mutateAdd = useMutateSomething(`rowAdd_${row._id}`, route + row._id, route);
-  const mutateDelete = useMutateSomething(`rowEdit_${row._id}`, route + row._id, route);
+  const mutateUpdate = useUpdate(`rowEdit_${row._id}`, route + row._id, route);
+  const mutateAdd = useUpdate(`rowAdd_${row._id}`, route + row._id, route);
+  const mutateDelete = useUpdate(`rowEdit_${row._id}`, route + row._id, route);
 
   const addNew = row.key === NEW_RECORD_KEY;
 
