@@ -1,3 +1,6 @@
+import { nanoid } from 'nanoid';
+import { lettersOnly } from '../../../utils/common';
+
 export const defaultGeolocationProps = { lg: '', lat: '', type: null };
 
 export const mapGeoToInputProps = (geo) => {
@@ -47,7 +50,7 @@ export const mapUIRowToServerData = (data, route) => {
   }
 
   if (route.includes('users')) {
-    changes = { ...changes, username: `${lettersOnly(payload.name)}_${nanoid(8)}` };
+    changes = { ...changes, username: `${lettersOnly(data.name)}_${nanoid(8)}` };
   }
 
   return { ...data, ...changes };
