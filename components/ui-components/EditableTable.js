@@ -20,20 +20,20 @@ export default ({ schema, data, fields, route }) => {
     setFormValue({ [rowId]: undefined });
   };
 
-  const save = (row, mutate) => {
+  const saveRecord = (row, mutate) => {
     mutate({ ...row, ...formValue[row._id] });
     setEditingKey('');
   };
 
   const deleteRecord = (row, mutate) => {
+    mutate(row._id);
     setEditingKey('');
     setFormValue({});
-    mutate(row._id);
   };
 
   const addRecord = (row, mutate) => {
-    setFormValue({});
     mutate({ ...schema, ...row, key: undefined, _id: undefined });
+    setFormValue({});
   };
 
   const handleFormChange = (rowId, cellId, value) => {
@@ -50,7 +50,7 @@ export default ({ schema, data, fields, route }) => {
     render: (_, record) => (
       <ActionColumn
         row={record}
-        save={save}
+        save={saveRecord}
         addRecord={addRecord}
         edit={edit}
         cancel={cancel}
