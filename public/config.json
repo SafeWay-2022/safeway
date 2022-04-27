@@ -1,8 +1,9 @@
 {
   "menu": [0, 1, 2, 3, 4],
-  "defaultPath": "/poi",
+  "defaultPath": "/",
   "tables": [
     {
+      "id": 0,
       "path": "/poi",
       "title": "Points of interest",
       "apiRoute": "/poi/",
@@ -43,36 +44,9 @@
         "tags": ["Pets friendly", "ID required"]
       }
     },
+
     {
-      "path": "/users",
-      "title": "Volunteers",
-      "apiRoute": "/users/",
-      "fields": [
-        {
-          "title": "Name",
-          "dataIndex": "name",
-          "width": "20%",
-          "editable": true,
-          "type": "string"
-        },
-        {
-          "title": "Email",
-          "dataIndex": "email",
-          "width": "20%",
-          "editable": true,
-          "type": "email"
-        },
-        {
-          "title": "Phone",
-          "dataIndex": "phone",
-          "width": "20%",
-          "editable": true,
-          "type": "phone"
-        }
-      ],
-      "schema": { "password": "$uper_admin_123" }
-    },
-    {
+      "id": 2,
       "path": "/org",
       "title": "Organizations",
       "apiRoute": "/org/",
@@ -101,6 +75,7 @@
       ]
     },
     {
+      "id": 3,
       "path": "/common",
       "title": "Common terms",
       "apiRoute": "/common/",
@@ -136,10 +111,10 @@
       ]
     },
     {
+      "id": 4,
       "path": "/need",
       "title": "Needs",
       "apiRoute": "/need/",
-      "schema": { "latilong": [49.8441, 24.0261] },
       "fields": [
         {
           "title": "Category",
@@ -149,8 +124,8 @@
           "type": "string"
         },
         {
-          "title": "Description",
-          "dataIndex": "description",
+          "title": "Geolocation",
+          "dataIndex": "latilong",
           "width": "20%",
           "editable": true,
           "type": "string"
@@ -163,6 +138,36 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "id": 1,
+      "path": "/users",
+      "title": "Volunteers",
+      "apiRoute": "/users/",
+      "fields": [
+        {
+          "title": "Name",
+          "dataIndex": "name",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Email",
+          "dataIndex": "email",
+          "width": "20%",
+          "editable": true,
+          "type": "email"
+        },
+        {
+          "title": "Phone",
+          "dataIndex": "phone",
+          "width": "20%",
+          "editable": true,
+          "type": "phone"
+        }
+      ],
+      "schema": { "password": "$uper_admin_123" }
     }
   ]
 }
