@@ -61,14 +61,22 @@ function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, r
         </Tooltip>
       </Input.Group>
       <Drawer
-        title="Place selection"
+        title={
+          <div>
+            Place selection:{' '}
+            <span style={{ fontWeight: 'normal' }}>
+              {!readonly
+                ? 'Drag the marker around to change the coordinates.'
+                : 'Press "edit" in actions column to change the position.'}
+            </span>
+          </div>
+        }
         placement="top"
         visible={isVisibleDrawer}
         onClose={() => setIsVisibleDrawer(false)}
         size="large"
         style={{ position: 'absolute' }}
       >
-        {!readonly ? 'Drag the marker around to change the coordinates.' : `Press "edit" in actions column to change the position`}
         <MapDrawerNoSSR
           center={[localLat, localLg]}
           readonly={readonly}

@@ -11,10 +11,7 @@ const Map = ({ center = [42, 42], updatePosition, readonly, label }) => {
         map.flyTo(e.latlng, map.getZoom());
         setMarkerPosition(e.latlng);
       },
-      locationfound(e) {
-        
-        
-      },
+      locationfound(e) {},
     }),
     [],
   );
@@ -41,7 +38,7 @@ const Map = ({ center = [42, 42], updatePosition, readonly, label }) => {
       zoom={14}
       scrollWheelZoom={false}
       eventHandlers={eventHandlers}
-      style={{ height: '80vh', width: '100%' }}
+      style={{ height: '100%', width: '100%' }}
       ref={setMap}
     >
       <TileLayer
