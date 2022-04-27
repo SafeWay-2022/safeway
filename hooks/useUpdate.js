@@ -6,31 +6,35 @@ import { useQueryClient } from 'react-query';
 
 const doFetch = async (url, data) => {
   console.log({ url, data });
-  return axios.put(API_REMOTE_HOST + url + 1, {
+  return axios.put(API_REMOTE_HOST + url, {
     ...data,
   });
 };
 
-export default (mutationKey, url, key) => {
+const sleep = (timeout) => new Promise((r) => setTimeout(r, timeout));
+
+export default function useUpdate({ url, mutationKey, tableKey }) {
   const queryClient = useQueryClient();
   const { mutate, error, isError } = useMutation((data) => doFetch(url, data), {
     mutationKey,
+    onMutate: async (newRow) => {
+      await queryClient.cancelQueries(tableKey);
+      await queryClient.cancelQueries(mutationKey);
 
-    onError: async (err, clientRow, context) => {
-      try {
-        await queryClient.invalidateQueries(key);
-        const previousTable = queryClient.getQueryData(key);
+      const previousTable = queryClient.getQueryData(tableKey);
 
-        const serverRow = previousTable.find(({ _id }) => _id === clientRow._id);
+      queryClient.setQueryData(tableKey, (old) =>
+        old.map((dataRow) => (dataRow._id === newRow._id ? newRow : dataRow)),
+      );
 
-        if (serverRow.name !== clientRow.name) {
-          // TODO - think about cleaner solution
-          queryClient.setQueryData(key, [...previousTable, {}]);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      return { previousTable };
+    },
+    onError: (err, newRow, context) => {
+      queryClient.setQueryData(tableKey, context.previousTable);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(tableKey);
     },
   });
   return mutate;
-};
+}

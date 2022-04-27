@@ -23,20 +23,9 @@ export default ({ data, fields, route }) => {
     setFormValue({ [rowId]: undefined });
   };
 
-  const save = (rowId, mutate) => {
+  const save = (row, mutate) => {
+    mutate({ ...row, ...formValue[row._id] });
     setEditingKey('');
-    let rowToSave;
-    setLocalData(
-      localData.map((dataRow) => {
-        if (dataRow._id === rowId) {
-          rowToSave = { ...dataRow, ...formValue[rowId] };
-          return rowToSave;
-        }
-
-        return dataRow;
-      }),
-    );
-    mutate(rowToSave);
   };
 
   const deleteRecord = (rowId) => {
@@ -80,7 +69,7 @@ export default ({ data, fields, route }) => {
     actionsColumn,
   ];
 
-  const dataSource = [getBlankData(fields), ...mapData(localData)];
+  const dataSource = [getBlankData(fields), ...mapData(data)];
 
   return (
     <Table
@@ -188,9 +177,21 @@ const ActionColumn = ({
   cancel,
   route,
 }) => {
-  const mutateUpdate = useUpdate(`rowEdit_${row._id}`, route + row._id, route);
-  const mutateAdd = useUpdate(`rowAdd_${row._id}`, route + row._id, route);
-  const mutateDelete = useUpdate(`rowEdit_${row._id}`, route + row._id, route);
+  const mutateUpdate = useUpdate({
+    mutationKey: `rowEdit_${row._id}`,
+    tableKey: route,
+    url: route + row._id,
+  });
+  const mutateAdd = useUpdate({
+    url: route + row._id,
+    tableKey: route,
+    mutationKey: `rowEdit_${row._id}`,
+  });
+  const mutateDelete = useUpdate({
+    url: route + row._id,
+    tableKey: route,
+    mutationKey: `rowEdit_${row._id}`,
+  });
 
   const addNew = row.key === NEW_RECORD_KEY;
 
@@ -212,7 +213,7 @@ const ActionColumn = ({
   if (editable) {
     return (
       <span>
-        <Typography.Link onClick={() => save(row.key, mutateUpdate)} style={{ marginRight: 8 }}>
+        <Typography.Link onClick={() => save(row, mutateUpdate)} style={{ marginRight: 8 }}>
           Save
         </Typography.Link>
         <Typography.Link onClick={() => cancel(row.key)}>Cancel</Typography.Link>
