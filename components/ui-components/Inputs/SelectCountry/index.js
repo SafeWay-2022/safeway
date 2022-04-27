@@ -13,6 +13,7 @@ function SelectCountry({ value = '', onChange = () => {} }) {
       style={{ width: 200 }}
       placeholder="Search to Select Country"
       optionFilterProp="children"
+      onChange={onChange}
       filterOption={(input, option) =>
         option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }

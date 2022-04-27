@@ -41,6 +41,10 @@ export default ({ schema, data, fields, route }) => {
     if (route.includes('users')) {
       payload.username = `${lettersOnly(payload.name)}_${nanoid(8)}`
     }
+    if (route.includes('poi')) {
+      payload.latilong = [+payload.geo.coordinates[0], +payload.geo.coordinates[1]];
+      payload.geo = undefined;
+    }
     mutate(payload);    
     setFormValue({});
   };
@@ -130,6 +134,9 @@ const EditableCell = ({
   ...restProps
 }) => {
   const isGeo = type === 'geo';
+  const isCountry = type === 'country';
+  const isFirstRow = record?.key === NEW_RECORD_KEY;
+  const isEditing = isFirstRow || editing;
 
   const onChangeHandler = (value) => {
     handleFormChange(record.key, dataIndex, value);
@@ -144,20 +151,20 @@ const EditableCell = ({
     const current = record[dataIndex];
     const changed = formValue[record.key] ? formValue[record.key][dataIndex] : null;
 
-    if (!editing || !changed) return dataMapper(current);
+    if (!isEditing || !changed) return dataMapper(current);
 
     return dataMapper(changed);
   };
 
   const getChangeHandler = () => {
-    if (isGeo) return onChangeHandler;
+    if (isGeo || isCountry) return onChangeHandler;
 
     return onInputChangeHandler;
   };
 
   return (
     <td {...restProps}>
-      {editing || isNew ? (
+      {isEditing || isNew ? (
         <InputComponent
           value={getCellValue()}
           onChange={getChangeHandler()}
