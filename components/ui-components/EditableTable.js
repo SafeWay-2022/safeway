@@ -4,6 +4,11 @@ import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
 import useUpdate from '../../hooks/useUpdate';
 import { dataMappers, inputsMapping } from './Inputs/config';
+import { nanoid } from 'nanoid'
+
+function lettersOnly(str) {
+	return str.replace(/[^a-zA-Z0-9]/g,"");
+}
 
 export default ({ schema, data, fields, route }) => {
   const [editingKey, setEditingKey] = useState('');
@@ -31,8 +36,12 @@ export default ({ schema, data, fields, route }) => {
     setFormValue({});
   };
 
-  const addRecord = (row, mutate) => {
-    mutate({ ...schema, ...row, key: undefined, _id: undefined });
+  const addRecord = (rowId, mutate) => {
+    let payload = { ...schema, ...formValue[rowId], key: undefined, _id: undefined };
+    if (route.includes('users')) {
+      payload.username = `${lettersOnly(payload.name)}_${nanoid(8)}`
+    }
+    mutate(payload);    
     setFormValue({});
   };
 
@@ -198,7 +207,7 @@ const ActionColumn = ({
       <span>
         <Typography.Link
           disabled={editingKey !== ''}
-          onClick={() => addRecord(row, mutateAdd)}
+          onClick={() => addRecord(row.key, mutateAdd)}
           style={{ marginRight: 8 }}
         >
           Add

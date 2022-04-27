@@ -139,6 +139,7 @@
       "path": "/need",
       "title": "Needs",
       "apiRoute": "/need/",
+      "schema": { "latilong": [49.8441, 24.0261] },
       "fields": [
         {
           "title": "Category",
@@ -148,8 +149,8 @@
           "type": "string"
         },
         {
-          "title": "Geolocation",
-          "dataIndex": "latilong",
+          "title": "Description",
+          "dataIndex": "description",
           "width": "20%",
           "editable": true,
           "type": "string"
