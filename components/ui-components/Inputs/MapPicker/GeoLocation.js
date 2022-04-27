@@ -1,60 +1,43 @@
 import { AimOutlined } from '@ant-design/icons';
 import { Button, Drawer, Input, Tooltip } from 'antd';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
-import { mapInputPropsToGeo } from '../config';
+import React, { useState, useEffect } from 'react';
 
 const MapDrawerNoSSR = dynamic(() => import('./MapDrawer'), {
   ssr: false,
 });
 
-function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, readonly, label }) {
-  const readonlyProps = readonly
-    ? { bordered: false, disabled: false, readOnly: true, allowClear: false }
-    : {};
-
-  const inputProps = { allowClear: true };
-  const [localValue, setLocalValue] = useState({ lat, lg });
-  const { lat: localLat, lg: localLg } = localValue;
-
+function GeoLocation({ value, onChange = () => {}, readonly, label }) {
+  const { lat, lg, type } = value;
   const [isVisibleDrawer, setIsVisibleDrawer] = useState(false);
 
-  const handleLatChange = (e) => {
-    setLocalValue({ ...localValue, lat: e.target?.value });
+  const handleChange = (key) => (value) => {
+    const position = { lat, lg };
+    return onChange({ ...position, [key]: value, type });
   };
 
-  const handleLgChange = (e) => {
-    setLocalValue({ ...localValue, lg: e.target?.value });
-  };
-
-  useEffect(() => {
-    onChange(mapInputPropsToGeo({ lg: localLg, lat: localLat, type }));
-  }, [localLat, localLg]);
-
-  useEffect(() => {
-    setLocalValue({ lat, lg });
-  }, [lat, lg]);
+  const inputProps = readonly
+    ? { bordered: false, disabled: false, readOnly: true, allowClear: false }
+    : { allowClear: true };
 
   return (
     <>
       <Input.Group>
         <Input
           type="number"
-          defaultValue={localLat}
-          onChange={handleLatChange}
+          value={lat}
+          onChange={(e) => handleChange('lat')(e.target.value)}
           style={{ width: 'calc(50% - 17px)' }}
           {...inputProps}
-          {...readonlyProps}
           placeholder={readonly ? '' : 'Enter latitude'}
         />
         <Input
           type="number"
-          defaultValue={localLg}
-          onChange={handleLgChange}
+          value={lg}
+          onChange={(e) => handleChange('lg')(e.target.value)}
           style={{ width: 'calc(50% - 17px)' }}
           {...inputProps}
-          {...readonlyProps}
-          placeholder={readonly ? '' : 'Enter longtitude'}
+          placeholder={readonly ? '' : 'Enter longitude'}
         />
         <Tooltip title="select on the map">
           <Button onClick={() => setIsVisibleDrawer(true)} icon={<AimOutlined />} />
@@ -66,9 +49,14 @@ function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, r
             Place selection:{' '}
             <span style={{ fontWeight: 'normal' }}>
               {!readonly
-                ? 'Drag the marker around to change the coordinates.'
+                ? `Drag the marker around`
                 : 'Press "edit" in actions column to change the position.'}
             </span>
+            <p style={{ fontSize: '0.85em' }}>
+              {!readonly
+                ? `Latitude and Longitude are changed according to the marker position. Close the map to see the updates (Escape/Cross/Click outside).`
+                : ''}
+            </p>
           </div>
         }
         placement="top"
@@ -78,9 +66,9 @@ function GeoLocation({ lat = '', lg = '', type = 'Point', onChange = () => {}, r
         style={{ position: 'absolute' }}
       >
         <MapDrawerNoSSR
-          center={[localLat, localLg]}
+          center={[lat, lg]}
           readonly={readonly}
-          updatePosition={({ lat, lng }) => setLocalValue({ lat, lg: lng })}
+          updatePosition={({ lat, lng }) => onChange({ lat, lg: lng, type })}
         />
       </Drawer>
     </>

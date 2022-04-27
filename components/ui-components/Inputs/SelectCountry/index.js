@@ -9,14 +9,12 @@ function SelectCountry({ value = '', onChange = () => {} }) {
   return (
     <Select
       showSearch
-      defaultValue={value}
+      value={value}
       style={{ width: 200 }}
       placeholder="Search to Select Country"
       optionFilterProp="children"
       onChange={onChange}
-      filterOption={(input, option) =>
-        option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      }
+      filterOption={(input, option) => option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       filterSort={(optionA, optionB) =>
         optionA.value.toLowerCase().localeCompare(optionB.value.toLowerCase())
       }

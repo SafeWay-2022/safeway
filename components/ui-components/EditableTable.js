@@ -3,12 +3,8 @@ import React, { useState } from 'react';
 import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
 import useUpdate from '../../hooks/useUpdate';
-import { dataMappers, inputsMapping } from './Inputs/config';
-import { nanoid } from 'nanoid'
-
-function lettersOnly(str) {
-	return str.replace(/[^a-zA-Z0-9]/g,"");
-}
+import { inputsMapping } from './Inputs/config';
+import { getAddNewRowUIData, NEW_RECORD_KEY } from './Inputs/mappers';
 
 export default ({ schema, data, fields, route }) => {
   const [editingKey, setEditingKey] = useState('');
@@ -22,7 +18,7 @@ export default ({ schema, data, fields, route }) => {
 
   const cancel = (rowId) => {
     setEditingKey('');
-    setFormValue({ [rowId]: undefined });
+    setFormValue((prevFormValue) => ({ ...prevFormValue, [rowId]: undefined }));
   };
 
   const saveRecord = (row, mutate) => {
@@ -37,23 +33,15 @@ export default ({ schema, data, fields, route }) => {
   };
 
   const addRecord = (rowId, mutate) => {
-    let payload = { ...schema, ...formValue[rowId], key: undefined, _id: undefined };
-    if (route.includes('users')) {
-      payload.username = `${lettersOnly(payload.name)}_${nanoid(8)}`
-    }
-    if (route.includes('poi')) {
-      payload.latilong = [+payload.geo.coordinates[0], +payload.geo.coordinates[1]];
-      payload.geo = undefined;
-    }
-    mutate(payload);    
+    mutate({ ...schema, ...formValue[rowId] });
     setFormValue({});
   };
 
   const handleFormChange = (rowId, cellId, value) => {
-    setFormValue({
-      ...formValue,
-      [rowId]: { ...formValue[rowId], [cellId]: value },
-    });
+    setFormValue((prevFormValue) => ({
+      ...prevFormValue,
+      [rowId]: { ...prevFormValue[rowId], [cellId]: value },
+    }));
   };
 
   const actionsColumn = {
@@ -80,7 +68,9 @@ export default ({ schema, data, fields, route }) => {
     actionsColumn,
   ];
 
-  const dataSource = [getBlankData(fields), ...mapData(data)];
+  const dataSource = [getAddNewRowUIData(fields), ...data];
+
+  console.log(dataSource);
 
   return (
     <Table
@@ -94,8 +84,6 @@ export default ({ schema, data, fields, route }) => {
     />
   );
 };
-
-const mapData = (data) => data.map((dataRow) => ({ key: dataRow._id, ...dataRow }));
 
 const mapColumns = (fields, { isEditing, isNew, handleFormChange, formValue }) =>
   fields.map((field) => {
@@ -111,13 +99,6 @@ const mapColumns = (fields, { isEditing, isNew, handleFormChange, formValue }) =
       }),
     };
   });
-
-const NEW_RECORD_KEY = 'add_new_record';
-const getBlankData = (fields) => ({
-  _id: NEW_RECORD_KEY,
-  key: NEW_RECORD_KEY,
-  ...Object.fromEntries(fields.map(({ dataIndex }) => [dataIndex, null])),
-});
 
 const EditableCell = ({
   editing,
@@ -138,22 +119,23 @@ const EditableCell = ({
   const isFirstRow = record?.key === NEW_RECORD_KEY;
   const isEditing = isFirstRow || editing;
 
+  const InputComponent = inputsMapping[type];
+
   const onChangeHandler = (value) => {
     handleFormChange(record.key, dataIndex, value);
   };
 
   const onInputChangeHandler = (e) => onChangeHandler(e.target.value);
 
-  const dataMapper = dataMappers[type];
-  const InputComponent = inputsMapping[type];
-
   const getCellValue = () => {
+    if (!record) return;
+
     const current = record[dataIndex];
     const changed = formValue[record.key] ? formValue[record.key][dataIndex] : null;
 
-    if (!isEditing || !changed) return dataMapper(current);
+    const takeCurrent = !isEditing || !changed;
 
-    return dataMapper(changed);
+    return takeCurrent ? current : changed;
   };
 
   const getChangeHandler = () => {
@@ -162,17 +144,19 @@ const EditableCell = ({
     return onInputChangeHandler;
   };
 
+  const cellValue = getCellValue();
+
   return (
     <td {...restProps}>
       {isEditing || isNew ? (
         <InputComponent
-          value={getCellValue()}
+          value={cellValue}
           onChange={getChangeHandler()}
           placeholder={`Enter ${dataIndex}`}
           label={record.name}
         />
       ) : isGeo ? (
-        <InputComponent {...getCellValue()} label={record.name} readonly />
+        <InputComponent value={cellValue} label={record.name} readonly />
       ) : (
         children
       )}
@@ -195,16 +179,19 @@ const ActionColumn = ({
     mutationKey: `rowEdit_${row._id}`,
     tableKey: route,
     url: route + row._id,
+    route,
   });
   const mutateAdd = useAdd({
     url: route,
     tableKey: route,
     mutationKey: `rowAdd_${row._id}`,
+    route,
   });
   const mutateDelete = useDelete({
     url: route + row._id,
     tableKey: route,
     mutationKey: `rowDelete_${row._id}`,
+    route,
   });
 
   const addNew = row.key === NEW_RECORD_KEY;
