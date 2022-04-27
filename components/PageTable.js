@@ -1,13 +1,13 @@
-import EditableFormTable from "./ui-components/EditableTable";
-import { useSomething } from "../hooks/useSomething";
-import styles from "../styles/Home.module.css";
-import { useEffect } from "react";
+import EditableFormTable from './ui-components/EditableTable';
+import useGetTableData from '../hooks/useGetTableData';
+import styles from '../styles/Home.module.css';
+import { useEffect } from 'react';
 
 export default function PageTable({ route, fields }) {
-  const { data: tableData, isLoading, isError, error } = useSomething(route);
+  const { data: tableData, isLoading, isError, error } = useGetTableData(route);
 
   useEffect(() => {
-    console.log("--- 3 ----", tableData);
+    console.log('--- 3 ----', tableData);
   }, [tableData]);
 
   if (isError) {
