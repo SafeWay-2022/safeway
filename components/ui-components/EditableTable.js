@@ -70,8 +70,6 @@ export default ({ schema, data, fields, route }) => {
 
   const dataSource = [getAddNewRowUIData(fields), ...data];
 
-  console.log(dataSource);
-
   return (
     <Table
       dataSource={dataSource}
