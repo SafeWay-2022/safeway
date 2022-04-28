@@ -24,13 +24,6 @@
           "type": "string"
         },
         {
-          "title": "Coordinates",
-          "dataIndex": "geo",
-          "width": "40%",
-          "editable": true,
-          "type": "geo"
-        },
-        {
           "title": "Country",
           "dataIndex": "country",
           "width": "10%",
@@ -50,6 +43,13 @@
           "width": "10%",
           "editable": true,
           "type": "MULTIPLE_SELECT"
+        },
+        {
+          "title": "Coordinates",
+          "dataIndex": "geo",
+          "width": "40%",
+          "editable": true,
+          "type": "geo"
         }
       ],
       "schema": {

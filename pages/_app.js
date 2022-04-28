@@ -1,3 +1,5 @@
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Button, Layout, Skeleton } from 'antd';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -5,19 +7,7 @@ import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import useConfig from '../hooks/useConfig';
 import { getTableById, getTableByRoute, withProps } from '../lib/helpers';
-
 import '../styles/globals.css';
-import { Layout, Skeleton, Menu, MenuProps } from 'antd';
-import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UserOutlined,
-  UploadOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -27,6 +17,8 @@ const App = ({ children }) => {
 
   const { data: config = {}, commonTables, isLoading, isError, error } = useConfig();
   const { menu = [], tables = [], defaultPath = '' } = config;
+
+  const [collapsed, setCollapsed] = useState(false);
 
   if (isError) {
     return <h1>Error getting application config:{JSON.stringify(error)}</h1>;
@@ -40,7 +32,7 @@ const App = ({ children }) => {
 
   const childrenWithProps = withProps({ children, currentTable, config, commonTables });
 
-  const btnClass = ' p-3 m-3 inline-block cursor-pointer';
+  const btnClass = ' p-3 m-3 inline-block cursor-pointer whitespace-nowrap overflow-hidden ';
   const getMenuClass = (id) =>
     (getTableById(tables, id)?.id === currentTable?.id ? 'bg-blue-600' : 'bg-gray-200') + btnClass;
   const getHref = (id) => getTableById(tables, id).apiRoute;
@@ -48,8 +40,12 @@ const App = ({ children }) => {
 
   console.log({ config, commonTables });
 
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
-    <Layout hasSider style={{ height: '99vh' }} className="overflow-auto">
+    <Layout hasSider style={{ height: '99vh' }} className="overflow-hidden">
       <Sider
         style={{
           overflow: 'auto',
@@ -59,21 +55,33 @@ const App = ({ children }) => {
           top: 0,
           bottom: 0,
         }}
+        collapsed={collapsed}
       >
-        <div className="mt-16">
-          <Link href="/">
-            <a className={getMenuClass()}>Home</a>
+        <Button
+          type="primary"
+          onClick={toggleCollapsed}
+          style={{
+            marginBottom: 16,
+          }}
+        >
+          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        </Button>
+        <br />
+        <Link href="/">
+          <a style={{ width: !collapsed ? '170px' : '50px' }} className={getMenuClass()}>
+            Home
+          </a>
+        </Link>
+        {menu.map((id) => (
+          <Link href={getHref(id)}>
+            <a style={{ width: !collapsed ? '170px' : '50px' }} className={getMenuClass(id)}>
+              {getTitle(id)}{' '}
+            </a>
           </Link>
-          {menu.map((id) => (
-            <Link href={getHref(id)}>
-              <a className={getMenuClass(id)}>{getTitle(id)} </a>
-            </Link>
-          ))}
-        </div>
+        ))}
       </Sider>
-      <Layout className="ml-40">
-        <Header />
-        <Content className="h-full">{childrenWithProps}</Content>
+      <Layout style={{ marginLeft: collapsed ? '70px' : '180px', backgroundColor: 'white' }}>
+        <Content className="h-full overflow-auto mt-4">{childrenWithProps}</Content>
         <Footer style={{ textAlign: 'center' }}>Safeway© 2022</Footer>
       </Layout>
     </Layout>

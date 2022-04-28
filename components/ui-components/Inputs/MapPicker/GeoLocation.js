@@ -1,5 +1,5 @@
-import { AimOutlined } from '@ant-design/icons';
-import { Button, Drawer, Input, Tag, Tooltip } from 'antd';
+import { AimOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { Button, Drawer, Input, Tag, Tooltip, Typography } from 'antd';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
 
@@ -8,6 +8,7 @@ const MapDrawerNoSSR = dynamic(() => import('./MapDrawer'), {
 });
 
 function GeoLocation({ value, onChange = () => {}, readonly, label }) {
+  const [valueBeforeDrawerOpen, setValueBeforeDrawerOpen] = useState({ lat, lg });
   const { lat, lg, type } = value;
   const [isVisibleDrawer, setIsVisibleDrawer] = useState(false);
 
@@ -16,18 +17,55 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
     return onChange({ ...position, [key]: value, type });
   };
 
-  const inputProps = readonly
-    ? { bordered: false, disabled: false, readOnly: true, allowClear: false }
-    : { allowClear: true };
+  const inputProps = readonly ? { bordered: false, disabled: false, readOnly: true } : {};
+
+  const changeToPreviousValue = () => {
+    onChange({ ...valueBeforeDrawerOpen, type });
+  };
+
+  const handleDrawerOpen = () => {
+    setValueBeforeDrawerOpen({ lat, lg });
+    setIsVisibleDrawer(true);
+  };
+
+  const drawerTitle = (
+    <div>
+      <p style={{ fontWeight: 'normal' }}>
+        {!readonly
+          ? ` Info: Drag the marker around`
+          : 'Press "edit" in actions column to change the position.'}
+      </p>
+      <p style={{ fontSize: '0.85em' }}>
+        {!readonly
+          ? `Latitude and Longitude are changed according to the marker position. Press cancel to restore geolocation value before the changes.`
+          : ''}
+      </p>
+    </div>
+  );
+
+  const selectionControls = (
+    <span>
+      <Typography.Link onClick={() => setIsVisibleDrawer(false)} style={{ marginRight: 8 }}>
+        Select
+      </Typography.Link>
+      <Typography.Link
+        onClick={() => {
+          changeToPreviousValue();
+          setIsVisibleDrawer(false);
+        }}
+      >
+        Cancel
+      </Typography.Link>
+    </span>
+  );
 
   return (
     <>
-      <Input.Group>
+      <Input.Group className="grid grid-cols-3 gap-4" style={{ minWidth: '280px' }}>
         <Input
           type="number"
           value={lat}
           onChange={(e) => handleChange('lat')(e.target.value)}
-          style={{ width: 'calc(50% - 17px)' }}
           {...inputProps}
           placeholder={readonly ? '' : 'Enter latitude'}
         />
@@ -35,37 +73,22 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
           type="number"
           value={lg}
           onChange={(e) => handleChange('lg')(e.target.value)}
-          style={{ width: 'calc(50% - 17px)' }}
           {...inputProps}
           placeholder={readonly ? '' : 'Enter longitude'}
         />
         <Tooltip title="select on the map">
-          <Button onClick={() => setIsVisibleDrawer(true)} icon={<AimOutlined />} />
+          <Button onClick={handleDrawerOpen} icon={<AimOutlined />} />
         </Tooltip>
       </Input.Group>
       <Drawer
-        title={
-          <div>
-            Place selection:{' '}
-            <span style={{ fontWeight: 'normal' }}>
-              {!readonly
-                ? `Drag the marker around`
-                : 'Press "edit" in actions column to change the position.'}
-            </span>
-            <p style={{ fontSize: '0.85em' }}>
-              {!readonly
-                ? `Latitude and Longitude are changed according to the marker position. Close the map to see the updates (Escape/Cross/Click outside).`
-                : ''}
-            </p>
-          </div>
-        }
-        placement="bottom"
+        title={drawerTitle}
+        placement="left"
         visible={isVisibleDrawer}
-        onClose={() => setIsVisibleDrawer(false)}
+        closable={false}
         size="large"
         style={{ position: 'absolute' }}
         destroyOnClose={true}
-        extra={<span>Hi mom!</span>}
+        extra={selectionControls}
       >
         <MapDrawerNoSSR
           center={[lat, lg]}

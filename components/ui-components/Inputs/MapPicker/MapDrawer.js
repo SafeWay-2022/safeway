@@ -12,7 +12,7 @@ const Map = ({ center = [42, 42], updatePosition, readonly, label }) => {
     <MapContainer
       center={center}
       zoom={14}
-      scrollWheelZoom={false}
+      scrollWheelZoom={true}
       style={{ height: '100%', width: '100%' }}
       ref={setMap}
     >
