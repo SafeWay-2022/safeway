@@ -69,7 +69,7 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
 
   return (
     <>
-      <Input.Group className="grid grid-cols-3 gap-4" style={{ minWidth: '280px' }}>
+      <Input.Group className="flex gap-1" style={{ minWidth: '260px' }}>
         <Input
           type="number"
           value={lat}
@@ -85,7 +85,7 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
           placeholder={readonly ? '' : 'Enter longitude'}
         />
         <Tooltip title="select on the map">
-          <Button onClick={handleDrawerOpen} icon={<AimOutlined />} />
+          <Button onClick={handleDrawerOpen} icon={<AimOutlined className="p-1" />} />
         </Tooltip>
       </Input.Group>
       <Drawer
