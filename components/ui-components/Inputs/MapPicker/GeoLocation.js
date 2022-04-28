@@ -43,7 +43,15 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
     </div>
   );
 
-  const selectionControls = (
+  const selectionControls = readonly ? (
+    <Typography.Link
+      onClick={() => {
+        setIsVisibleDrawer(false);
+      }}
+    >
+      Cancel
+    </Typography.Link>
+  ) : (
     <span>
       <Typography.Link onClick={() => setIsVisibleDrawer(false)} style={{ marginRight: 8 }}>
         Select
