@@ -31,4 +31,8 @@ function SelectCountry({ value = '', onChange = () => {} }) {
   );
 }
 
-export default SelectCountry;
+function InputWrapper(props) {
+  return !props.readonly ? <SelectCountry {...props} /> : props.children;
+}
+
+export default InputWrapper;

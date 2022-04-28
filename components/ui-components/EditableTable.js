@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
 import useUpdate from '../../hooks/useUpdate';
-import { inputsMapping } from './Inputs/config';
+import { inputsMapping, pureValueTypes } from './Inputs/config';
 import { getAddNewRowUIData, NEW_RECORD_KEY } from './Inputs/mappers';
 
 export default ({ schema, data, fields, route, commonTablesData }) => {
@@ -114,10 +114,9 @@ const EditableCell = ({
   type,
   ...restProps
 }) => {
-  const isGeo = type === 'geo';
   const isFirstRow = record?.key === NEW_RECORD_KEY;
-  const isEditing = isFirstRow || editing;
-  const pureValueTypes = ['MULTIPLE_SELECT', 'geo', 'country'];
+  const isEditing = isFirstRow || editing || isNew;
+
   const InputComponent = inputsMapping[type];
 
   const onChangeHandler = (value) => {
@@ -127,8 +126,6 @@ const EditableCell = ({
   const onInputChangeHandler = (e) => onChangeHandler(e.target.value);
 
   const getCellValue = () => {
-    if (!record) return;
-
     const current = record[dataIndex];
     const changed = formValue[record.key] ? formValue[record.key][dataIndex] : null;
 
@@ -137,25 +134,22 @@ const EditableCell = ({
     return takeCurrent ? current : changed;
   };
 
-  const getChangeHandler = () => {
-    if (pureValueTypes.includes(type)) return onChangeHandler;
-    return onInputChangeHandler;
-  };
-
-  const cellValue = getCellValue();
+  const getChangeHandler = () =>
+    pureValueTypes.includes(type) ? onChangeHandler : onInputChangeHandler;
 
   return (
     <td {...restProps}>
-      {isEditing || isNew ? (
+      {InputComponent ? (
         <InputComponent
-          value={cellValue}
-          onChange={getChangeHandler()}
-          placeholder={`Enter ${dataIndex}`}
+          value={getCellValue()}
           label={record.name}
+          readonly={!isEditing}
+          placeholder={`Enter ${dataIndex}`}
+          onChange={getChangeHandler()}
           options={commonTablesData[dataIndex]}
-        />
-      ) : isGeo ? (
-        <InputComponent value={cellValue} label={record.name} readonly />
+        >
+          {children}
+        </InputComponent>
       ) : (
         children
       )}

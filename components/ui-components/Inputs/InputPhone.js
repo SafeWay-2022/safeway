@@ -5,4 +5,8 @@ function InputPhone({ value = '', onChange = () => {} }) {
   return <Input type="tel" placeholder="Enter phone..." value={value} onChange={onChange} />;
 }
 
-export default InputPhone;
+function InputWrapper(props) {
+  return !props.readonly ? <InputPhone {...props} /> : props.children;
+}
+
+export default InputWrapper;

@@ -14,3 +14,5 @@ export const inputsMapping = {
   country: SelectCountry,
   MULTIPLE_SELECT: SelectMultiple,
 };
+
+export const pureValueTypes = ['MULTIPLE_SELECT', 'geo', 'country'];

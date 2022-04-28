@@ -1,7 +1,7 @@
-import EditableFormTable from './ui-components/EditableTable';
+import { Skeleton } from 'antd';
 import useGetTableData from '../hooks/useGetTableData';
 import styles from '../styles/Home.module.css';
-import { useEffect } from 'react';
+import EditableFormTable from './ui-components/EditableTable';
 
 export default function PageTable({ table: tableConfig, commonTables: commonTablesData }) {
   const { apiRoute: route, fields, schema = { default: 'hello, nice 2 see u' } } = tableConfig;
@@ -12,8 +12,9 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   }
 
   if (isLoading) {
-    return <h1>loading table data... </h1>;
+    return <Skeleton />;
   }
+
   return (
     <div className={styles.container}>
       <main>

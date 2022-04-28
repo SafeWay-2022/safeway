@@ -5,7 +5,21 @@ import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import useConfig from '../hooks/useConfig';
 import { getTableById, getTableByRoute, withProps } from '../lib/helpers';
+
 import '../styles/globals.css';
+import { Layout, Skeleton, Menu, MenuProps } from 'antd';
+import {
+  AppstoreOutlined,
+  BarChartOutlined,
+  CloudOutlined,
+  ShopOutlined,
+  TeamOutlined,
+  UserOutlined,
+  UploadOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
+
+const { Header, Content, Footer, Sider } = Layout;
 
 const App = ({ children }) => {
   const router = useRouter();
@@ -19,7 +33,7 @@ const App = ({ children }) => {
   }
 
   if (isLoading) {
-    return <h1>loading config... </h1>;
+    return <Skeleton />;
   }
 
   const currentTable = getTableByRoute(tables, route || defaultPath);
@@ -35,17 +49,34 @@ const App = ({ children }) => {
   console.log({ config, commonTables });
 
   return (
-    <>
-      <Link href="/">
-        <a className={getMenuClass()}>Home</a>
-      </Link>
-      {menu.map((id) => (
-        <Link href={getHref(id)}>
-          <a className={getMenuClass(id)}>{getTitle(id)} </a>
-        </Link>
-      ))}
-      {childrenWithProps}
-    </>
+    <Layout hasSider style={{ height: '99vh' }} className="overflow-auto">
+      <Sider
+        style={{
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+        }}
+      >
+        <div className="mt-16">
+          <Link href="/">
+            <a className={getMenuClass()}>Home</a>
+          </Link>
+          {menu.map((id) => (
+            <Link href={getHref(id)}>
+              <a className={getMenuClass(id)}>{getTitle(id)} </a>
+            </Link>
+          ))}
+        </div>
+      </Sider>
+      <Layout className="ml-40">
+        <Header />
+        <Content className="h-full">{childrenWithProps}</Content>
+        <Footer style={{ textAlign: 'center' }}>Safeway© 2022</Footer>
+      </Layout>
+    </Layout>
   );
 };
 

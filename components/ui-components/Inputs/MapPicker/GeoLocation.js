@@ -1,5 +1,5 @@
 import { AimOutlined } from '@ant-design/icons';
-import { Button, Drawer, Input, Tooltip } from 'antd';
+import { Button, Drawer, Input, Tag, Tooltip } from 'antd';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
 
@@ -59,11 +59,13 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
             </p>
           </div>
         }
-        placement="top"
+        placement="bottom"
         visible={isVisibleDrawer}
         onClose={() => setIsVisibleDrawer(false)}
         size="large"
         style={{ position: 'absolute' }}
+        destroyOnClose={true}
+        extra={<span>Hi mom!</span>}
       >
         <MapDrawerNoSSR
           center={[lat, lg]}
