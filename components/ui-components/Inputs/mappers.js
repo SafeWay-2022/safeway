@@ -17,8 +17,8 @@ export const mapLatilongToInputProps = (latilong) => {
   if (!latilong) return defaultGeolocationProps;
 
   return {
-    lat: latilong[1],
-    lg: latilong[0],
+    lat: latilong[0],
+    lg: latilong[1],
     type: null,
   };
 };
@@ -28,7 +28,7 @@ export const mapInputPropsToGeo = ({ lg, lat, type }) => ({
   type,
 });
 
-export const mapInputPropsToLatilong = ({ lg, lat, type }) => [+lg, +lat];
+export const mapInputPropsToServerLatilong = ({ lg, lat, type }) => [+lat, +lg];
 
 export const mapServerRowToUIRow = (dataRow) => ({
   key: dataRow._id,
@@ -44,7 +44,7 @@ export const mapUIRowToServerData = (data, route) => {
   if (route.includes('poi')) {
     changes = {
       ...changes,
-      latilong: mapInputPropsToLatilong(data.geo),
+      latilong: mapInputPropsToServerLatilong(data.geo),
       geo: undefined,
     };
   }
