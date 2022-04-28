@@ -93,6 +93,8 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
         placement="left"
         visible={isVisibleDrawer}
         closable={false}
+        maskClosable={readonly}
+        onClose={() => setIsVisibleDrawer(false)}
         size="large"
         style={{ position: 'absolute' }}
         destroyOnClose={true}
