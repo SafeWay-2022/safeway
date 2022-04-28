@@ -2,24 +2,17 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { QueryClient, QueryClientProvider, useQueryClient } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import useConfig from '../hooks/useConfig';
+import { btnClass, getTableById, getTableByRoute, withProps } from '../lib/helpers';
 import '../styles/globals.css';
-
-const cleanPath = (path) => path.replace('/', '');
-
-const getTableByRoute = (tables, route) =>
-  tables.find(({ path }) => cleanPath(path) === cleanPath(route));
-
-const getTableById = (tables, targetId) => tables.find(({ id }) => id === targetId);
 
 const App = ({ children }) => {
   const router = useRouter();
   const { asPath: route } = router;
 
-  const { data, isLoading, isError, error } = useConfig();
-  const config = data || {};
-  const { menu = [], tables = [], defaultPath = '' } = config;
+  const { data: config = {}, isLoading, isError, error } = useConfig();
+  const { menu = [], tables = [], defaultPath = '', common } = config;
 
   if (isError) {
     return <h1>Error getting application config:{JSON.stringify(error)}</h1>;
@@ -31,14 +24,8 @@ const App = ({ children }) => {
 
   const currentTable = getTableByRoute(tables, route || defaultPath);
 
-  const childrenWithProps = React.Children.map(children, (child) => {
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, { currentTable, config });
-    }
-    return child;
-  });
+  const childrenWithProps = withProps({ children, currentTable, config });
 
-  const btnClass = ' p-3 m-3 inline-block cursor-pointer';
   const getMenuClass = (id) =>
     (getTableById(tables, id)?.id === currentTable?.id ? 'bg-blue-600' : 'bg-gray-200') + btnClass;
   const getHref = (id) => getTableById(tables, id).apiRoute;

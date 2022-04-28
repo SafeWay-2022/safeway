@@ -3,8 +3,8 @@ import useGetTableData from '../hooks/useGetTableData';
 import styles from '../styles/Home.module.css';
 import { useEffect } from 'react';
 
-export default function PageTable({ table }) {
-  const { apiRoute: route, fields, schema = { default: 'hello, nice 2 see u' } } = table;
+export default function PageTable({ table: tableConfig }) {
+  const { apiRoute: route, fields, schema = { default: 'hello, nice 2 see u' } } = tableConfig;
   const { data: tableData, isLoading, isError, error } = useGetTableData(route);
 
   if (isError) {

@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { mapServerTableToUIData } from '../components/ui-components/Inputs/mappers';
 import { API_HOST } from '../config';
 
-const fetchData = async (url) => {
+export const fetchData = async (url) => {
   const { data } = await axios(API_HOST + url);
   const dataArray = Array.isArray(data) ? data : data.items;
 
