@@ -3,7 +3,7 @@
   "defaultPath": "/",
   "common": {
     "organizations": {
-      "apiRoute": "/poi/"
+      "apiRoute": "/org/"
     },
     "categories": {
       "apiRoute": "/common/"
@@ -36,20 +36,25 @@
           "width": "10%",
           "editable": true,
           "type": "country"
+        },
+        {
+          "title": "Categories",
+          "dataIndex": "categories",
+          "width": "10%",
+          "editable": true,
+          "type": "MULTIPLE_SELECT"
+        },
+        {
+          "title": "Organizations",
+          "dataIndex": "organizations",
+          "width": "10%",
+          "editable": true,
+          "type": "MULTIPLE_SELECT"
         }
       ],
       "schema": {
-        "name": "testing Galați Night Camp",
-        "address": "E87 Road",
-        "city": "Galați",
-        "country": "Romania",
-        "latilong": [45.4579, 28.1578],
-        "categories": ["Clothes", "Accommodation"],
-        "organizations": ["unhelp", "ilhelp"],
-        "description": "Get help here",
-        "phone": "+38-123-4567",
-        "open_hours": "Monday-Friday: 10-19\nSaturday: 10-17\nSunday: Closed",
-        "tags": ["Pets friendly", "ID required"]
+        "name": "",
+        "categories": []
       }
     },
 

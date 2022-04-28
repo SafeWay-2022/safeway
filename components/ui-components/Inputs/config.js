@@ -2,6 +2,7 @@ import GeoLocation from './MapPicker/GeoLocation';
 import InputEmail from './InputEmail';
 import InputText from './InputText';
 import InputPhone from './InputPhone';
+import SelectMultiple from './SelectMultiple';
 import SelectCountry from './SelectCountry';
 
 export const inputsMapping = {
@@ -11,4 +12,5 @@ export const inputsMapping = {
   latilong: GeoLocation,
   phone: InputPhone,
   country: SelectCountry,
+  MULTIPLE_SELECT: SelectMultiple,
 };

@@ -6,7 +6,7 @@ import useUpdate from '../../hooks/useUpdate';
 import { inputsMapping } from './Inputs/config';
 import { getAddNewRowUIData, NEW_RECORD_KEY } from './Inputs/mappers';
 
-export default ({ schema, data, fields, route }) => {
+export default ({ schema, data, fields, route, commonTablesData }) => {
   const [editingKey, setEditingKey] = useState('');
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
@@ -64,7 +64,7 @@ export default ({ schema, data, fields, route }) => {
   };
 
   const columns = [
-    ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue }),
+    ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }),
     actionsColumn,
   ];
 
@@ -83,7 +83,7 @@ export default ({ schema, data, fields, route }) => {
   );
 };
 
-const mapColumns = (fields, { isEditing, isNew, handleFormChange, formValue }) =>
+const mapColumns = (fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }) =>
   fields.map((field) => {
     return {
       ...field,
@@ -93,6 +93,7 @@ const mapColumns = (fields, { isEditing, isNew, handleFormChange, formValue }) =
         formValue,
         editing: isEditing(record),
         isNew: isNew(record),
+        commonTablesData,
         ...field,
       }),
     };
@@ -109,14 +110,14 @@ const EditableCell = ({
   children,
   handleFormChange,
   formValue,
+  commonTablesData,
   type,
   ...restProps
 }) => {
   const isGeo = type === 'geo';
-  const isCountry = type === 'country';
   const isFirstRow = record?.key === NEW_RECORD_KEY;
   const isEditing = isFirstRow || editing;
-
+  const pureValueTypes = ['MULTIPLE_SELECT', 'geo', 'country'];
   const InputComponent = inputsMapping[type];
 
   const onChangeHandler = (value) => {
@@ -137,8 +138,7 @@ const EditableCell = ({
   };
 
   const getChangeHandler = () => {
-    if (isGeo || isCountry) return onChangeHandler;
-
+    if (pureValueTypes.includes(type)) return onChangeHandler;
     return onInputChangeHandler;
   };
 
@@ -152,6 +152,7 @@ const EditableCell = ({
           onChange={getChangeHandler()}
           placeholder={`Enter ${dataIndex}`}
           label={record.name}
+          options={commonTablesData[dataIndex]}
         />
       ) : isGeo ? (
         <InputComponent value={cellValue} label={record.name} readonly />

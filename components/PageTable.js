@@ -3,7 +3,7 @@ import useGetTableData from '../hooks/useGetTableData';
 import styles from '../styles/Home.module.css';
 import { useEffect } from 'react';
 
-export default function PageTable({ table: tableConfig }) {
+export default function PageTable({ table: tableConfig, commonTables: commonTablesData }) {
   const { apiRoute: route, fields, schema = { default: 'hello, nice 2 see u' } } = tableConfig;
   const { data: tableData, isLoading, isError, error } = useGetTableData(route);
 
@@ -17,7 +17,13 @@ export default function PageTable({ table: tableConfig }) {
   return (
     <div className={styles.container}>
       <main>
-        <EditableFormTable schema={schema} data={tableData} fields={fields} route={route} />
+        <EditableFormTable
+          route={route}
+          schema={schema}
+          fields={fields}
+          data={tableData}
+          commonTablesData={commonTablesData}
+        />
       </main>
     </div>
   );

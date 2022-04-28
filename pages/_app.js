@@ -4,15 +4,15 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import useConfig from '../hooks/useConfig';
-import { btnClass, getTableById, getTableByRoute, withProps } from '../lib/helpers';
+import { getTableById, getTableByRoute, withProps } from '../lib/helpers';
 import '../styles/globals.css';
 
 const App = ({ children }) => {
   const router = useRouter();
   const { asPath: route } = router;
 
-  const { data: config = {}, isLoading, isError, error } = useConfig();
-  const { menu = [], tables = [], defaultPath = '', common } = config;
+  const { data: config = {}, commonTables, isLoading, isError, error } = useConfig();
+  const { menu = [], tables = [], defaultPath = '' } = config;
 
   if (isError) {
     return <h1>Error getting application config:{JSON.stringify(error)}</h1>;
@@ -24,12 +24,15 @@ const App = ({ children }) => {
 
   const currentTable = getTableByRoute(tables, route || defaultPath);
 
-  const childrenWithProps = withProps({ children, currentTable, config });
+  const childrenWithProps = withProps({ children, currentTable, config, commonTables });
 
+  const btnClass = ' p-3 m-3 inline-block cursor-pointer';
   const getMenuClass = (id) =>
     (getTableById(tables, id)?.id === currentTable?.id ? 'bg-blue-600' : 'bg-gray-200') + btnClass;
   const getHref = (id) => getTableById(tables, id).apiRoute;
   const getTitle = (id) => getTableById(tables, id).title;
+
+  console.log({ config, commonTables });
 
   return (
     <>

@@ -1,36 +1,35 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { CONFIG_HOST } from '../config';
 import { fetchData } from './useGetTableData';
 
 export default () => {
-  const getConfigResponse = useQuery('appConfig', async () => {
+  const [commonTables, setCommonTables] = useState([]);
+
+  const configResponse = useQuery('appConfig', async () => {
     const { data: response = {} } = await axios(CONFIG_HOST);
-
-    const { data } = response;
-
     return response || {};
   });
 
   useEffect(() => {
-    async function myFnc() {
-      if (response.common) {
-        const commonToFetch = Object.entries(response.common).map(([key, { apiRoute }]) => ({
-          key,
-          apiRoute,
-        }));
+    async function myFnc(commonConfig) {
+      const commonToFetch = Object.entries(commonConfig).map(([key, { apiRoute }]) => ({
+        key,
+        apiRoute,
+      }));
 
-        const commonFetches = commonToFetch.map(({ apiRoute }) => fetchData(apiRoute));
-        const commons = await Promise.all(commonFetches);
+      const commonFetches = await Promise.all(
+        commonToFetch.map(({ apiRoute }) => fetchData(apiRoute)),
+      );
 
-        console.log({ commons });
-      }
+      setCommonTables(
+        Object.fromEntries(commonFetches.map((commons, i) => [commonToFetch[i].key, commons])),
+      );
     }
-    getConfigResponse.data && myFnc();
-  }, []);
 
-  console.log({ getConfigResponse });
+    configResponse.data?.common && myFnc(configResponse.data.common);
+  }, [configResponse?.data?.common]);
 
-  return getConfigResponse;
+  return { ...configResponse, commonTables };
 };

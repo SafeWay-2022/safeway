@@ -3,21 +3,22 @@ import App from 'next/app';
 import { API_REMOTE_HOST } from '../../config';
 
 export default async function handler(req, res) {
-  const { route } = req.query;
-  const path = route.join('/')
-  console.log('-->', req.method, path);
+  const { route, limit, skip } = req.query;
+  const path = route.join('/');
+  const queryParams = `/?limit=${limit || 10000}&skip=${skip || 0}`;
+  const url = API_REMOTE_HOST + '/' + path + queryParams;
 
   try {
-    const { data } = await axios[req.method.toLowerCase()](
-      API_REMOTE_HOST + '/' + path,
-      req.body,
-    );
+    const { data } = await axios[req.method.toLowerCase()](url, req.body);
     return res.status(200).json(data);
   } catch (e) {
     console.log('Huston...');
-    console.log(e.response.statusText, e.response.status);
-    return res
-      .status(400)
-      .json({ message: e.message, statusText: e.response.statusText, status: e.response.status });
+    const payload = {
+      message: e?.message,
+      statusText: e?.response?.statusText,
+      status: e?.response?.status,
+    };
+    console.log(payload);
+    return res.status(400).json(payload);
   }
 }

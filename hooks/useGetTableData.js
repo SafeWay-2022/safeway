@@ -4,7 +4,7 @@ import { mapServerTableToUIData } from '../components/ui-components/Inputs/mappe
 import { API_HOST } from '../config';
 
 export const fetchData = async (url) => {
-  const { data } = await axios(API_HOST + url);
+  const { data } = await axios(API_HOST + url + '?limit=4200');
   const dataArray = Array.isArray(data) ? data : data.items;
 
   return mapServerTableToUIData(dataArray);
