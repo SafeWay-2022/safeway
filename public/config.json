@@ -136,19 +136,27 @@
           "editable": true,
           "type": "string"
         },
-        {
-          "title": "Geolocation",
-          "dataIndex": "latilong",
-          "width": "20%",
-          "editable": true,
-          "type": "string"
-        },
+
         {
           "title": "Country",
           "dataIndex": "country",
           "width": "20%",
           "editable": true,
+          "type": "country"
+        },
+        {
+          "title": "Description",
+          "dataIndex": "description",
+          "width": "20%",
+          "editable": true,
           "type": "string"
+        },
+        {
+          "title": "Geolocation",
+          "dataIndex": "geo",
+          "width": "20%",
+          "editable": true,
+          "type": "geo"
         }
       ]
     },
