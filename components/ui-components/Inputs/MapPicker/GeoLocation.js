@@ -90,6 +90,7 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
           value={lg}
           onChange={(e) => handleChange('lg')(e.target.value)}
           {...inputProps}
+          placeholder={readonly ? '' : 'Enter longitude'}
         />
         <Tooltip title="select on the map">
           <Button onClick={handleDrawerOpen} icon={<AimOutlined className="p-1" />} />
