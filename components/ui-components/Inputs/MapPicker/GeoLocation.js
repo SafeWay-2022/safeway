@@ -1,11 +1,13 @@
-import { AimOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { Button, Drawer, Input, Tag, Tooltip, Typography } from 'antd';
+import { AimOutlined } from '@ant-design/icons';
+import { Button, Drawer, Input, Tooltip, Typography } from 'antd';
 import dynamic from 'next/dynamic';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const MapDrawerNoSSR = dynamic(() => import('./MapDrawer'), {
   ssr: false,
 });
+
+const defaultCoord = [52.214, 21.027];
 
 function GeoLocation({ value, onChange = () => {}, readonly, label }) {
   const [valueBeforeDrawerOpen, setValueBeforeDrawerOpen] = useState({ lat, lg });
@@ -53,7 +55,11 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
     </Typography.Link>
   ) : (
     <span>
-      <Typography.Link onClick={() => setIsVisibleDrawer(false)} style={{ marginRight: 8 }}>
+      <Typography.Link
+        onClick={() => setIsVisibleDrawer(false)}
+        style={{ marginRight: 8 }}
+        disabled={!(lat && lg)}
+      >
         Select
       </Typography.Link>
       <Typography.Link
@@ -66,6 +72,8 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
       </Typography.Link>
     </span>
   );
+
+  const mapCenter = lat && lg ? [lat, lg] : defaultCoord;
 
   return (
     <>
@@ -82,7 +90,6 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
           value={lg}
           onChange={(e) => handleChange('lg')(e.target.value)}
           {...inputProps}
-          placeholder={readonly ? '' : 'Enter longitude'}
         />
         <Tooltip title="select on the map">
           <Button onClick={handleDrawerOpen} icon={<AimOutlined className="p-1" />} />
@@ -101,7 +108,7 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
         extra={selectionControls}
       >
         <MapDrawerNoSSR
-          center={[lat, lg]}
+          center={mapCenter}
           readonly={readonly}
           updatePosition={({ lat, lng }) => onChange({ lat, lg: lng, type })}
         />

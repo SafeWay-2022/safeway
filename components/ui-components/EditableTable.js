@@ -114,8 +114,7 @@ const EditableCell = ({
   type,
   ...restProps
 }) => {
-  const isFirstRow = record?.key === NEW_RECORD_KEY;
-  const isEditing = isFirstRow || editing || isNew;
+  const isEditing = editing || isNew;
 
   const InputComponent = inputsMapping[type];
 

@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { lettersOnly } from '../../../utils/common';
 
-export const defaultGeolocationProps = { lg: '', lat: '', type: null };
+export const defaultGeolocationProps = { lg: undefined, lat: undefined, type: null };
 
 export const mapGeoToInputProps = (geo) => {
   if (!geo) return defaultGeolocationProps;
