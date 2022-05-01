@@ -6,7 +6,7 @@ const Map = ({ center, updatePosition, readonly, label }) => {
 
   useEffect(() => {
     map && map.flyTo(center);
-  }, [center]);
+  }, [...center]);
 
   return (
     <MapContainer
