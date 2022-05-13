@@ -94,6 +94,13 @@
       "apiRoute": "/common/",
       "fields": [
         {
+          "title": "Category",
+          "dataIndex": "_id",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
           "title": "Russian",
           "dataIndex": "ru",
           "width": "20%",
