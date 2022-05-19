@@ -4,7 +4,7 @@ import InputText from './InputText';
 import InputPhone from './InputPhone';
 import SelectMultiple from './SelectMultiple';
 import SelectCountry from './SelectCountry';
-import InputSwitch from './InputSwitch';
+import InputCheckbox from './InputCheckbox';
 
 export const inputsMapping = {
   string: InputText,
@@ -14,7 +14,7 @@ export const inputsMapping = {
   phone: InputPhone,
   country: SelectCountry,
   MULTIPLE_SELECT: SelectMultiple,
-  boolean: InputSwitch,
+  boolean: InputCheckbox,
 };
 
 export const pureValueTypes = ['MULTIPLE_SELECT', 'geo', 'country', 'boolean'];

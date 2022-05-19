@@ -125,12 +125,15 @@ const EditableCell = ({
   const onInputChangeHandler = (e) => onChangeHandler(e.target.value);
 
   const getCellValue = () => {
-    const current = record[dataIndex];
-    const changed = formValue[record.key] ? formValue[record.key][dataIndex] : null;
+    const currentCellValue = record[dataIndex];
+    const changedRowValue = formValue[record.key];
 
-    const takeCurrent = !isEditing || !changed;
+    if (!changedRowValue) return currentCellValue;
 
-    return takeCurrent ? current : changed;
+    const changedCellValue = changedRowValue[dataIndex];
+    if (changedCellValue === undefined) return currentCellValue;
+
+    return changedCellValue;
   };
 
   const getChangeHandler = () =>
