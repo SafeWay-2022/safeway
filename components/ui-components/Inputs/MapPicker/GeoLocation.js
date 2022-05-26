@@ -77,7 +77,10 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
 
   return (
     <>
-      <div className="grid grid-rows-2 grid-flow-col gap-2" style={{ minWidth: '260px' }}>
+      <div
+        className="grid grid-rows-2 grid-flow-col gap-2 2xl:grid-rows-1"
+        style={{ minWidth: '260px' }}
+      >
         <Input
           className="row-span-1"
           type="number"
@@ -96,7 +99,7 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
         />
         <Tooltip title="select on the map">
           <Button
-            className="row-span-2"
+            className="row-span-2 2xl:row-span-1"
             onClick={handleDrawerOpen}
             icon={<AimOutlined className="p-1" />}
           />
