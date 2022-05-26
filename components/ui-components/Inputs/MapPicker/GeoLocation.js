@@ -77,8 +77,9 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
 
   return (
     <>
-      <Input.Group className="flex gap-1" style={{ minWidth: '260px' }}>
+      <div className="grid grid-rows-2 grid-flow-col gap-2" style={{ minWidth: '260px' }}>
         <Input
+          className="row-span-1"
           type="number"
           value={lat}
           onChange={(e) => handleChange('lat')(e.target.value)}
@@ -86,6 +87,7 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
           placeholder={readonly ? '' : 'Enter latitude'}
         />
         <Input
+          className="row-span-1"
           type="number"
           value={lg}
           onChange={(e) => handleChange('lg')(e.target.value)}
@@ -93,9 +95,13 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
           placeholder={readonly ? '' : 'Enter longitude'}
         />
         <Tooltip title="select on the map">
-          <Button onClick={handleDrawerOpen} icon={<AimOutlined className="p-1" />} />
+          <Button
+            className="row-span-2"
+            onClick={handleDrawerOpen}
+            icon={<AimOutlined className="p-1" />}
+          />
         </Tooltip>
-      </Input.Group>
+      </div>
       <Drawer
         title={drawerTitle}
         placement="left"
