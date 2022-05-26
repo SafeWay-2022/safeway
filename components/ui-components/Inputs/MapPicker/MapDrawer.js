@@ -8,6 +8,15 @@ const Map = ({ center, updatePosition, readonly, label }) => {
     map && map.flyTo(center);
   }, [...center]);
 
+  useEffect(() => {
+    if (readonly) return;
+    if (!map) return;
+
+    map.on('dblclick', (e) => {
+      updatePosition(e.latlng);
+    });
+  }, [readonly, map]);
+
   return (
     <MapContainer
       center={center}
@@ -15,6 +24,7 @@ const Map = ({ center, updatePosition, readonly, label }) => {
       scrollWheelZoom={true}
       style={{ height: '100%', width: '100%' }}
       ref={setMap}
+      doubleClickZoom={readonly}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
