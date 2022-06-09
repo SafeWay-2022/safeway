@@ -57,6 +57,7 @@ const App = ({ children }) => {
     </Layout>
   );
 };
+
 function MyApp({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());
   return (
@@ -69,7 +70,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <App>
-          <Component {...pageProps} />
+          <RouteGuard>
+            <Component {...pageProps} />
+          </RouteGuard>
         </App>
       </QueryClientProvider>
     </>
