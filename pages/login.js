@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Button, Form, Input } from 'antd';
 import { login } from '../lib/auth';
 import { useRouter } from 'next/router';
@@ -7,13 +7,15 @@ const { Content } = Layout;
 
 const App = () => {
   const router = useRouter();
-
+  const [error, setError] = useState('');
   const onFinish = async (values) => {
-    const result = await login(values);
-    result &&
-      router.push({
-        pathname: '/poi',
-      });
+    try {
+      const result = await login(values);
+      setError('');
+      result && (window.location.href = '/poi');
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -65,6 +67,7 @@ const App = () => {
             <Input.Password />
           </Form.Item>
           <div style={{ textAlign: 'center', fontSize: 24, margin: '20px 0' }}>
+            <div style={{ color: 'red' }}>{error}</div>
             <Button type="secondary" htmlType="submit">
               Submit
             </Button>
