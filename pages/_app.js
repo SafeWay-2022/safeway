@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import useConfig from '../hooks/useConfig';
 import { getTableById, getTableByRoute, withProps } from '../lib/helpers';
+import AccountMenu from '../components/ui-components/dropdown';
 import '../styles/globals.css';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -30,7 +31,7 @@ const App = ({ children }) => {
   if (isLoading) {
     return <Skeleton />;
   }
-  const getHref = (id) => getTableById(tables, id).apiRoute;
+  const getHref = (id) => getTableById(tables, id)?.apiRoute;
   const currentTable = getTableByRoute(tables, route || defaultPath);
   const childrenWithProps = withProps({ children, currentTable, config, commonTables });
   const getTitle = (id) => getTableById(tables, id)?.title;
@@ -43,14 +44,16 @@ const App = ({ children }) => {
             mode="horizontal"
             selectedKeys={[String(currentTable?.id)]}
             style={{ justifyContent: 'center' }}
-            onClick={({ key }) => (window.location.href = getHref(key))}
+          // onClick={({ key }) => (window.location.href = getHref(key))}
           >
             {menu.map((id) => (
-              <Menu.Item key={id}>{getTitle(id)}</Menu.Item>
+              <Menu.Item onClick={({ key }) => (window.location.href = getHref(key))} key={id}>{getTitle(id)}</Menu.Item>
             ))}
+
+            <Menu.Item style={{ transform: 'translateX(200%)' }} key='dcdcd'><AccountMenu /></Menu.Item>
+
           </Menu>
         )}
-
         <Content className="h-full overflow-auto mt-4">{childrenWithProps}</Content>
         <Footer style={{ textAlign: 'center' }}>Safeway© 2022</Footer>
       </Layout>
