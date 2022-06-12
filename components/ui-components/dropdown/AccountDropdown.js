@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import { Dropdown, Menu, Space, Avatar, Modal, Spin, Input } from 'antd';
 import { API_REMOTE_HOST } from '../../../config'
-import { logOut } from '../../../lib/auth';
+import { logOut, getToken } from '../../../lib/auth';
 import { useRouter } from 'next/router';
+import { DownOutlined, UserOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Space, Avatar, Modal, Spin, Label } from 'antd';
+import InputEmail from '../Inputs/InputEmail'
+import InputPhone from '../Inputs/InputPhone'
+import InputText from '../Inputs/InputText'
+
+
 
 const MeComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const token = localStorage.getItem('token')
+    const token = getToken()
     const options = {
         headers: {
             Authorization: 'Bearer ' + token
@@ -66,11 +71,14 @@ const UpdateMeComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const token = localStorage.getItem('token')
+    const token = getToken()
     const options = {
         headers: {
             Authorization: 'Bearer ' + token
         }
+    }
+    const style = {
+        marginBottom: 10
     }
 
     const showModal = () => {
@@ -97,15 +105,15 @@ const UpdateMeComponent = () => {
             <div onClick={showModal}>
                 Update
             </div>
-            <Modal title="Update" visible={isModalVisible} onOk={() => { }} onCancel={handleCancel}>
+            <Modal title="Update" visible={isModalVisible} onOk={() => { }} onCancel={handleCancel} okType='secondary'>
                 {isLoading ? <div style={{ textAlign: 'center' }}><Spin /></div> :
                     <>
-                        <Input addonBefore="Full name:" name="name" value={data?.full_name} defaultValue="name" />
-                        <Input addonBefore="phone:" name="phone" value={data?.phone} defaultValue="phone" />
-                        <Input addonBefore="email:" name="email" value={data?.email} defaultValue="email" />
-                        <Input addonBefore="url:" name="url" value={data?.url} defaultValue="url" />
-                        <Input addonBefore="socialmedia:" name="socialmedia" value={data?.socialmedia} defaultValue="socialmedia" />
-                        <Input addonBefore="messenger:" name="messenger" value={data?.messenger} defaultValue="messenger" />
+                        <div style={style}> Name: <InputText name="name" value={data?.full_name} onChange={() => { }} placeholder='Enter name...' /></div>
+                        <div style={style}>Phone: <InputPhone name="phone" value={data?.phone} onChange={() => { }} /></div>
+                        <div style={style}>Email: <InputEmail name="email" value={data?.email} onChange={() => { }} /></div>
+                        <div style={style}>Url:<InputText name="url" value={data?.url} onChange={() => { }} placeholder='Enter url...' /></div>
+                        <div style={style}>Social media: <InputText name="socialmedia" value={data?.socialmedia} onChange={() => { }} placeholder='Enter social media...' /></div>
+                        <div style={style}>Messenger: <InputText name="messenger" value={data?.messenger} onChange={() => { }} placeholder='Enter messenger...' /></div>
                     </>
                 }
 
