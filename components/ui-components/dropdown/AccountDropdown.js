@@ -46,6 +46,10 @@ const MeComponent = () => {
         margin: 2,
         padding: '2px 2px 2px 10px'
     }
+    const text = {
+        marginRight: 10,
+        fontSize: '12px'
+    }
     return (
         <>
             <div onClick={showModal}>
@@ -54,11 +58,13 @@ const MeComponent = () => {
             <Modal title="About me" visible={isModalVisible} footer={false} onCancel={handleCancel}>
                 {isLoading ? <div style={{ textAlign: 'center' }}><Spin /></div> :
                     <>
-                        <div style={styles}>Full name: <span>{data?.full_name}</span> </div>
-                        <div style={styles}>Email: <span>{data?.email}</span> </div>
-                        <div style={styles}>Url: <span>{data?.url}</span> </div>
-                        <div style={styles}>Social media: <span>{data?.socialmedia}</span> </div>
-                        <div style={styles}>Messenger: <span>{data?.messenger}</span> </div>
+                        <div style={styles}><span style={text}> Full name:</span> <span>{data?.full_name}</span> </div>
+                        <div style={styles}><span style={text}>Email:</span> <span>{data?.email}</span> </div>
+                        <div style={styles}><span style={text}>Url:</span> <span>{data?.url}</span> </div>
+                        <div style={styles}><span style={text}>Social media:</span> <span>{data?.socialmedia}</span> </div>
+                        <div style={styles}><span style={text}>Messenger:</span> <span>{data?.messenger}</span> </div>
+                        <div style={styles}><span style={text}>Telegram:</span> <span>{data?.telegram}</span> </div>
+                        <div style={styles}><span style={text}>Whatsapp:</span> <span>{data?.whatsapp}</span> </div>
                     </>
                 }
 
@@ -70,13 +76,16 @@ const MeComponent = () => {
 const UpdateMeComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+    const [name, setName] = useState('')
     const [data, setData] = useState({
         full_name: '',
         phone: '',
         email: '',
         url: '',
         socialmedia: '',
-        messenger: ''
+        messenger: '',
+        whatsapp: '',
+        telegram: ''
     })
     const token = getToken()
     const options = {
@@ -104,15 +113,20 @@ const UpdateMeComponent = () => {
         })
     }
     const onHandleOk = () => {
-        console.log(data)
-
+        axios.patch(`${API_REMOTE_HOST}/users/set/${name}`, data, options)
+            .then(({ data }) => setData(data))
+            .catch(e => console.log(e))
+            .finally(() => handleCancel())
     }
     useEffect(() => {
         if (isModalVisible) {
             let name
             setIsLoading(true)
             axios.get(`${API_REMOTE_HOST}/aaa/me`, options)
-                .then(({ data }) => name = data?.username)
+                .then(({ data }) => {
+                    name = data?.username
+                    setName(name)
+                })
                 .then(() => axios.get(`${API_REMOTE_HOST}/users/get/${name}`, options)
                     .then(({ data }) => setData(data)).catch(e => console.log(e)))
                 .catch(e => console.log(e)).finally(() => setIsLoading(false))
@@ -144,6 +158,12 @@ const UpdateMeComponent = () => {
                         </div>
                         <div style={style}>
                             Messenger: <InputText name="messenger" value={data?.messenger} onChange={onChangeFill} placeholder='Enter messenger...' />
+                        </div>
+                        <div style={style}>
+                            Telegram: <InputText name="telegram" value={data?.telegram} onChange={onChangeFill} placeholder='Enter telegram...' />
+                        </div>
+                        <div style={style}>
+                            Whatsapp: <InputText name="whatsapp" value={data?.whatsapp} onChange={onChangeFill} placeholder='Enter whatsapp...' />
                         </div>
                     </>
                 }
