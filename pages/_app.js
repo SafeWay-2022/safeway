@@ -47,7 +47,7 @@ const App = ({ children }) => {
           // onClick={({ key }) => (window.location.href = getHref(key))}
           >
             {menu.map((id) => (
-              <Menu.Item onClick={({ key }) => (window.location.href = getHref(key))} key={id}>{getTitle(id)}</Menu.Item>
+              <Menu.Item onClick={({ key }) => (router.push(getHref(key)))} key={id}>{getTitle(id)}</Menu.Item>
             ))}
 
             <Menu.Item style={{ transform: 'translateX(200%)' }} key='dcdcd'><AccountMenu /></Menu.Item>
