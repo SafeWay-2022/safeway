@@ -69,8 +69,15 @@ const MeComponent = () => {
 
 const UpdateMeComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [data, setData] = useState({
+        full_name: '',
+        phone: '',
+        email: '',
+        url: '',
+        socialmedia: '',
+        messenger: ''
+    })
     const token = getToken()
     const options = {
         headers: {
@@ -88,6 +95,18 @@ const UpdateMeComponent = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+    const onChangeFill = (e) => {
+        setData(prev => {
+            return {
+                ...prev,
+                [e.target.name]: e.target.value
+            }
+        })
+    }
+    const onHandleOk = () => {
+        console.log(data)
+
+    }
     useEffect(() => {
         if (isModalVisible) {
             let name
@@ -105,15 +124,27 @@ const UpdateMeComponent = () => {
             <div onClick={showModal}>
                 Update
             </div>
-            <Modal title="Update" visible={isModalVisible} onOk={() => { }} onCancel={handleCancel} okType='secondary'>
+            <Modal title="Update" visible={isModalVisible} onOk={onHandleOk} onCancel={handleCancel} okType='secondary'>
                 {isLoading ? <div style={{ textAlign: 'center' }}><Spin /></div> :
                     <>
-                        <div style={style}> Name: <InputText name="name" value={data?.full_name} onChange={() => { }} placeholder='Enter name...' /></div>
-                        <div style={style}>Phone: <InputPhone name="phone" value={data?.phone} onChange={() => { }} /></div>
-                        <div style={style}>Email: <InputEmail name="email" value={data?.email} onChange={() => { }} /></div>
-                        <div style={style}>Url:<InputText name="url" value={data?.url} onChange={() => { }} placeholder='Enter url...' /></div>
-                        <div style={style}>Social media: <InputText name="socialmedia" value={data?.socialmedia} onChange={() => { }} placeholder='Enter social media...' /></div>
-                        <div style={style}>Messenger: <InputText name="messenger" value={data?.messenger} onChange={() => { }} placeholder='Enter messenger...' /></div>
+                        <div style={style}>
+                            Name: <InputText name="full_name" value={data?.full_name} onChange={onChangeFill} placeholder='Enter name...' />
+                        </div>
+                        <div style={style}>
+                            Phone: <InputPhone name="phone" value={data?.phone} onChange={onChangeFill} />
+                        </div>
+                        <div style={style}>
+                            Email: <InputEmail name="email" value={data?.email} onChange={onChangeFill} />
+                        </div>
+                        <div style={style}>
+                            Url:<InputText name="url" value={data?.url} onChange={onChangeFill} placeholder='Enter url...' />
+                        </div>
+                        <div style={style}>
+                            Social media: <InputText name="socialmedia" value={data?.socialmedia} onChange={onChangeFill} placeholder='Enter social media...' />
+                        </div>
+                        <div style={style}>
+                            Messenger: <InputText name="messenger" value={data?.messenger} onChange={onChangeFill} placeholder='Enter messenger...' />
+                        </div>
                     </>
                 }
 
