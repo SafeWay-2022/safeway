@@ -18,9 +18,9 @@ const MeComponent = () => {
     const token = getToken()
     const options = {
         headers: {
-            Authorization: 'Bearer ' + token
+            Authorization: 'Bearer ' + token,
+            'sec-fetch-mode': 'cors',
         },
-        method: 'GET'
     }
 
     const showModal = () => {
