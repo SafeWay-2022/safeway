@@ -32,7 +32,6 @@ const MeComponent = () => {
             },
             method: 'GET',
             mode: 'cors',
-            cache: 'no-cache'
         }
         try {
             const request = await fetch(`${API_REMOTE_HOST}/users/me/`, options)
