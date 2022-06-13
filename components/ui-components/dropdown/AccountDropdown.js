@@ -25,10 +25,11 @@ const MeComponent = () => {
         setIsModalVisible(false);
     };
     const onFetch = async () => {
-        const token = getToken()
         const options = {
             headers: {
-                Authorization: 'Bearer ' + token,
+                accept: 'application/json',
+                authorization: 'Bearer ' + getToken(),
+                'sec-fetch-mode': 'cors',
             },
             method: 'GET',
             mode: 'cors',
