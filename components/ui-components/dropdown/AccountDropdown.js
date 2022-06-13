@@ -19,7 +19,8 @@ const MeComponent = () => {
     const options = {
         headers: {
             Authorization: 'Bearer ' + token
-        }
+        },
+        method: 'GET'
     }
 
     const showModal = () => {
