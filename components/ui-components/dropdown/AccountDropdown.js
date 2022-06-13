@@ -31,12 +31,9 @@ const MeComponent = () => {
     };
     useEffect(() => {
         if (isModalVisible) {
-            let name
             setIsLoading(true)
-            axios.get(`${API_REMOTE_HOST}/aaa/me`, options)
-                .then(({ data }) => name = data?.username)
-                .then(() => axios.get(`${API_REMOTE_HOST}/users/get/${name}`, options)
-                    .then(({ data }) => setData(data)).catch(e => console.log(e)))
+            axios.get(`${API_REMOTE_HOST}/users/me/`, options)
+                .then(({ data }) => setData(data))
                 .catch(e => console.log(e)).finally(() => setIsLoading(false))
         }
     }, [isModalVisible])
