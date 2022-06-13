@@ -27,16 +27,14 @@ const MeComponent = () => {
     const onFetch = async () => {
         const options = {
             headers: {
-                accept: 'application/json',
-                authorization: 'Bearer ' + getToken(),
-                'sec-fetch-mode': 'cors',
-            },
-            method: 'GET',
-            mode: 'cors',
+                Authorization: 'Bearer ' + getToken(),
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            }
         }
         try {
-            const request = await fetch(`${API_REMOTE_HOST}/users/me/`, options)
-            setData(await request.json())
+            const { data } = await axios.get(`${API_REMOTE_HOST}/users/me/`, options)
+            setData(data)
         }
         catch (e) {
             console.log(e)
