@@ -13,15 +13,9 @@ import InputText from '../Inputs/InputText'
 
 const MeComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [data, setData] = useState([])
+    const [data, setData] = useState({})
     const [isLoading, setIsLoading] = useState(false)
-    const token = getToken()
-    const options = {
-        headers: {
-            Authorization: 'Bearer ' + token,
-            'sec-fetch-mode': 'cors',
-        },
-    }
+
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -30,12 +24,31 @@ const MeComponent = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+    const onFetch = async () => {
+        const token = getToken()
+        const options = {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache'
+        }
+        try {
+            const request = await fetch(`${API_REMOTE_HOST}/users/me/`, options)
+            setData(await request.json())
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }
     useEffect(() => {
         if (isModalVisible) {
             setIsLoading(true)
-            axios.get(`${API_REMOTE_HOST}/users/me/`, options)
-                .then(({ data }) => setData(data))
-                .catch(e => console.log(e)).finally(() => setIsLoading(false))
+            onFetch()
         }
     }, [isModalVisible])
 
