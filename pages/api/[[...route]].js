@@ -3,7 +3,7 @@ import { API_REMOTE_HOST } from '../../config';
 import Cors from 'cors'
 
 const cors = Cors({
-  methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'HEAD'],
 })
 
 function runMiddleware(req, res, fn) {
