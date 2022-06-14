@@ -17,11 +17,10 @@ const MeComponent = () => {
     const [isLoading, setIsLoading] = useState(false)
     const options = {
         headers: {
-            accept: 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
             "Access-Control-Allow-Origin": "*",
             authorization: 'Bearer ' + getToken(),
-        },
-        mode: 'no-cors'
+        }
     }
 
     const showModal = () => {
