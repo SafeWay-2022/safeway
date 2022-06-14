@@ -17,8 +17,9 @@ const MeComponent = () => {
     const [isLoading, setIsLoading] = useState(false)
     const options = {
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            "Access-Control-Allow-Origin": "*",
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
             authorization: 'Bearer ' + getToken(),
         }
     }
