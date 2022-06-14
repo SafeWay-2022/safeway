@@ -26,7 +26,6 @@ const MeComponent = () => {
     };
     const onFetch = async () => {
         const options = {
-            mode: 'no-cors',
             headers: {
                 Authorization: 'Bearer ' + getToken(),
             }
@@ -96,7 +95,6 @@ const UpdateMeComponent = () => {
         telegram: ''
     })
     const options = {
-        mode: 'no-cors',
         headers: {
             Authorization: 'Bearer ' + getToken()
         }
