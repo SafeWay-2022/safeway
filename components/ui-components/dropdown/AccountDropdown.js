@@ -17,6 +17,7 @@ const MeComponent = () => {
     const [isLoading, setIsLoading] = useState(false)
     const token = getToken()
     const options = {
+        mode: 'no-cors',
         headers: {
             Authorization: 'Bearer ' + token
         }
@@ -86,6 +87,7 @@ const UpdateMeComponent = () => {
     })
     const token = getToken()
     const options = {
+        mode: 'no-cors',
         headers: {
             Authorization: 'Bearer ' + token
         }
