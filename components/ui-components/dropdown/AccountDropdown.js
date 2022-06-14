@@ -19,6 +19,8 @@ const MeComponent = () => {
     const options = {
         mode: 'no-cors',
         headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token
         }
     }
@@ -89,6 +91,8 @@ const UpdateMeComponent = () => {
     const options = {
         mode: 'no-cors',
         headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token
         }
     }
