@@ -95,11 +95,10 @@ const UpdateMeComponent = () => {
         whatsapp: '',
         telegram: ''
     })
-    const token = getToken()
     const options = {
+        mode: 'no-cors',
         headers: {
-            mode: 'no-cors',
-            Authorization: 'Bearer ' + token
+            Authorization: 'Bearer ' + getToken()
         }
     }
     const style = {
