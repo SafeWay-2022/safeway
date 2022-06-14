@@ -21,6 +21,7 @@ const MeComponent = () => {
             'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE',
             'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
             authorization: 'Bearer ' + getToken(),
+            mode: 'no-cors'
         }
     }
 
