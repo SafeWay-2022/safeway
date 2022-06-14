@@ -19,10 +19,9 @@ const MeComponent = () => {
         headers: {
             accept: 'application/json',
             authorization: 'Bearer ' + getToken(),
-            'sec-fetch-mode': 'cors',
         },
         method: 'GET',
-        mode: 'cors',
+        mode: 'no-cors',
     }
 
     const showModal = () => {
