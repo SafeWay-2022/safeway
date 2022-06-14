@@ -18,9 +18,9 @@ const MeComponent = () => {
     const options = {
         headers: {
             accept: 'application/json',
+            "Access-Control-Allow-Origin": "*",
             authorization: 'Bearer ' + getToken(),
-        },
-        mode: 'no-cors',
+        }
     }
 
     const showModal = () => {
