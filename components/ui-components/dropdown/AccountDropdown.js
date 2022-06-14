@@ -20,7 +20,8 @@ const MeComponent = () => {
             accept: 'application/json',
             "Access-Control-Allow-Origin": "*",
             authorization: 'Bearer ' + getToken(),
-        }
+        },
+        mode: 'no-cors'
     }
 
     const showModal = () => {
