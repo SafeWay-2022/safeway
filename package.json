@@ -13,7 +13,6 @@
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.19.5",
     "axios": "^0.26.1",
-    "cors": "^2.8.5",
     "leaflet": "^1.8.0",
     "nanoid": "^3.3.3",
     "next": "latest",

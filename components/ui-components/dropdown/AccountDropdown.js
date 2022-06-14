@@ -26,10 +26,9 @@ const MeComponent = () => {
     };
     const onFetch = async () => {
         const options = {
+            mode: 'no-cors',
             headers: {
                 Authorization: 'Bearer ' + getToken(),
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
             }
         }
         try {
@@ -99,6 +98,7 @@ const UpdateMeComponent = () => {
     const token = getToken()
     const options = {
         headers: {
+            mode: 'no-cors',
             Authorization: 'Bearer ' + token
         }
     }
