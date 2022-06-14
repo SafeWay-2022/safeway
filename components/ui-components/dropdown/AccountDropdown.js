@@ -15,14 +15,14 @@ const MeComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const token = getToken()
     const options = {
-        mode: 'no-cors',
         headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token
-        }
+            accept: 'application/json',
+            authorization: 'Bearer ' + getToken(),
+            'sec-fetch-mode': 'cors',
+        },
+        method: 'GET',
+        mode: 'cors',
     }
 
     const showModal = () => {
@@ -35,8 +35,8 @@ const MeComponent = () => {
     useEffect(() => {
         if (isModalVisible) {
             setIsLoading(true)
-            axios.get(`${API_REMOTE_HOST}/users/me/`, options)
-                .then(({ data }) => setData(data))
+            fetch(`${API_REMOTE_HOST}/users/me/`, options)
+                .then((data) => data.json()).then(e => setData(e))
                 .catch(e => console.log(e)).finally(() => setIsLoading(false))
         }
     }, [isModalVisible])
