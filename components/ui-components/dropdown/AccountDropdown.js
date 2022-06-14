@@ -20,7 +20,6 @@ const MeComponent = () => {
             accept: 'application/json',
             authorization: 'Bearer ' + getToken(),
         },
-        method: 'GET',
         mode: 'no-cors',
     }
 
@@ -34,8 +33,8 @@ const MeComponent = () => {
     useEffect(() => {
         if (isModalVisible) {
             setIsLoading(true)
-            fetch(`${API_REMOTE_HOST}/users/me/`, options)
-                .then((data) => data.json()).then(e => setData(e))
+            axios.get(`${API_REMOTE_HOST}/users/me/`, options)
+                .then(({ data }) => setData(data))
                 .catch(e => console.log(e)).finally(() => setIsLoading(false))
         }
     }, [isModalVisible])
