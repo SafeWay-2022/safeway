@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { mapUIRowToServerData } from '../components/ui-components/Inputs/mappers';
-import { API_HOST } from '../config';
+import { API_REMOTE_HOST } from '../config';
+import { getToken } from '../lib/auth';
 
-const doFetch = async (url, data) => axios.put(API_HOST + url, data);
+
+const doFetch = async (url, data) => axios.put(API_REMOTE_HOST + url, data, { headers: { Authorization: 'Bearer ' + getToken() } });
 
 export default function useUpdate({ url, mutationKey, tableKey, route }) {
   const queryClient = useQueryClient();
