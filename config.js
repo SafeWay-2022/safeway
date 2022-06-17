@@ -7,4 +7,4 @@ export const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
 // Application configuration
 export const CONFIG_HOST = process.env.NEXT_PUBLIC_CONFIG_HOST;
 
-export const PER_PAGE = 9;
+export const PER_PAGE = 10;

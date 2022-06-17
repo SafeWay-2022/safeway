@@ -35,23 +35,22 @@ const App = ({ children }) => {
   return (
     <Layout style={{ height: '99vh' }} className="overflow-hidden">
       <Layout>
-        {!route.startsWith('/login') && (
-          <Menu
-            mode="horizontal"
-            selectedKeys={[String(currentTable?.id)]}
-            style={{ justifyContent: 'center' }}
-          >
-            {menu.map((id) => (
-              <Menu.Item onClick={({ key }) => router.push(getHref(key))} key={id}>
-                {getTitle(id)}
-              </Menu.Item>
-            ))}
-
-            <Menu.Item style={{ transform: 'translateX(200%)' }} key="dcdcd">
-              <AccountMenu />
+        <Menu
+          mode="horizontal"
+          selectedKeys={[String(currentTable?.id)]}
+          style={{ justifyContent: 'center' }}
+        >
+          {menu.map((id) => (
+            <Menu.Item onClick={({ key }) => router.push(getHref(key))} key={id}>
+              {getTitle(id)}
             </Menu.Item>
-          </Menu>
-        )}
+          ))}
+
+          <Menu.Item style={{ transform: 'translateX(200%)' }} key="dcdcd">
+            <AccountMenu />
+          </Menu.Item>
+        </Menu>
+
         <Content className="h-full overflow-auto mt-4">{childrenWithProps}</Content>
         <Footer style={{ textAlign: 'center' }}>Safeway© 2022</Footer>
       </Layout>
@@ -60,7 +59,10 @@ const App = ({ children }) => {
 };
 
 export default function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+  const { asPath: route } = router;
   const [queryClient] = useState(() => new QueryClient());
+  
   return (
     <>
       <Head>
@@ -70,11 +72,15 @@ export default function MyApp({ Component, pageProps }) {
         <link rel="stylesheet" href="leaflet.css" />
       </Head>
       <QueryClientProvider client={queryClient}>
-        <AuthGuard>
-          <App>
-            <Component {...pageProps} />
-          </App>
-        </AuthGuard>
+        {route.startsWith('/login') ? (
+          <Component {...pageProps} />
+        ) : (
+          <AuthGuard>
+            <App>
+              <Component {...pageProps} />
+            </App>
+          </AuthGuard>
+        )}
       </QueryClientProvider>
     </>
   );

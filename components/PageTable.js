@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pagination, Skeleton } from 'antd';
 import { useQuery, useQueryClient, QueryClient, QueryClientProvider } from 'react-query';
 import { API_HOST, PER_PAGE } from '../config';
@@ -16,6 +16,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   const { apiRoute: route, fields, schema = { default: 'hello, nice 2 see u' } } = tableConfig;
   const myFetch = getTableFetch(route);
   const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(PER_PAGE);
 
   const {
     data: tableData,
@@ -24,7 +25,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     isFetching,
     isPreviousData,
     refetch,
-  } = useQuery(['tableList', page], () => myFetch(page), {
+  } = useQuery([route, page], () => myFetch(page, limit), {
     keepPreviousData: true,
     staleTime: 15000,
   });
@@ -37,10 +38,12 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     return <Skeleton />;
   }
   const { list = [], skip = 0, total = 0 } = tableData;
+  console.log(total);
   const pagination = {
-    pageSize: PER_PAGE,
-    onChange: (currentPage) => {
+    pageSize: limit,
+    onChange: (currentPage, limit) => {
       setPage(currentPage);
+      setLimit(limit);
     },
     total,
   };
@@ -48,7 +51,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   return (
     <div className={styles.container}>
       <main>
-        {total && <Pagination {...pagination} />}
+        {total > 0 && <Pagination {...pagination} />}
         <EditableFormTable
           route={route}
           schema={schema}

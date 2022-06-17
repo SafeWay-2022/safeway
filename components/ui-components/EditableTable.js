@@ -72,7 +72,7 @@ export default ({ schema, data, fields, route, commonTablesData, pagination }) =
 
   return (
     <Table
-      pagination={pagination}
+      pagination={false}
       dataSource={dataSource}
       columns={columns}
       components={{
