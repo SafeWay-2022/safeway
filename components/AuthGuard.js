@@ -8,6 +8,7 @@ export default function RouteGuard({ children }) {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
+    console.log('fetching me....');
     // on initial load - run auth check
     authCheck(router.asPath);
 

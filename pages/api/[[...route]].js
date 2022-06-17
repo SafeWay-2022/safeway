@@ -12,7 +12,6 @@ export default async function handler(req, res) {
 
   try {
     console.log('url:', req.method.toLowerCase(), url);
-    console.log('req.headers:', req.headers);
 
     const { data } = await axios({
       method: req.method.toLowerCase(),

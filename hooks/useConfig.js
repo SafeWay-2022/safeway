@@ -24,7 +24,7 @@ export default () => {
       );
 
       setCommonTables(
-        Object.fromEntries(commonFetches.map((commons, i) => [commonToFetch[i].key, commons])),
+        Object.fromEntries(commonFetches.map((commons, i) => [commonToFetch[i].key, commons.list])),
       );
     }
 

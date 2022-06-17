@@ -6,7 +6,7 @@ import useUpdate from '../../hooks/useUpdate';
 import { inputsMapping, pureValueTypes } from './Inputs/config';
 import { getAddNewRowUIData, NEW_RECORD_KEY } from './Inputs/mappers';
 
-export default ({ schema, data, fields, route, commonTablesData }) => {
+export default ({ schema, data, fields, route, commonTablesData, pagination }) => {
   const [editingKey, setEditingKey] = useState('');
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
@@ -72,6 +72,7 @@ export default ({ schema, data, fields, route, commonTablesData }) => {
 
   return (
     <Table
+      pagination={pagination}
       dataSource={dataSource}
       columns={columns}
       components={{
