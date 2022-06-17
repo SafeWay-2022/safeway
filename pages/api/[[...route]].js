@@ -12,14 +12,12 @@ export default async function handler(req, res) {
 
   try {
     console.log('url:', req.method.toLowerCase(), url);
-
+    const headers = req.headers?.authorization ? { headers: req.headers?.authorization } : {};
     const { data } = await axios({
       method: req.method.toLowerCase(),
       url: url,
       data: req.body,
-      headers: {
-        authorization: req.headers.authorization,
-      },
+      headers,
     });
 
     return res.status(200).json(data);
