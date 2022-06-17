@@ -31,5 +31,6 @@ export default () => {
     configResponse.data?.common && myFnc(configResponse.data.common);
   }, [configResponse?.data?.common]);
 
+  // commonTables - data for dropdowns
   return { ...configResponse, commonTables };
 };

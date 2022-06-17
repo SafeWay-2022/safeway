@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { API_REMOTE_HOST } from '../config';
+import { API_HOST } from '../config';
 import { getToken } from '../lib/auth';
 
 export default function RouteGuard({ children }) {
@@ -32,7 +32,9 @@ export default function RouteGuard({ children }) {
     const publicPaths = ['/login'];
     const path = url.split('?')[0];
 
-    const result = await fetch(API_REMOTE_HOST + '/aaa/me/', {
+    // The only closed route for today, uncomment to test
+    // const result = await fetch(API_HOST + '/org', {
+    const result = await fetch(API_HOST + '/aaa/me', {
       headers: {
         accept: 'application/json',
         authorization: 'Bearer ' + getToken(),
