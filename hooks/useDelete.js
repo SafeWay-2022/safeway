@@ -2,8 +2,14 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 import { API_HOST } from '../config';
 import { useQueryClient } from 'react-query';
+import { getToken } from '../lib/auth';
 
-const doFetch = async (url) => axios.delete(API_HOST + url);
+const doFetch = async (url) =>
+  axios.delete(API_HOST + url, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
 export default function useDelete({ url, mutationKey, tableKey }) {
   const queryClient = useQueryClient();

@@ -2,8 +2,14 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { mapUIRowToServerData } from '../components/ui-components/Inputs/mappers';
 import { API_HOST } from '../config';
+import { getToken } from '../lib/auth';
 
-const doFetch = async (url, data) => axios.post(API_HOST + url, data);
+const doFetch = async (url, data) =>
+  axios.post(API_HOST + url, data, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
 export default function useAdd({ url, mutationKey, tableKey, route }) {
   const queryClient = useQueryClient();
@@ -18,7 +24,7 @@ export default function useAdd({ url, mutationKey, tableKey, route }) {
 
         const previousTable = queryClient.getQueryData(tableKey);
 
-        queryClient.setQueryData(tableKey, (old) => [...old, newRow]);
+        queryClient.setQueryData(tableKey, (old = []) => [...old, newRow]);
 
         return { previousTable };
       },

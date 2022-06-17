@@ -24,12 +24,10 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     isFetching,
     isPreviousData,
     refetch,
-  } = useQuery(['bla', page], () => myFetch(page), {
+  } = useQuery(['tableList', page], () => myFetch(page), {
     keepPreviousData: true,
     staleTime: 15000,
   });
-
-  //const { data: tableData = {}, isLoading, isError, error, refetch } = useGetTableData(route, 2);
 
   if (error) {
     return <h1>Error getting table data:{JSON.stringify(error)}</h1>;
@@ -46,7 +44,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     },
     total,
   };
-  console.log('---<', list, commonTablesData, pagination);
+
   return (
     <div className={styles.container}>
       <main>
