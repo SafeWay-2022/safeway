@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_REMOTE_HOST } from '../../../config'
+import { API_HOST } from '../../../config'
 import { logOut, getToken } from '../../../lib/auth';
 import { useRouter } from 'next/router';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
@@ -9,18 +9,17 @@ import InputEmail from '../Inputs/InputEmail'
 import InputPhone from '../Inputs/InputPhone'
 import InputText from '../Inputs/InputText'
 
-
+const options = {
+    headers: {
+        Authorization: `Bearer ${getToken()}`
+    }
+}
 
 const MeComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const token = getToken()
-    const options = {
-        headers: {
-            Authorization: 'Bearer ' + token
-        }
-    }
+
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -32,7 +31,7 @@ const MeComponent = () => {
     useEffect(() => {
         if (isModalVisible) {
             setIsLoading(true)
-            axios.get(`${API_REMOTE_HOST}/users/me/`, options)
+            axios.get(`${API_HOST}/users/me/`, options)
                 .then(({ data }) => setData(data))
                 .catch(e => console.log(e)).finally(() => setIsLoading(false))
         }
@@ -84,12 +83,6 @@ const UpdateMeComponent = () => {
         whatsapp: '',
         telegram: ''
     })
-    const token = getToken()
-    const options = {
-        headers: {
-            Authorization: 'Bearer ' + token
-        }
-    }
     const style = {
         marginBottom: 10
     }
@@ -110,7 +103,7 @@ const UpdateMeComponent = () => {
         })
     }
     const onHandleOk = () => {
-        axios.patch(`${API_REMOTE_HOST}/users/set/${name}`, data, options)
+        axios.patch(`${API_HOST}/users/set/${name}`, data, options)
             .then(({ data }) => setData(data))
             .catch(e => console.log(e))
             .finally(() => handleCancel())
@@ -119,12 +112,12 @@ const UpdateMeComponent = () => {
         if (isModalVisible) {
             let name
             setIsLoading(true)
-            axios.get(`${API_REMOTE_HOST}/aaa/me`, options)
+            axios.get(`${API_HOST}/aaa/me`, options)
                 .then(({ data }) => {
                     name = data?.username
                     setName(name)
                 })
-                .then(() => axios.get(`${API_REMOTE_HOST}/users/get/${name}`, options)
+                .then(() => axios.get(`${API_HOST}/users/get/${name}`, options)
                     .then(({ data }) => setData(data)).catch(e => console.log(e)))
                 .catch(e => console.log(e)).finally(() => setIsLoading(false))
         }
