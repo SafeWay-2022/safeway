@@ -55,6 +55,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
           fields={fields}
           data={list}
           commonTablesData={commonTablesData}
+          currentPage={page}
         />
       </main>
     </div>

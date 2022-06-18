@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
   try {
     console.log('url:', req.method.toLowerCase(), url);
-    const headers = req.headers ? {...req.headers} : {};
+    const headers = req.headers ? { ...req.headers } : {};
     delete headers.host; // https://stackoverflow.com/a/33771557/5575768
 
     const { data } = await axios({
