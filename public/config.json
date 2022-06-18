@@ -19,7 +19,7 @@
         {
           "title": "Name",
           "dataIndex": "name",
-          "width": "30%",
+          "width": "10%",
           "editable": true,
           "type": "string"
         },
@@ -87,6 +87,76 @@
           "type": "string"
         },
         {
+          "title": "Languages",
+          "dataIndex": "languages",
+          "width": "5%",
+          "editable": true,
+          "type": "MULTIPLE_SELECT"
+        },
+        {
+          "title": "Contact Person",
+          "dataIndex": "contact_person",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Phone",
+          "dataIndex": "phone",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Email",
+          "dataIndex": "email",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Web-Site",
+          "dataIndex": "url",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Social-Media",
+          "dataIndex": "socialmedia",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Facebook Messenger",
+          "dataIndex": "messenger",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Telegram",
+          "dataIndex": "telegram",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Whatsapp",
+          "dataIndex": "whatsapp",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Admin",
+          "dataIndex": "admin",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
           "title": "Active",
           "dataIndex": "active",
           "width": "5%",
@@ -99,9 +169,8 @@
         "categories": []
       }
     },
-
     {
-      "id": 2,
+      "id": 1,
       "path": "/org",
       "title": "Organizations",
       "apiRoute": "/org/",
@@ -114,25 +183,102 @@
           "type": "string"
         },
         {
-          "title": "Email",
-          "dataIndex": "email",
-          "width": "20%",
+          "title": "Approved",
+          "dataIndex": "approved",
+          "width": "5%",
           "editable": true,
-          "type": "email"
+          "type": "boolean"
+        },
+        {
+          "title": "Contact Person",
+          "dataIndex": "contact_person",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Members",
+          "dataIndex": "members",
+          "width": "5%",
+          "editable": true,
+          "type": "MULTIPLE_SELECT"
         },
         {
           "title": "Phone",
           "dataIndex": "phone",
-          "width": "20%",
+          "width": "5%",
           "editable": true,
-          "type": "phone"
+          "type": "string"
+        },
+        {
+          "title": "Email",
+          "dataIndex": "email",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Web-Site",
+          "dataIndex": "url",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Social-Media",
+          "dataIndex": "socialmedia",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Facebook Messenger",
+          "dataIndex": "messenger",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Telegram",
+          "dataIndex": "telegram",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Whatsapp",
+          "dataIndex": "whatsapp",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Categories",
+          "dataIndex": "categories",
+          "width": "5%",
+          "editable": true,
+          "type": "MULTIPLE_SELECT"
+        },
+        {
+          "title": "Description",
+          "dataIndex": "description",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Admin",
+          "dataIndex": "admin",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
         }
       ]
     },
     {
       "id": 3,
       "path": "/common",
-      "title": "Common terms",
+      "title": "Categories",
       "apiRoute": "/common/",
       "fields": [
         {
@@ -210,9 +356,9 @@
       ]
     },
     {
-      "id": 1,
+      "id": 2,
       "path": "/users",
-      "title": "Volunteers",
+      "title": "Users",
       "apiRoute": "/users/",
       "fields": [
         {
