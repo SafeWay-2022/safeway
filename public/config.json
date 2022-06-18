@@ -362,25 +362,60 @@
       "apiRoute": "/users/",
       "fields": [
         {
-          "title": "Name",
-          "dataIndex": "name",
-          "width": "20%",
+          "title": "username",
+          "dataIndex": "username",
+          "width": "10%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "name",
+          "dataIndex": "full_name",
+          "width": "10%",
           "editable": true,
           "type": "string"
         },
         {
           "title": "Email",
           "dataIndex": "email",
-          "width": "20%",
+          "width": "10%",
           "editable": true,
           "type": "email"
         },
         {
           "title": "Phone",
           "dataIndex": "phone",
-          "width": "20%",
+          "width": "10%",
           "editable": true,
           "type": "phone"
+        },
+        {
+          "title": "Organization ID (internal)",
+          "dataIndex": "org_id",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Organization Position",
+          "dataIndex": "org_position",
+          "width": "10%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Organization membership",
+          "dataIndex": "org_membership",
+          "width": "10%",
+          "editable": true,
+          "type": "boolean"
+        },
+        {
+          "title": "Superuser",
+          "dataIndex": "aaa_superuser",
+          "width": "20%",
+          "editable": false,
+          "type": "boolean"
         }
       ],
       "schema": { "password": "$uper_admin_123" }
