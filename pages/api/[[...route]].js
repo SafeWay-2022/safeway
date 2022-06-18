@@ -7,7 +7,8 @@ export default async function handler(req, res) {
   const isNotTable = [].find((r) => route.includes(r));
 
   const path = route.join('/');
-  const url = API_REMOTE_HOST + '/' + path;
+  const queryParams = isNotTable ? '' : `/?limit=${limit || 10000}&skip=${skip || 0}`;
+  const url = API_REMOTE_HOST + '/' + path + queryParams;
 
   try {
     console.log('url:', req.method.toLowerCase(), url);
