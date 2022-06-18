@@ -1,13 +1,10 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Pagination, Skeleton } from 'antd';
-import { useQuery, useQueryClient, QueryClient, QueryClientProvider } from 'react-query';
-import { API_HOST, PER_PAGE } from '../config';
-import useGetTableData, { getTableFetch } from '../hooks/useGetTableData';
+import { useQuery, useQueryClient } from 'react-query';
+import { PER_PAGE } from '../config';
+import { getTableFetch } from '../hooks/useGetTableData';
 import styles from '../styles/Home.module.css';
 import EditableFormTable from './ui-components/EditableTable';
-import { getToken } from '../lib/auth';
-import { mapServerTableToUIData } from './ui-components/Inputs/mappers';
 
 //export default (url, skip) => useQuery([url, { url, skip }], fetchData2);
 
