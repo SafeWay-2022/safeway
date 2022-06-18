@@ -15,16 +15,17 @@ export default async function handler(req, res) {
     const headers = req.headers ? { ...req.headers } : {};
     delete headers.host; // https://stackoverflow.com/a/33771557/5575768
 
-    const { data } = await axios({
+    const response = await axios({
       method: req.method.toLowerCase(),
       url: url,
       data: req.body,
       headers,
     });
 
+    const { data } = response;
     return res.status(200).json(data);
   } catch (e) {
-    console.log('Huston...', e.message);
+    console.log('Huston...', e);
     const payload = {
       message: e?.message,
       statusText: e?.response?.statusText,
@@ -33,4 +34,3 @@ export default async function handler(req, res) {
     return res.status(e?.response?.status || 400).json(payload);
   }
 }
-// curl -X GET 'https://safeway-chi.vercel.app/api/org?limit=10'  -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZnVuYyIsInNjb3BlcyI6WyJtZTpSIiwibWU6VSJdLCJleHAiOjE2NTU0OTczOTF9.dzdtrkDSbp8YYG_juIsL579fdqYc4KHQ0AyoiKeUYKQ"

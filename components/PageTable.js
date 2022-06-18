@@ -10,7 +10,7 @@ import EditableFormTable from './ui-components/EditableTable';
 
 export default function PageTable({ table: tableConfig, commonTables: commonTablesData }) {
   const queryClient = useQueryClient();
-  const { apiRoute: route, fields, schema = { default: 'hello, nice 2 see u' } } = tableConfig;
+  const { apiRoute: route, fields, schema = {} } = tableConfig;
   const myFetch = getTableFetch(route);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(PER_PAGE);
