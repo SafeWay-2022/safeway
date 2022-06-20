@@ -65,7 +65,7 @@ export default ({ schema, data, fields, route, commonTablesData, pagination }) =
 
   const columns = [
     ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }),
-    actionsColumn,
+    schema.name !== 'nearby' ? actionsColumn : {},
   ];
 
   const dataSource = [getAddNewRowUIData(fields), ...data];
@@ -76,7 +76,7 @@ export default ({ schema, data, fields, route, commonTablesData, pagination }) =
       dataSource={dataSource}
       columns={columns}
       components={{
-        body: {
+        body: schema.name !== 'nearby' && {
           cell: EditableCell,
         },
       }}
