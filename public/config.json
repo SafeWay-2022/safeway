@@ -182,6 +182,14 @@
           "type": "string"
         },
         {
+          "title": "Approved",
+          "dataIndex": "approved",
+          "width": "1%",
+          "editable": true,
+          "type": "boolean"
+        },
+
+        {
           "title": "Country",
           "dataIndex": "country",
           "width": "5%",
@@ -212,10 +220,31 @@
           "type": "string"
         },
         {
+          "title": "Phone",
+          "dataIndex": "phone",
+          "width": "5%",
+          "editable": true,
+          "type": "string"
+        },
+        {
           "title": "Description",
           "dataIndex": "description",
           "width": "30%",
           "type": "string"
+        },
+        {
+          "title": "Active",
+          "dataIndex": "active",
+          "width": "5%",
+          "editable": true,
+          "type": "boolean"
+        },
+        {
+          "title": "Activated at",
+          "dataIndex": "active_at",
+          "width": "5%",
+          "editable": true,
+          "type": "boolean"
         }
       ],
       "schema": {
@@ -337,14 +366,7 @@
       "fields": [
         {
           "title": "Category",
-          "dataIndex": "_id",
-          "width": "20%",
-          "editable": true,
-          "type": "string"
-        },
-        {
-          "title": "Russian",
-          "dataIndex": "ru",
+          "dataIndex": "category",
           "width": "20%",
           "editable": true,
           "type": "string"
@@ -357,8 +379,8 @@
           "type": "string"
         },
         {
-          "title": "English",
-          "dataIndex": "en",
+          "title": "Russian",
+          "dataIndex": "ru",
           "width": "20%",
           "editable": true,
           "type": "string"
@@ -366,6 +388,13 @@
         {
           "title": "Description",
           "dataIndex": "description",
+          "width": "20%",
+          "editable": true,
+          "type": "string"
+        },
+        {
+          "title": "Icon",
+          "dataIndex": "icon",
           "width": "20%",
           "editable": true,
           "type": "string"
