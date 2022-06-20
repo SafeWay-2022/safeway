@@ -1,5 +1,6 @@
 import { Layout, Skeleton } from 'antd';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -27,7 +28,12 @@ const App = ({ children }) => {
     return <Skeleton />;
   }
 
-  const getHref = (id) => getTableById(tables, id)?.apiRoute;
+  const getHref = (id) => {
+    if (getTableById(tables, id)?.path === '/nearby') {
+      return '/nearby/'
+    }
+    return getTableById(tables, id)?.apiRoute
+  };
   const currentTable = getTableByRoute(tables, route || defaultPath);
   const childrenWithProps = withProps({ children, currentTable, config, commonTables });
   const getTitle = (id) => getTableById(tables, id)?.title;
@@ -62,7 +68,7 @@ export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const { asPath: route } = router;
   const [queryClient] = useState(() => new QueryClient());
-  
+
   return (
     <>
       <Head>

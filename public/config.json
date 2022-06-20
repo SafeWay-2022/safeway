@@ -1,5 +1,5 @@
 {
-  "menu": [0, 1, 2, 3, 4],
+  "menu": [7, 0, 1, 2, 3, 4],
   "defaultPath": "/",
   "common": {
     "organizations": {
@@ -166,6 +166,60 @@
       ],
       "schema": {
         "name": "",
+        "categories": []
+      }
+    },
+    {
+      "id": 7,
+      "path": "/nearby",
+      "title": "Nearby",
+      "apiRoute": "/poi/nearby/",
+      "fields": [
+        {
+          "title": "Name",
+          "dataIndex": "name",
+          "width": "25%",
+          "type": "string"
+        },
+        {
+          "title": "Country",
+          "dataIndex": "country",
+          "width": "5%",
+          "type": "country"
+        },
+        {
+          "title": "City",
+          "dataIndex": "city",
+          "width": "5%",
+          "type": "string"
+        },
+        {
+          "title": "Address",
+          "dataIndex": "address",
+          "width": "15%",
+          "type": "string"
+        },
+        {
+          "title": "Categories",
+          "dataIndex": "categories",
+          "width": "5%",
+          "type": "string"
+        },
+        {
+          "title": "Organizations",
+          "dataIndex": "organizations",
+          "width": "5%",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "dataIndex": "description",
+          "width": "30%",
+          "type": "string"
+        }
+      ],
+      "schema": {
+        "name": "nearby",
         "categories": []
       }
     },

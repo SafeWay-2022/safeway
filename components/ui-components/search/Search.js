@@ -1,0 +1,128 @@
+import { useState } from 'react'
+import { inputsMapping } from '../Inputs/config'
+import { SearchOutlined } from '@ant-design/icons';
+import { Button, Checkbox } from 'antd';
+
+const initTextState = {
+    city: null,
+    organizations: null,
+    categories: null,
+    max_distance: null,
+    author: null,
+    admin: null
+}
+const initCheckBox = {
+    approved: false,
+    active: false,
+    add_distance: false
+}
+
+const SearchQuery = ({ setSearchData, refetch }) => {
+    const [value, setValue] = useState({})
+    const [country, setCountry] = useState(undefined)
+    const [text, setText] = useState(initTextState)
+    const [checkBox, setCheckbox] = useState(initCheckBox)
+    const InputGeolocation = inputsMapping.geo
+    const SelectCountry = inputsMapping.country
+    const Input = inputsMapping.string
+
+    const onChangeMap = (e) => {
+        setValue(e)
+        setSearchData(prev => ({
+            ...prev,
+            latitude: e.lat,
+            longitude: e.lg,
+        }))
+    }
+    const onChangeCountry = (e) => {
+        setCountry(e)
+        setSearchData(prev => ({
+            ...prev,
+            country: e,
+        }))
+    }
+    const onChangeText = (e) => {
+        setText(prev => ({ ...prev, [e.target.name]: e.target.value }))
+        setSearchData(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    const onChangeCheckBox = (e) => {
+        setCheckbox(prev => ({ ...prev, [e.target.name]: !prev[e.target.name] ? true : null }))
+        setSearchData(prev => ({
+            ...prev,
+            [e.target.name]: !prev[e.target.name] ? true : null
+        }))
+    }
+
+    const onClear = () => {
+        setCountry(undefined)
+        setValue({})
+        setSearchData({})
+        setText(initTextState)
+        setCheckbox(initCheckBox)
+    }
+
+    return (
+        <>
+            <div style={{ display: 'flex', alightItems: 'center', marginBottom: 10 }}>
+                <div style={{ marginRight: 10 }}>
+                    <InputGeolocation value={value} onChange={onChangeMap} />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <SelectCountry value={country} onChange={onChangeCountry} />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <Input value={text.max_distance} onChange={onChangeText} name='max_distance' placeholder="Max distance" style={{ width: '120px' }} />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <Input value={text.city} onChange={onChangeText} name='city' placeholder="City" style={{ width: '100px' }} />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <Input value={text.categories} onChange={onChangeText} name='categories' placeholder="Categories" style={{ width: '120px' }} />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <Input value={text.organizations} onChange={onChangeText} name='organizations' placeholder="Organizations" style={{ width: '120px' }} />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <Input value={text.author} onChange={onChangeText} name='author' placeholder="Author" style={{ width: '100px' }} />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
+                </div>
+
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+
+                    <Checkbox checked={checkBox.approved} onChange={onChangeCheckBox} name='approved' />
+                    <span style={{ marginLeft: '5px' }}>Approved</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }} >
+
+                    <Checkbox checked={checkBox.active} onChange={onChangeCheckBox} name='active' />
+                    <span style={{ marginLeft: '5px' }}>Active</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }} >
+
+                    <Checkbox checked={checkBox.add_distance} onChange={onChangeCheckBox} name='add_distance' />
+                    <span style={{ marginLeft: '5px' }}>Add distance</span>
+                </div>
+            </div>
+            <div style={{ textAlign: 'end', marginBottom: 5 }}>
+                <Button style={{ display: 'inline', marginRight: 10 }} onClick={refetch} type="secondary" icon={<SearchOutlined />} size="default">
+                    Search
+                </Button>
+                <Button style={{ display: 'inline' }} onClick={onClear} type="secondary" size="default">
+                    Clear
+                </Button>
+            </div>
+
+        </>
+    )
+}
+
+export default SearchQuery
+
