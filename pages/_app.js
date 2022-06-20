@@ -10,7 +10,6 @@ import AccountMenu from '../components/ui-components/dropdown';
 import AuthGuard from '../components/AuthGuard';
 import '../styles/globals.css';
 import { Menu } from 'antd';
-import { ReactQueryDevtools } from 'react-query/devtools'
 
 const { Content, Footer } = Layout;
 
@@ -83,7 +82,6 @@ export default function MyApp({ Component, pageProps }) {
           <AuthGuard>
             <App>
               <Component {...pageProps} />
-              <ReactQueryDevtools initialIsOpen={false} />
             </App>
           </AuthGuard>
         )}
