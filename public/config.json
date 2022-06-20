@@ -1,5 +1,5 @@
 {
-  "menu": [0, 1, 2, 3, 4],
+  "menu": [7, 0, 1, 2, 3, 4],
   "defaultPath": "/",
   "common": {
     "organizations": {
@@ -172,7 +172,7 @@
     {
       "id": 7,
       "path": "/nearby",
-      "title": "Nearby points",
+      "title": "Nearby",
       "apiRoute": "/poi/nearby/",
       "fields": [
         {

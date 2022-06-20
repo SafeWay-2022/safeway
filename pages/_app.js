@@ -28,7 +28,12 @@ const App = ({ children }) => {
     return <Skeleton />;
   }
 
-  const getHref = (id) => getTableById(tables, id)?.apiRoute;
+  const getHref = (id) => {
+    if (getTableById(tables, id)?.path === '/nearby') {
+      return '/nearby/'
+    }
+    return getTableById(tables, id)?.apiRoute
+  };
   const currentTable = getTableByRoute(tables, route || defaultPath);
   const childrenWithProps = withProps({ children, currentTable, config, commonTables });
   const getTitle = (id) => getTableById(tables, id)?.title;
@@ -41,9 +46,6 @@ const App = ({ children }) => {
           selectedKeys={[String(currentTable?.id)]}
           style={{ justifyContent: 'center' }}
         >
-          <Menu.Item key="aev">
-            <Link href="/nearby"><a> Point nearby</a></Link>
-          </Menu.Item>
           {menu.map((id) => (
             <Menu.Item onClick={({ key }) => router.push(getHref(key))} key={id}>
               {getTitle(id)}
