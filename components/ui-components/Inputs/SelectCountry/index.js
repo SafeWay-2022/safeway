@@ -5,7 +5,7 @@ const { Option } = Select;
 
 import { countries } from './data';
 
-function SelectCountry({ value = '', onChange = () => {} }) {
+function SelectCountry({ value = undefined, onChange = () => { } }) {
   return (
     <Select
       showSearch

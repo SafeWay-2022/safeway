@@ -114,7 +114,7 @@
         {
           "title": "Country",
           "dataIndex": "country",
-          "width": "10%",
+          "width": "5%",
           "type": "country"
         },
         {
@@ -126,7 +126,7 @@
         {
           "title": "Address",
           "dataIndex": "address",
-          "width": "5%",
+          "width": "15%",
           "type": "string"
         },
         {
