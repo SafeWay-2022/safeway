@@ -1,5 +1,6 @@
 import { Layout, Skeleton } from 'antd';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -9,6 +10,7 @@ import AccountMenu from '../components/ui-components/dropdown';
 import AuthGuard from '../components/AuthGuard';
 import '../styles/globals.css';
 import { Menu } from 'antd';
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const { Content, Footer } = Layout;
 
@@ -40,6 +42,9 @@ const App = ({ children }) => {
           selectedKeys={[String(currentTable?.id)]}
           style={{ justifyContent: 'center' }}
         >
+          <Menu.Item key="aev">
+            <Link href="/nearby"><a> Point nearby</a></Link>
+          </Menu.Item>
           {menu.map((id) => (
             <Menu.Item onClick={({ key }) => router.push(getHref(key))} key={id}>
               {getTitle(id)}
@@ -62,7 +67,7 @@ export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const { asPath: route } = router;
   const [queryClient] = useState(() => new QueryClient());
-  
+
   return (
     <>
       <Head>
@@ -78,6 +83,7 @@ export default function MyApp({ Component, pageProps }) {
           <AuthGuard>
             <App>
               <Component {...pageProps} />
+              <ReactQueryDevtools initialIsOpen={false} />
             </App>
           </AuthGuard>
         )}
