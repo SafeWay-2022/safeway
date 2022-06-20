@@ -17,7 +17,8 @@ const options = {
 
 const MeComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [data, setData] = useState([])
+    const [data, setData] = useState()
+    const [name, setName] = useState()
     const [isLoading, setIsLoading] = useState(false)
 
 
@@ -31,8 +32,12 @@ const MeComponent = () => {
     useEffect(() => {
         if (isModalVisible) {
             setIsLoading(true)
-            axios.get(`${API_HOST}/users/me/`, options)
-                .then(({ data }) => setData(data))
+            let name
+            axios.get(`${API_HOST}/aaa/me/`, options)
+                .then(({ data }) => name = data.username)
+                .then(() => axios.get(`${API_HOST}/users/get/${name}`, options)
+                    .then(({ data }) => setData(data))
+                )
                 .catch(e => console.log(e)).finally(() => setIsLoading(false))
         }
     }, [isModalVisible])
