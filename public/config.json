@@ -99,7 +99,60 @@
         "categories": []
       }
     },
-
+    {
+      "id": 7,
+      "path": "/nearby",
+      "title": "Nearby points",
+      "apiRoute": "/poi/nearby/",
+      "fields": [
+        {
+          "title": "Name",
+          "dataIndex": "name",
+          "width": "25%",
+          "type": "string"
+        },
+        {
+          "title": "Country",
+          "dataIndex": "country",
+          "width": "10%",
+          "type": "country"
+        },
+        {
+          "title": "City",
+          "dataIndex": "city",
+          "width": "5%",
+          "type": "string"
+        },
+        {
+          "title": "Address",
+          "dataIndex": "address",
+          "width": "5%",
+          "type": "string"
+        },
+        {
+          "title": "Categories",
+          "dataIndex": "categories",
+          "width": "5%",
+          "type": "string"
+        },
+        {
+          "title": "Organizations",
+          "dataIndex": "organizations",
+          "width": "5%",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "dataIndex": "description",
+          "width": "30%",
+          "type": "string"
+        }
+      ],
+      "schema": {
+        "name": "nearby",
+        "categories": []
+      }
+    },
     {
       "id": 2,
       "path": "/org",

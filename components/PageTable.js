@@ -5,6 +5,7 @@ import { PER_PAGE } from '../config';
 import { getTableFetch } from '../hooks/useGetTableData';
 import styles from '../styles/Home.module.css';
 import EditableFormTable from './ui-components/EditableTable';
+import Search from './ui-components/search'
 
 //export default (url, skip) => useQuery([url, { url, skip }], fetchData2);
 
@@ -14,6 +15,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   const myFetch = getTableFetch(route);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(PER_PAGE);
+  const [searchData, setSearchData] = useState({})
 
   const {
     data: tableData,
@@ -22,10 +24,18 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     isFetching,
     isPreviousData,
     refetch,
-  } = useQuery([route, page], () => myFetch(page, limit), {
+  } = useQuery([route, page], () => myFetch(
+    {
+      skip: page,
+      limit: limit,
+      ...searchData
+    }), {
+    refetchOnWindowFocus: true,
     keepPreviousData: true,
     staleTime: 15000,
+    refetchInterval: 0,
   });
+
 
   if (error) {
     return <h1>Error getting table data:{JSON.stringify(error)}</h1>;
@@ -35,7 +45,6 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     return <Skeleton />;
   }
   const { list = [], skip = 0, total = 0 } = tableData;
-  console.log(total);
   const pagination = {
     pageSize: limit,
     onChange: (currentPage, limit) => {
@@ -48,7 +57,8 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   return (
     <div className={styles.container}>
       <main>
-        {total > 0 && <Pagination {...pagination} />}
+        {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
+        {route === '/poi/nearby/' && <Search setSearchData={setSearchData} refetch={refetch} />}
         <EditableFormTable
           route={route}
           schema={schema}
