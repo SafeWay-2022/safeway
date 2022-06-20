@@ -11,9 +11,9 @@ import Search from './ui-components/search'
 
 export default function PageTable({ table: tableConfig, commonTables: commonTablesData }) {
   const queryClient = useQueryClient();
-  const { apiRoute: route, fields, schema = { default: 'hello, nice 2 see u' } } = tableConfig;
+  const { apiRoute: route, fields, schema = {} } = tableConfig;
   const myFetch = getTableFetch(route);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(PER_PAGE);
   const [searchData, setSearchData] = useState({})
 
@@ -65,6 +65,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
           fields={fields}
           data={list}
           commonTablesData={commonTablesData}
+          currentPage={page}
         />
       </main>
     </div>

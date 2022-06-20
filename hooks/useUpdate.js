@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { mapUIRowToServerData } from '../components/ui-components/Inputs/mappers';
-import { API_REMOTE_HOST } from '../config';
+import { API_HOST } from '../config';
 import { getToken } from '../lib/auth';
 
 const doFetch = async (url, data) =>
-  axios.put(API_REMOTE_HOST + url, data, { headers: { Authorization: 'Bearer ' + getToken() } });
+  axios.put(API_HOST + url, data, { headers: { Authorization: 'Bearer ' + getToken() } });
 
 export default function useUpdate({ url, mutationKey, tableKey, route }) {
   const queryClient = useQueryClient();
@@ -21,9 +21,12 @@ export default function useUpdate({ url, mutationKey, tableKey, route }) {
 
         const previousTable = queryClient.getQueryData(tableKey);
 
-        queryClient.setQueryData(tableKey, (old) =>
-          old.map((dataRow) => (dataRow._id === newRow._id ? newRow : dataRow)),
-        );
+        queryClient.setQueryData(tableKey, (old) => {
+          const newList = old.list.map((dataRow) =>
+            dataRow._id === newRow._id ? newRow : dataRow,
+          );
+          return { ...old, list: newList };
+        });
 
         return { previousTable };
       },

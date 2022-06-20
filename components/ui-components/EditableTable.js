@@ -6,7 +6,7 @@ import useUpdate from '../../hooks/useUpdate';
 import { inputsMapping, pureValueTypes } from './Inputs/config';
 import { getAddNewRowUIData, NEW_RECORD_KEY } from './Inputs/mappers';
 
-export default ({ schema, data, fields, route, commonTablesData, pagination }) => {
+export default ({ schema, data, fields, route, commonTablesData, currentPage }) => {
   const [editingKey, setEditingKey] = useState('');
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
@@ -59,6 +59,7 @@ export default ({ schema, data, fields, route, commonTablesData, pagination }) =
         editingKey={editingKey}
         route={route}
         deleteRecord={deleteRecord}
+        currentPage={currentPage}
       />
     ),
   };
@@ -170,22 +171,23 @@ const ActionColumn = ({
   editingKey,
   cancel,
   route,
+  currentPage
 }) => {
   const mutateUpdate = useUpdate({
     mutationKey: `rowEdit_${row._id}`,
-    tableKey: route,
+    tableKey: [route, currentPage],
     url: route + row._id,
     route,
   });
   const mutateAdd = useAdd({
     url: route,
-    tableKey: route,
+    tableKey: [route, currentPage],
     mutationKey: `rowAdd_${row._id}`,
     route,
   });
   const mutateDelete = useDelete({
     url: route + row._id,
-    tableKey: route,
+    tableKey: [route, currentPage],
     mutationKey: `rowDelete_${row._id}`,
     route,
   });

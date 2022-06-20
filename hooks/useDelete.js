@@ -22,7 +22,10 @@ export default function useDelete({ url, mutationKey, tableKey }) {
 
       const previousTable = queryClient.getQueryData(tableKey);
 
-      queryClient.setQueryData(tableKey, (old) => old.filter((dataRow) => dataRow._id !== id));
+      queryClient.setQueryData(tableKey, (old) => {
+        const newList = old.list.filter((dataRow) => dataRow._id !== id);
+        return { ...old, list: newList };
+      });
 
       return { previousTable };
     },
