@@ -7,12 +7,12 @@ export default async function handler(req, res) {
   const isNotTable = [].find((r) => route.includes(r));
 
   const path = route.join('/');
-  const queryParams = isNotTable ? '' : `/?limit=${limit || 10000}&skip=${skip || 0}`;
-  const url = API_REMOTE_HOST + '/' + path + queryParams;
+  // const queryParams = isNotTable ? '' : `/?limit=${limit || 10000}&skip=${skip || 0}`;
+  const url = API_REMOTE_HOST + '/' + path;
 
   try {
     console.log('url:', req.method.toLowerCase(), url);
-    const headers = req.headers ? {...req.headers} : {};
+    const headers = req.headers ? { ...req.headers } : {};
     delete headers.host; // https://stackoverflow.com/a/33771557/5575768
 
     const { data } = await axios({
@@ -20,6 +20,7 @@ export default async function handler(req, res) {
       url: url,
       data: req.body,
       headers,
+      params: req.query
     });
 
     return res.status(200).json(data);
