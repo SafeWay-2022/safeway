@@ -111,7 +111,7 @@ const SearchQuery = ({ setSearchData, refetch }) => {
                     <span style={{ marginLeft: '5px' }}>Add distance</span>
                 </div>
             </div>
-            <div style={{ textAlign: 'end' }}>
+            <div style={{ textAlign: 'end', marginBottom: 5 }}>
                 <Button style={{ display: 'inline', marginRight: 10 }} onClick={refetch} type="secondary" icon={<SearchOutlined />} size="default">
                     Search
                 </Button>
