@@ -227,6 +227,12 @@
           "type": "string"
         },
         {
+          "title": "Distance (KM)",
+          "dataIndex": "distance_km",
+          "width": "2%",
+          "type": "float"
+        },
+        {
           "title": "Description",
           "dataIndex": "description",
           "width": "30%",
