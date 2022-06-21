@@ -16,7 +16,7 @@ const initCheckBox = {
     add_distance: null
 }
 
-const SearchQuery = ({ setSearchData, refetch }) => {
+const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
     const [value, setValue] = useState({})
     const [country, setCountry] = useState(undefined)
     const [text, setText] = useState(initTextState)
@@ -53,6 +53,7 @@ const SearchQuery = ({ setSearchData, refetch }) => {
         setDistance(null)
         setText(initTextState)
         setCheckbox(initCheckBox)
+        setPage(1)
     }
 
     return (
@@ -71,6 +72,7 @@ const SearchQuery = ({ setSearchData, refetch }) => {
                         onChange={setDistance}
                         name='max_distance'
                         placeholder="Max distance"
+                        type="number"
                         style={{ width: '120px' }}
                     />
                 </div>
@@ -116,6 +118,12 @@ const SearchQuery = ({ setSearchData, refetch }) => {
                     Clear
                 </Button>
             </div>
+            {page > 1 && <Button style={{ display: 'inline', marginRight: 5 }} onClick={() => setPage(page - 10)} type="secondary" size="default">
+                Previous page
+            </Button>}
+            <Button style={{ display: 'inline' }} onClick={() => setPage(page + 10)} type="secondary" size="default">
+                Next page
+            </Button>
 
         </>
     )
