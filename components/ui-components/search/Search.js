@@ -1,20 +1,19 @@
 import { useState } from 'react'
 import { inputsMapping } from '../Inputs/config'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox } from 'antd';
+import { Button, Checkbox, InputNumber } from 'antd';
 
 const initTextState = {
     city: null,
     organizations: null,
     categories: null,
-    max_distance: null,
     author: null,
     admin: null
 }
 const initCheckBox = {
-    approved: false,
-    active: false,
-    add_distance: false
+    approved: null,
+    active: null,
+    add_distance: null
 }
 
 const SearchQuery = ({ setSearchData, refetch }) => {
@@ -22,45 +21,36 @@ const SearchQuery = ({ setSearchData, refetch }) => {
     const [country, setCountry] = useState(undefined)
     const [text, setText] = useState(initTextState)
     const [checkBox, setCheckbox] = useState(initCheckBox)
+    const [max_distance, setDistance] = useState(null)
     const InputGeolocation = inputsMapping.geo
     const SelectCountry = inputsMapping.country
     const Input = inputsMapping.string
 
-    const onChangeMap = (e) => {
-        setValue(e)
-        setSearchData(prev => ({
-            ...prev,
-            latitude: e.lat,
-            longitude: e.lg,
-        }))
-    }
-    const onChangeCountry = (e) => {
-        setCountry(e)
-        setSearchData(prev => ({
-            ...prev,
-            country: e,
-        }))
-    }
     const onChangeText = (e) => {
         setText(prev => ({ ...prev, [e.target.name]: e.target.value }))
-        setSearchData(prev => ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }))
     }
 
     const onChangeCheckBox = (e) => {
         setCheckbox(prev => ({ ...prev, [e.target.name]: !prev[e.target.name] ? true : null }))
-        setSearchData(prev => ({
-            ...prev,
-            [e.target.name]: !prev[e.target.name] ? true : null
-        }))
+    }
+
+    const onSearch = () => {
+        new Promise((resolve) => {
+            resolve()
+        })
+            .then(() => setSearchData({
+                country, max_distance, ...text, ...checkBox, latitude: value.lat,
+                longitude: value.lg
+            }))
+            .then(() => refetch())
+            .catch(e => console.log(e))
     }
 
     const onClear = () => {
         setCountry(undefined)
         setValue({})
         setSearchData({})
+        setDistance(null)
         setText(initTextState)
         setCheckbox(initCheckBox)
     }
@@ -69,13 +59,20 @@ const SearchQuery = ({ setSearchData, refetch }) => {
         <>
             <div style={{ display: 'flex', alightItems: 'center', marginBottom: 10 }}>
                 <div style={{ marginRight: 10 }}>
-                    <InputGeolocation value={value} onChange={onChangeMap} />
+                    <InputGeolocation value={value} onChange={setValue} />
                 </div>
                 <div style={{ marginRight: 10 }}>
-                    <SelectCountry value={country} onChange={onChangeCountry} />
+                    <SelectCountry value={country} onChange={setCountry} />
                 </div>
                 <div style={{ marginRight: 10 }}>
-                    <Input value={text.max_distance} onChange={onChangeText} name='max_distance' placeholder="Max distance" style={{ width: '120px' }} />
+                    <InputNumber
+                        value={max_distance}
+                        parser={x => Number(x).toFixed(3)}
+                        onChange={setDistance}
+                        name='max_distance'
+                        placeholder="Max distance"
+                        style={{ width: '120px' }}
+                    />
                 </div>
                 <div style={{ marginRight: 10 }}>
                     <Input value={text.city} onChange={onChangeText} name='city' placeholder="City" style={{ width: '100px' }} />
@@ -112,7 +109,7 @@ const SearchQuery = ({ setSearchData, refetch }) => {
                 </div>
             </div>
             <div style={{ textAlign: 'end', marginBottom: 5 }}>
-                <Button style={{ display: 'inline', marginRight: 10 }} onClick={refetch} type="secondary" icon={<SearchOutlined />} size="default">
+                <Button style={{ display: 'inline', marginRight: 10 }} onClick={onSearch} type="secondary" icon={<SearchOutlined />} size="default">
                     Search
                 </Button>
                 <Button style={{ display: 'inline' }} onClick={onClear} type="secondary" size="default">
