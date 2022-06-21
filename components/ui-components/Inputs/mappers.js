@@ -7,8 +7,8 @@ export const mapGeoToInputProps = (geo) => {
   if (!geo) return defaultGeolocationProps;
 
   return {
-    lg: geo.coordinates[0],
-    lat: geo.coordinates[1],
+    lg: Number(geo.coordinates[0]).toFixed(3),
+    lat: Number(geo.coordinates[1]).toFixed(3),
     type: geo.type,
   };
 };
