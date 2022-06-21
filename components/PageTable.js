@@ -58,7 +58,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     <div className={styles.container}>
       <main>
         {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-        {route === '/poi/nearby/' && <Search setSearchData={setSearchData} refetch={refetch} />}
+        {route === '/poi/nearby/' && <Search setSearchData={setSearchData} refetch={refetch} page={page} setPage={setPage} />}
         <EditableFormTable
           route={route}
           schema={schema}
