@@ -66,18 +66,19 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage }) 
 
   const columns = [
     ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }),
-    schema.name !== 'nearby' ? actionsColumn : {},
+    actionsColumn
   ];
 
   const dataSource = [getAddNewRowUIData(fields), ...data];
 
   return (
     <Table
+      rowClassName={record => route === '/poi/nearby/' && record.key === 'add_new_record' && 'shouldCut'}
       pagination={false}
       dataSource={dataSource}
       columns={columns}
       components={{
-        body: schema.name !== 'nearby' && {
+        body: {
           cell: EditableCell,
         },
       }}
@@ -137,27 +138,27 @@ const EditableCell = ({
 
     return changedCellValue;
   };
-
   const getChangeHandler = () =>
     pureValueTypes.includes(type) ? onChangeHandler : onInputChangeHandler;
-
   return (
-    <td {...restProps}>
-      {InputComponent ? (
-        <InputComponent
-          value={getCellValue()}
-          label={record.name}
-          readonly={!isEditing}
-          placeholder={`Enter ${dataIndex}`}
-          onChange={getChangeHandler()}
-          options={commonTablesData[dataIndex]}
-        >
-          {children}
-        </InputComponent>
-      ) : (
-        children
-      )}
-    </td>
+    <>
+      <td {...restProps}>
+        {InputComponent ? (
+          <InputComponent
+            value={getCellValue()}
+            label={record.name}
+            readonly={!isEditing}
+            placeholder={`Enter ${dataIndex}`}
+            onChange={getChangeHandler()}
+            options={commonTablesData[dataIndex]}
+          >
+            {children}
+          </InputComponent>
+        ) : (
+          children
+        )}
+      </td>
+    </>
   );
 };
 
@@ -193,10 +194,9 @@ const ActionColumn = ({
   });
 
   const addNew = row.key === NEW_RECORD_KEY;
-
   if (addNew) {
     return (
-      <span>
+      <span >
         <Typography.Link
           disabled={editingKey !== ''}
           onClick={() => addRecord(row.key, mutateAdd)}
