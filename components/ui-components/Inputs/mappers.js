@@ -70,3 +70,14 @@ export const getAddNewRowUIData = (fields) => ({
     }),
   ),
 });
+export const changingData = (data) => {
+  const result = data.map(e => {
+    if (e.distance_km) {
+      return { ...e, distance_km: Number(e.distance_km).toFixed(3) }
+    } else {
+      return e
+    }
+
+  })
+  return result
+}
