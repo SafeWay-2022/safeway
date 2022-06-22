@@ -48,7 +48,11 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   const pagination = {
     pageSize: limit,
     onChange: (currentPage, limit) => {
-      setPage(currentPage);
+      if (currentPage === 1) {
+        setPage(0);
+      } else {
+        setPage((currentPage - 1) + '0');
+      }
       setLimit(limit);
     },
     total,
