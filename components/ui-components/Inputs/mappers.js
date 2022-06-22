@@ -8,7 +8,7 @@ export const mapGeoToInputProps = (geo) => {
 
   return {
     lg: geo.coordinates[0],
-    lat: geo.coordinates,
+    lat: geo.coordinates[1],
     type: geo.type,
   };
 };
