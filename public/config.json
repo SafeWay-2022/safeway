@@ -179,6 +179,7 @@
           "title": "Name",
           "dataIndex": "name",
           "width": "25%",
+          "editable": true,
           "type": "string"
         },
         {
@@ -193,30 +194,35 @@
           "title": "Country",
           "dataIndex": "country",
           "width": "5%",
+          "editable": true,
           "type": "country"
         },
         {
           "title": "City",
           "dataIndex": "city",
           "width": "5%",
+          "editable": true,
           "type": "string"
         },
         {
           "title": "Address",
           "dataIndex": "address",
           "width": "15%",
+          "editable": true,
           "type": "string"
         },
         {
           "title": "Categories",
           "dataIndex": "categories",
           "width": "5%",
+          "editable": true,
           "type": "string"
         },
         {
           "title": "Organizations",
           "dataIndex": "organizations",
           "width": "5%",
+          "editable": true,
           "type": "string"
         },
         {
@@ -230,6 +236,7 @@
           "title": "Distance (KM)",
           "dataIndex": "distance_km",
           "width": "2%",
+          "editable": false,
           "type": "float"
         },
         {
