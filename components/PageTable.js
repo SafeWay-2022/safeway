@@ -13,7 +13,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   const queryClient = useQueryClient();
   const { apiRoute: route, fields, schema = {} } = tableConfig;
   const myFetch = getTableFetch(route);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(PER_PAGE);
   const [searchData, setSearchData] = useState({})
 
@@ -48,7 +48,11 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   const pagination = {
     pageSize: limit,
     onChange: (currentPage, limit) => {
-      setPage(currentPage);
+      if (currentPage === 1) {
+        setPage(0);
+      } else {
+        setPage((currentPage - 1) + '0');
+      }
       setLimit(limit);
     },
     total,
