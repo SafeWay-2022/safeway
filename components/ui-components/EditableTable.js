@@ -4,7 +4,7 @@ import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
 import useUpdate from '../../hooks/useUpdate';
 import { inputsMapping, pureValueTypes } from './Inputs/config';
-import { getAddNewRowUIData, NEW_RECORD_KEY } from './Inputs/mappers';
+import { getAddNewRowUIData, NEW_RECORD_KEY, changingData } from './Inputs/mappers';
 
 export default ({ schema, data, fields, route, commonTablesData, currentPage }) => {
   const [editingKey, setEditingKey] = useState('');
@@ -69,7 +69,8 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage }) 
     schema.name !== 'nearby' ? actionsColumn : {},
   ];
 
-  const dataSource = [getAddNewRowUIData(fields), ...data];
+  const dataSource = [getAddNewRowUIData(fields), ...changingData(data)];
+
 
   return (
     <Table

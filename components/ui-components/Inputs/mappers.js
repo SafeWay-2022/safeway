@@ -7,8 +7,8 @@ export const mapGeoToInputProps = (geo) => {
   if (!geo) return defaultGeolocationProps;
 
   return {
-    lg: Number(geo.coordinates[0]).toFixed(3),
-    lat: Number(geo.coordinates[1]).toFixed(3),
+    lg: geo.coordinates[0],
+    lat: geo.coordinates[1],
     type: geo.type,
   };
 };
@@ -70,3 +70,14 @@ export const getAddNewRowUIData = (fields) => ({
     }),
   ),
 });
+export const changingData = (data) => {
+  const result = data.map(e => {
+    if (e.distance_km) {
+      return { ...e, distance_km: Number(e.distance_km).toFixed(3) }
+    } else {
+      return e
+    }
+
+  })
+  return result
+}
