@@ -13,7 +13,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   const queryClient = useQueryClient();
   const { apiRoute: route, fields, schema = {} } = tableConfig;
   const myFetch = getTableFetch(route);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(PER_PAGE);
   const [searchData, setSearchData] = useState({})
 
