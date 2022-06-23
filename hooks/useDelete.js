@@ -3,6 +3,7 @@ import { useMutation } from 'react-query';
 import { API_HOST } from '../config';
 import { useQueryClient } from 'react-query';
 import { getToken } from '../lib/auth';
+import { checkUrlOnNearbyEdit } from '../lib/helpers'
 
 const doFetch = async (url) =>
   axios.delete(API_HOST + url, {
@@ -14,7 +15,7 @@ const doFetch = async (url) =>
 export default function useDelete({ url, mutationKey, tableKey }) {
   const queryClient = useQueryClient();
 
-  const { mutate, error, isError } = useMutation((data) => doFetch(url, data), {
+  const { mutate, error, isError } = useMutation((data) => doFetch(checkUrlOnNearbyEdit(url), data), {
     mutationKey,
     onMutate: async (id) => {
       await queryClient.cancelQueries(tableKey);
