@@ -241,7 +241,7 @@ const ActionColumn = ({
         onConfirm={() => deleteRecord(row, mutateDelete)}
         okText="Delete"
         okType="secondary"
-        cancelText="No">
+        cancelText="Cancel">
         <Typography.Link disabled={editingKey !== ''}>
           Delete
         </Typography.Link>
