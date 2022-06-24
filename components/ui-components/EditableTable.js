@@ -1,4 +1,4 @@
-import { Table, Typography } from 'antd';
+import { Table, Typography, Popconfirm } from 'antd';
 import React, { useState } from 'react';
 import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
@@ -235,9 +235,17 @@ const ActionColumn = ({
       >
         Edit
       </Typography.Link>
-      <Typography.Link disabled={editingKey !== ''} onClick={() => deleteRecord(row, mutateDelete)}>
-        Delete
-      </Typography.Link>
+      <Popconfirm
+        placement="top"
+        title="Do you really want to delete this item?"
+        onConfirm={() => deleteRecord(row, mutateDelete)}
+        okText="Delete"
+        okType="secondary"
+        cancelText="No">
+        <Typography.Link disabled={editingKey !== ''}>
+          Delete
+        </Typography.Link>
+      </Popconfirm>
     </span>
   );
 };
