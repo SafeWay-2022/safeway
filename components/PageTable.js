@@ -10,7 +10,6 @@ import Search from './ui-components/search'
 //export default (url, skip) => useQuery([url, { url, skip }], fetchData2);
 
 export default function PageTable({ table: tableConfig, commonTables: commonTablesData }) {
-  const queryClient = useQueryClient();
   const { apiRoute: route, fields, schema = {} } = tableConfig;
   const myFetch = getTableFetch(route);
   const [page, setPage] = useState(0);

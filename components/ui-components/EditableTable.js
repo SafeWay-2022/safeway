@@ -48,6 +48,7 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage }) 
     title: 'Actions',
     dataIndex: 'action',
     width: '10%',
+    fixed: 'right',
     render: (_, record) => (
       <ActionColumn
         row={record}
@@ -66,15 +67,19 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage }) 
 
   const columns = [
     ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }),
-    actionsColumn
+    actionsColumn,
   ];
 
   const dataSource = [getAddNewRowUIData(fields), ...changingData(data)];
 
-
+  const getRowClassName = (record) => {
+    const shouldCut =
+      route === '/poi/nearby/' && record.key === 'add_new_record' ? 'shouldCut' : '';
+    return `${shouldCut} bg-white`;
+  };
   return (
     <Table
-      rowClassName={record => route === '/poi/nearby/' && record.key === 'add_new_record' && 'shouldCut'}
+      rowClassName={getRowClassName}
       pagination={false}
       dataSource={dataSource}
       columns={columns}
@@ -173,7 +178,7 @@ const ActionColumn = ({
   editingKey,
   cancel,
   route,
-  currentPage
+  currentPage,
 }) => {
   const mutateUpdate = useUpdate({
     mutationKey: `rowEdit_${row._id}`,
@@ -197,7 +202,7 @@ const ActionColumn = ({
   const addNew = row.key === NEW_RECORD_KEY;
   if (addNew) {
     return (
-      <span >
+      <span>
         <Typography.Link
           disabled={editingKey !== ''}
           onClick={() => addRecord(row.key, mutateAdd)}
