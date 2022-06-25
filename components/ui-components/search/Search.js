@@ -11,9 +11,8 @@ const initTextState = {
     admin: null
 }
 const initCheckBox = {
-    approved: null,
-    active: null,
-    add_distance: null
+    approved: false,
+    active: false
 }
 
 const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
@@ -31,7 +30,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
     }
 
     const onChangeCheckBox = (e) => {
-        setCheckbox(prev => ({ ...prev, [e.target.name]: !prev[e.target.name] ? true : null }))
+        setCheckbox(prev => ({ ...prev, [e.target.name]: !prev[e.target.name] }))
     }
 
     const onSearch = () => {
@@ -53,7 +52,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
         setDistance(null)
         setText(initTextState)
         setCheckbox(initCheckBox)
-        setPage(1)
+        setPage(0)
     }
 
     return (
