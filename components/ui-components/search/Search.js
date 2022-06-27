@@ -117,12 +117,12 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
                     Clear
                 </Button>
             </div>
-            {page > 1 && <Button style={{ display: 'inline', marginRight: 5 }} onClick={() => setPage(page - 10)} type="secondary" size="default">
+            {/* {page > 1 && <Button style={{ display: 'inline', marginRight: 5 }} onClick={() => setPage(page - 10)} type="secondary" size="default">
                 Previous page
             </Button>}
             <Button style={{ display: 'inline' }} onClick={() => setPage(page + 10)} type="secondary" size="default">
                 Next page
-            </Button>
+            </Button> */}
 
         </>
     )
