@@ -60,8 +60,8 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   return (
     <div className={styles.container}>
       <main>
-        {route === '/poi/nearby/' && <Search setSearchData={setSearchData} refetch={refetch} page={page} setPage={setPage} />}
         {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
+        {route === '/poi/nearby/' && <Search setSearchData={setSearchData} refetch={refetch} page={page} setPage={setPage} />}
         <EditableFormTable
           route={route}
           schema={schema}
