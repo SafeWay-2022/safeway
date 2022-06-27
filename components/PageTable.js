@@ -50,7 +50,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
       if (currentPage === 1) {
         setPage(0);
       } else {
-        setPage((currentPage - 1) + '0');
+        setPage((currentPage - 1) * limit);
       }
       setLimit(limit);
     },
