@@ -1,4 +1,4 @@
-import { Table, Typography, Popconfirm } from 'antd';
+import { Table, Typography, Popconfirm, Spin } from 'antd';
 import React, { useState } from 'react';
 import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
@@ -6,7 +6,7 @@ import useUpdate from '../../hooks/useUpdate';
 import { inputsMapping, pureValueTypes } from './Inputs/config';
 import { getAddNewRowUIData, NEW_RECORD_KEY, changingData } from './Inputs/mappers';
 
-export default ({ schema, data, fields, route, commonTablesData, currentPage }) => {
+export default ({ schema, data, fields, route, commonTablesData, currentPage, isFetching }) => {
   const [editingKey, setEditingKey] = useState('');
   const [formValue, setFormValue] = useState({});
   const isEditing = (row) => row.key === editingKey;
@@ -83,6 +83,7 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage }) 
       pagination={false}
       dataSource={dataSource}
       columns={columns}
+      loading={isFetching}
       components={{
         body: {
           cell: EditableCell,

@@ -69,6 +69,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
           data={list}
           commonTablesData={commonTablesData}
           currentPage={page}
+          isFetching={isFetching}
         />
       </main>
     </div>
