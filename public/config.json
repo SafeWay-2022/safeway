@@ -216,14 +216,14 @@
           "dataIndex": "categories",
           "width": "5%",
           "editable": true,
-          "type": "string"
+          "type": "MULTIPLE_SELECT"
         },
         {
           "title": "Organizations",
           "dataIndex": "organizations",
           "width": "5%",
           "editable": true,
-          "type": "string"
+          "type": "MULTIPLE_SELECT"
         },
         {
           "title": "Phone",
