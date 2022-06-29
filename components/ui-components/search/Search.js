@@ -87,18 +87,17 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                 <div style={{ marginRight: 10 }}>
                     <Input value={text.author} onChange={onChangeText} name='author' placeholder="Author" style={{ width: '100px' }} />
                 </div>
-                <div style={{ marginRight: 300 }}>
+                <div style={{ marginRight: 10 }}>
                     <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
                 </div>
-                <div>
+                <div style={{ marginLeft: 'auto' }}>
                     <Switch
                         style={{ background: mapView ? "blue" : 'grey' }}
                         onChange={setMapView}
-                        checkedChildren="Table view"
-                        unCheckedChildren="Map view"
+                        checkedChildren="Table"
+                        unCheckedChildren="Map"
                     />
                 </div>
-
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
@@ -116,6 +115,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                     <Checkbox checked={checkBox.add_distance} onChange={onChangeCheckBox} name='add_distance' />
                     <span style={{ marginLeft: '5px' }}>Add distance</span>
                 </div>
+
             </div>
             <div style={{ textAlign: 'end', marginBottom: 5 }}>
                 <Button style={{ display: 'inline', marginRight: 10 }} onClick={onSearch} type="secondary" icon={<SearchOutlined />} size="default">

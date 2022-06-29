@@ -30,7 +30,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     isFetching,
     isPreviousData,
     refetch,
-  } = useQuery([route, page], () => myFetch(
+  } = useQuery([route, page, limit], () => myFetch(
     {
       skip: page,
       limit: limit,
@@ -95,6 +95,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
             <MapPicker
               value={value}
               list={list}
+              setLimit={setLimit}
             />
           </div>
         }

@@ -7,9 +7,39 @@ import {
     Circle,
     useMapEvents
 } from 'react-leaflet';
+import "leaflet-loading"
 
-const MapPicker = ({ list, value }) => {
+
+function MyComponent({ setLimit }) {
+    const [zoomLevel, setZoomLevel] = useState(14); // initial zoom level provided for MapContainer
+
+    const mapEvents = useMapEvents({
+        zoomend: () => {
+            setZoomLevel(mapEvents.getZoom());
+        },
+    });
+
+
+    useEffect(() => {
+        if (zoomLevel >= 14) {
+            setLimit(10)
+        } else if (zoomLevel >= 13) {
+            setLimit(20)
+        } else if (zoomLevel === 12) {
+            setLimit(50)
+        } else if (zoomLevel < 12) {
+            setLimit(100)
+        }
+        return () => setLimit(10)
+    }, [zoomLevel])
+
+    return null
+}
+
+
+const MapPicker = ({ list, value, setLimit }) => {
     const [map, setMap] = useState(null);
+
     const center = !value.length > 0 ? { lat: list[0]?.geo.lat, lng: list[0]?.geo.lg } : { lat: value.lat, lng: value.lg }
     useEffect(() => {
         map && map?.flyTo(center);
@@ -20,12 +50,12 @@ const MapPicker = ({ list, value }) => {
             style={{ height: "900px" }}
             center={center}
             zoom={14}
-            onZoomlevelschange={(e) => { console.log(e) }}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+            <MyComponent setLimit={setLimit} />
             {list?.map((elem, i) => {
                 return (
                     <Marker
