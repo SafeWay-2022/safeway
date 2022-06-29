@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { handleColorsMapPoint } from '../../../../lib/helpers'
 import {
     MapContainer,
     Marker,
@@ -85,8 +84,7 @@ const MapPicker = ({ list, value, setLimit }) => {
                         </Popup>
                         <Circle
                             center={{ lat: elem.geo.lat, lng: elem.geo.lg }}
-                            color={handleColorsMapPoint(elem)}
-                            fillColor={handleColorsMapPoint(elem)}
+                            fillColor="blue"
                             radius={200} />
                     </Marker>
                 )
