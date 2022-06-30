@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { inputsMapping } from '../Inputs/config'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, InputNumber, Select } from 'antd';
+import { Button, Checkbox, InputNumber, Select, Switch } from 'antd';
 
 const initTextState = {
     city: null,
@@ -14,8 +14,7 @@ const initCheckBox = {
     add_distance: null
 }
 
-const SearchQuery = ({ setSearchData, refetch, page, setPage, setPage, setMapView, mapView, value, setValue }) => {
-    const [value, setValue] = useState({})
+const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapView, value, setValue }) => {
     const [country, setCountry] = useState(undefined)
     const [text, setText] = useState(initTextState)
     const [checkBox, setCheckbox] = useState(initCheckBox)
@@ -106,6 +105,14 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setPage, setMapVie
                 </div>
                 <div style={{ marginRight: 10 }}>
                     <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
+                </div>
+                <div style={{ marginLeft: 'auto' }}>
+                    <Switch
+                        style={{ background: mapView ? "blue" : 'grey' }}
+                        onChange={setMapView}
+                        checkedChildren="Table"
+                        unCheckedChildren="Map"
+                    />
                 </div>
 
             </div>
