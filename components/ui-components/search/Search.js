@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { inputsMapping } from '../Inputs/config'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, InputNumber } from 'antd';
+import { Button, Checkbox, InputNumber, Switch } from 'antd';
 
 const initTextState = {
     city: null,
@@ -15,8 +15,8 @@ const initCheckBox = {
     active: false
 }
 
-const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
-    const [value, setValue] = useState({})
+const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapView, value, setValue }) => {
+
     const [country, setCountry] = useState(undefined)
     const [text, setText] = useState(initTextState)
     const [checkBox, setCheckbox] = useState(initCheckBox)
@@ -90,7 +90,14 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
                 <div style={{ marginRight: 10 }}>
                     <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
                 </div>
-
+                <div style={{ marginLeft: 'auto' }}>
+                    <Switch
+                        style={{ background: mapView ? "blue" : 'grey' }}
+                        onChange={setMapView}
+                        checkedChildren="Table"
+                        unCheckedChildren="Map"
+                    />
+                </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
@@ -108,6 +115,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
                     <Checkbox checked={checkBox.add_distance} onChange={onChangeCheckBox} name='add_distance' />
                     <span style={{ marginLeft: '5px' }}>Add distance</span>
                 </div>
+
             </div>
             <div style={{ textAlign: 'end', marginBottom: 5 }}>
                 <Button style={{ display: 'inline', marginRight: 10 }} onClick={onSearch} type="secondary" icon={<SearchOutlined />} size="default">

@@ -6,6 +6,11 @@ import { getTableFetch } from '../hooks/useGetTableData';
 import styles from '../styles/Home.module.css';
 import EditableFormTable from './ui-components/EditableTable';
 import Search from './ui-components/search'
+import dynamic from 'next/dynamic';
+
+const MapPicker = dynamic(() => import('./ui-components/Inputs/MapPicker/MapPicker'), {
+  ssr: false,
+});
 
 //export default (url, skip) => useQuery([url, { url, skip }], fetchData2);
 
@@ -15,6 +20,8 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(PER_PAGE);
   const [searchData, setSearchData] = useState({})
+  const [mapView, setMapView] = useState(false)
+  const [value, setValue] = useState({})
 
   const {
     data: tableData,
@@ -23,7 +30,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     isFetching,
     isPreviousData,
     refetch,
-  } = useQuery([route, page], () => myFetch(
+  } = useQuery([route, page, limit], () => myFetch(
     {
       skip: page,
       limit: limit,
@@ -61,16 +68,37 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     <div className={styles.container}>
       <main>
         {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-        {route === '/poi/nearby/' && <Search setSearchData={setSearchData} refetch={refetch} page={page} setPage={setPage} />}
-        <EditableFormTable
-          route={route}
-          schema={schema}
-          fields={fields}
-          data={list}
-          commonTablesData={commonTablesData}
-          currentPage={page}
-          isFetching={isFetching}
-        />
+        {route === '/poi/nearby/' &&
+          <Search
+            setSearchData={setSearchData}
+            refetch={refetch}
+            page={page}
+            setPage={setPage}
+            mapView={mapView}
+            setMapView={setMapView}
+            value={value}
+            setValue={setValue}
+          />
+        }
+        {!mapView ?
+          <EditableFormTable
+            route={route}
+            schema={schema}
+            fields={fields}
+            data={list}
+            commonTablesData={commonTablesData}
+            currentPage={page}
+            isFetching={isFetching}
+          />
+          :
+          <div style={{ height: '900px' }}>
+            <MapPicker
+              value={value}
+              list={list}
+              setLimit={setLimit}
+            />
+          </div>
+        }
       </main>
     </div>
   );
