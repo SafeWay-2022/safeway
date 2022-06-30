@@ -8,11 +8,10 @@ import {
     Circle,
     useMapEvents
 } from 'react-leaflet';
-import "leaflet-loading"
 
 
 function MyComponent({ setLimit }) {
-    const [zoomLevel, setZoomLevel] = useState(14); // initial zoom level provided for MapContainer
+    const [zoomLevel, setZoomLevel] = useState(14);
 
     const mapEvents = useMapEvents({
         zoomend: () => {
