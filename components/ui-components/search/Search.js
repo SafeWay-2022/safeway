@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { inputsMapping } from '../Inputs/config'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, InputNumber } from 'antd';
+import { Button, Checkbox, InputNumber, Switch } from 'antd';
 
 const initTextState = {
     city: null,
@@ -11,8 +11,8 @@ const initTextState = {
     admin: null
 }
 const initCheckBox = {
-    approved: false,
-    active: false
+    approved: null,
+    active: null
 }
 
 const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
@@ -21,6 +21,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
     const [text, setText] = useState(initTextState)
     const [checkBox, setCheckbox] = useState(initCheckBox)
     const [max_distance, setDistance] = useState(null)
+    const [verification, setVerification] = useState(false)
     const InputGeolocation = inputsMapping.geo
     const SelectCountry = inputsMapping.country
     const Input = inputsMapping.string
@@ -31,6 +32,17 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
 
     const onChangeCheckBox = (e) => {
         setCheckbox(prev => ({ ...prev, [e.target.name]: !prev[e.target.name] }))
+    }
+    const onChangeVerification = (e) => {
+        setVerification(e)
+        if (!verification) {
+            setCheckbox({
+                approved: false,
+                active: false
+            })
+        } else {
+            setCheckbox(initCheckBox)
+        }
     }
 
     const onSearch = () => {
@@ -95,12 +107,17 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
 
-                    <Checkbox checked={checkBox.approved} onChange={onChangeCheckBox} name='approved' />
+                    <Switch style={{ backgroundColor: verification ? '#1890ff' : 'grey' }} checked={verification} onChange={onChangeVerification} name='verify' />
+                    <span style={{ marginLeft: '5px' }}>With params</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+
+                    <Checkbox disabled={!verification} checked={checkBox.approved} onChange={onChangeCheckBox} name='approved' />
                     <span style={{ marginLeft: '5px' }}>Approved</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }} >
 
-                    <Checkbox checked={checkBox.active} onChange={onChangeCheckBox} name='active' />
+                    <Checkbox disabled={!verification} checked={checkBox.active} onChange={onChangeCheckBox} name='active' />
                     <span style={{ marginLeft: '5px' }}>Active</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }} >
