@@ -14,7 +14,7 @@ const initCheckBox = {
     add_distance: null
 }
 
-const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
+const SearchQuery = ({ setSearchData, refetch, page, setPage, setPage, setMapView, mapView, value, setValue }) => {
     const [value, setValue] = useState({})
     const [country, setCountry] = useState(undefined)
     const [text, setText] = useState(initTextState)
