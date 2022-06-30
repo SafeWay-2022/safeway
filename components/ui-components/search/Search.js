@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { inputsMapping } from '../Inputs/config'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, InputNumber, Switch } from 'antd';
+import { Button, Checkbox, InputNumber, Select } from 'antd';
 
 const initTextState = {
     city: null,
@@ -11,17 +11,17 @@ const initTextState = {
     admin: null
 }
 const initCheckBox = {
-    approved: null,
-    active: null
+    add_distance: null
 }
 
-const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapView, value, setValue }) => {
-
+const SearchQuery = ({ setSearchData, refetch, page, setPage }) => {
+    const [value, setValue] = useState({})
     const [country, setCountry] = useState(undefined)
     const [text, setText] = useState(initTextState)
     const [checkBox, setCheckbox] = useState(initCheckBox)
     const [max_distance, setDistance] = useState(null)
-    const [verification, setVerification] = useState(false)
+    const [approved, setApproved] = useState(null)
+    const [active, setActive] = useState(null)
     const InputGeolocation = inputsMapping.geo
     const SelectCountry = inputsMapping.country
     const Input = inputsMapping.string
@@ -33,16 +33,19 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
     const onChangeCheckBox = (e) => {
         setCheckbox(prev => ({ ...prev, [e.target.name]: !prev[e.target.name] }))
     }
-    const onChangeVerification = (e) => {
-        setVerification(e)
-        if (!verification) {
-            setCheckbox({
-                approved: false,
-                active: false
-            })
-        } else {
-            setCheckbox(initCheckBox)
+    const onChangeSelectApproved = (e) => {
+        if (e === '-') {
+            setApproved(null)
+            return
         }
+        setApproved(e)
+    }
+    const onChangeSelectActive = (e) => {
+        if (e === '-') {
+            setActive(null)
+            return
+        }
+        setActive(e)
     }
 
     const onSearch = () => {
@@ -50,7 +53,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
             resolve()
         })
             .then(() => setSearchData({
-                country, max_distance, ...text, ...checkBox, latitude: value.lat,
+                approved, active, country, max_distance, ...text, ...checkBox, latitude: value.lat,
                 longitude: value.lg
             }))
             .then(() => refetch())
@@ -65,6 +68,8 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
         setText(initTextState)
         setCheckbox(initCheckBox)
         setPage(0)
+        setActive(null)
+        setApproved(null)
     }
 
     return (
@@ -102,37 +107,44 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                 <div style={{ marginRight: 10 }}>
                     <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
                 </div>
-                <div style={{ marginLeft: 'auto' }}>
-                    <Switch
-                        style={{ background: mapView ? "blue" : 'grey' }}
-                        onChange={setMapView}
-                        checkedChildren="Table"
-                        unCheckedChildren="Map"
-                    />
-                </div>
+
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+                    <div style={{ marginRight: '5px' }}>Approved</div>
+                    <Select
+                        defaultValue="-"
+                        style={{
+                            width: 80,
+                        }}
+                        onChange={onChangeSelectApproved}
+                    >
+                        <Option value="-">{null}</Option>
+                        <Option value="true">true</Option>
+                        <Option value="false">false</Option>
+                    </Select>
 
-                    <Switch style={{ backgroundColor: verification ? '#1890ff' : 'grey' }} checked={verification} onChange={onChangeVerification} name='verify' />
-                    <span style={{ marginLeft: '5px' }}>With params</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+                    <div style={{ marginRight: '5px' }}>Active</div>
+                    <Select
+                        defaultValue="-"
+                        style={{
+                            width: 80,
+                        }}
+                        onChange={onChangeSelectActive}
+                    >
+                        <Option value="-">{null}</Option>
+                        <Option value="true">true</Option>
+                        <Option value="false">false</Option>
+                    </Select>
 
-                    <Checkbox disabled={!verification} checked={checkBox.approved} onChange={onChangeCheckBox} name='approved' />
-                    <span style={{ marginLeft: '5px' }}>Approved</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }} >
-
-                    <Checkbox disabled={!verification} checked={checkBox.active} onChange={onChangeCheckBox} name='active' />
-                    <span style={{ marginLeft: '5px' }}>Active</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }} >
 
                     <Checkbox checked={checkBox.add_distance} onChange={onChangeCheckBox} name='add_distance' />
                     <span style={{ marginLeft: '5px' }}>Add distance</span>
                 </div>
-
             </div>
             <div style={{ textAlign: 'end', marginBottom: 5 }}>
                 <Button style={{ display: 'inline', marginRight: 10 }} onClick={onSearch} type="secondary" icon={<SearchOutlined />} size="default">
