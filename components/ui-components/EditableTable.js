@@ -1,4 +1,5 @@
-import { Table, Typography, Popconfirm, Spin } from 'antd';
+import { Table, Typography, Popconfirm } from 'antd';
+import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import React, { useState } from 'react';
 import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
@@ -229,13 +230,16 @@ const ActionColumn = ({
 
   return (
     <span>
-      <Typography.Link
-        disabled={editingKey !== ''}
-        onClick={() => edit(row)}
-        style={{ marginRight: 8 }}
+      {/* <Typography.Link
+
       >
         Edit
-      </Typography.Link>
+      </Typography.Link> */}
+      <EditFilled
+        disabled={editingKey !== ''}
+        onClick={() => edit(row)}
+        style={{ marginRight: 8, fontSize: '150%' }}
+      />
       <Popconfirm
         placement="top"
         title="Do you really want to delete this item?"
@@ -243,9 +247,7 @@ const ActionColumn = ({
         okText="Delete"
         okType="secondary"
         cancelText="Cancel">
-        <Typography.Link disabled={editingKey !== ''}>
-          Delete
-        </Typography.Link>
+        <DeleteFilled disabled={editingKey !== ''} style={{ marginRight: 8, fontSize: '150%' }} />
       </Popconfirm>
     </span>
   );
