@@ -1,5 +1,5 @@
 import { Table, Typography, Popconfirm } from 'antd';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined, FileAddOutlined, ClearOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
@@ -96,7 +96,6 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
 
 const mapColumns = (fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }) =>
   fields.map((field) => {
-    console.log(field)
     return {
       ...field,
       onCell: (record) => ({
@@ -206,14 +205,12 @@ const ActionColumn = ({
   if (addNew) {
     return (
       <span>
-        <Typography.Link
+        <FileAddOutlined
           disabled={editingKey !== ''}
           onClick={() => addRecord(row.key, mutateAdd)}
-          style={{ marginRight: 8 }}
-        >
-          Add
-        </Typography.Link>
-        <Typography.Link onClick={() => cancel(row.key)}>Clear</Typography.Link>
+          style={{ marginRight: 8, fontSize: '150%' }}
+        />
+        <ClearOutlined onClick={() => cancel(row.key)} style={{ fontSize: '150%' }} />
       </span>
     );
   }
@@ -221,17 +218,15 @@ const ActionColumn = ({
   if (editable) {
     return (
       <span>
-        <Typography.Link onClick={() => save(row, mutateUpdate)} style={{ marginRight: 8 }}>
-          Save
-        </Typography.Link>
-        <Typography.Link onClick={() => cancel(row.key)}>Cancel</Typography.Link>
+        <SaveOutlined onClick={() => save(row, mutateUpdate)} style={{ marginRight: 8, fontSize: '150%' }} />
+        <CloseCircleOutlined onClick={() => cancel(row.key)} style={{ fontSize: '150%' }} />
       </span>
     );
   }
 
   return (
-    <span>
-      <EditFilled
+    <span style={{ display: 'flex' }}>
+      <EditOutlined
         disabled={editingKey !== ''}
         onClick={() => edit(row)}
         style={{ marginRight: 8, fontSize: '150%' }}
@@ -243,7 +238,7 @@ const ActionColumn = ({
         okText="Delete"
         okType="secondary"
         cancelText="Cancel">
-        <DeleteFilled disabled={editingKey !== ''} style={{ fontSize: '150%' }} />
+        <DeleteOutlined disabled={editingKey !== ''} style={{ fontSize: '150%' }} />
       </Popconfirm>
     </span>
   );
