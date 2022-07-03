@@ -21,12 +21,11 @@ export default function useAdd({ url, mutationKey, tableKey, route }) {
       onMutate: async (newRow) => {
         await queryClient.cancelQueries(tableKey);
         await queryClient.cancelQueries(mutationKey);
-
+        console.log(newRow)
         const previousTable = queryClient.getQueryData(tableKey);
-
         queryClient.setQueryData(tableKey, (old) => {
-          const newList = [...old.list, newRow];
-          return {...old, list: newList};
+          const newList = [...(old?.list ? old.list : []), newRow];
+          return { ...(old ? old : {}), list: newList };
         });
 
         return { previousTable };
