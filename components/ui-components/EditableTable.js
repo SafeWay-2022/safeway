@@ -96,6 +96,7 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
 
 const mapColumns = (fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }) =>
   fields.map((field) => {
+    console.log(field)
     return {
       ...field,
       onCell: (record) => ({
@@ -230,11 +231,6 @@ const ActionColumn = ({
 
   return (
     <span>
-      {/* <Typography.Link
-
-      >
-        Edit
-      </Typography.Link> */}
       <EditFilled
         disabled={editingKey !== ''}
         onClick={() => edit(row)}
@@ -247,7 +243,7 @@ const ActionColumn = ({
         okText="Delete"
         okType="secondary"
         cancelText="Cancel">
-        <DeleteFilled disabled={editingKey !== ''} style={{ marginRight: 8, fontSize: '150%' }} />
+        <DeleteFilled disabled={editingKey !== ''} style={{ fontSize: '150%' }} />
       </Popconfirm>
     </span>
   );

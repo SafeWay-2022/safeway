@@ -12,6 +12,7 @@ export default () => {
     return response || {};
   });
 
+
   useEffect(() => {
     async function myFnc(commonConfig) {
       const commonToFetch = Object.entries(commonConfig).map(([key, { apiRoute }]) => ({
