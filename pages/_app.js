@@ -47,7 +47,9 @@ const App = ({ children }) => {
           style={{ justifyContent: 'center' }}
         >
           {menu.map((id) => (
-            <Menu.Item onClick={({ key }) => router.push(getHref(key))} key={id}>
+            <Menu.Item
+              className={route === '/nearby' && getTitle(id) === 'Points of interest' && 'ant-menu-item-selected'}
+              onClick={({ key }) => router.push(getHref(key))} key={id}>
               {getTitle(id)}
             </Menu.Item>
           ))}
@@ -60,7 +62,7 @@ const App = ({ children }) => {
         <Content className="h-full overflow-auto mt-4">{childrenWithProps}</Content>
         <Footer style={{ textAlign: 'center' }}>Safeway© 2022</Footer>
       </Layout>
-    </Layout>
+    </Layout >
   );
 };
 

@@ -1,5 +1,5 @@
 {
-  "menu": [7, 0, 1, 2, 3, 4],
+  "menu": [0, 1, 2, 3, 4],
   "defaultPath": "/",
   "common": {
     "organizations": {

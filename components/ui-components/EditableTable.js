@@ -78,12 +78,14 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
       route === '/poi/nearby/' && record.key === 'add_new_record' ? 'shouldCut' : '';
     return `${shouldCut} bg-white`;
   };
+  // const filterdColumns = columns.filter(col => col.title !== "Age");
+
   return (
     <Table
       rowClassName={getRowClassName}
       pagination={false}
       dataSource={dataSource}
-      columns={columns}
+      columns={columns.slice(0, 14)}
       loading={isFetching}
       components={{
         body: {
