@@ -65,7 +65,7 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
           deleteRecord={deleteRecord}
           currentPage={currentPage}
         />
-        {route === '/poi/' && (!more ? <RightOutlined onClick={() => setMore(!more)} /> : <LeftOutlined onClick={() => setMore(!more)} />)}
+        {route === '/poi/' && (!more ? <RightOutlined style={{ fontSize: '200%', marginLeft: 10 }} onClick={() => setMore(!more)} /> : <LeftOutlined style={{ fontSize: '200%', marginLeft: 10 }} onClick={() => setMore(!more)} />)}
       </div>
     ),
   };
@@ -228,9 +228,9 @@ const ActionColumn = ({
         <FileAddOutlined
           disabled={editingKey !== ''}
           onClick={() => addRecord(row.key, mutateAdd)}
-          style={{ marginRight: 8, fontSize: '150%' }}
+          style={{ marginRight: 8, fontSize: '200%' }}
         />
-        <ClearOutlined onClick={() => cancel(row.key)} style={{ fontSize: '150%' }} />
+        <ClearOutlined onClick={() => cancel(row.key)} style={{ fontSize: '200%' }} />
       </span>
     );
   }
@@ -238,8 +238,8 @@ const ActionColumn = ({
   if (editable) {
     return (
       <span>
-        <SaveOutlined onClick={() => save(row, mutateUpdate)} style={{ marginRight: 8, fontSize: '150%' }} />
-        <CloseCircleOutlined onClick={() => cancel(row.key)} style={{ fontSize: '150%' }} />
+        <SaveOutlined onClick={() => save(row, mutateUpdate)} style={{ marginRight: 8, fontSize: '200%' }} />
+        <CloseCircleOutlined onClick={() => cancel(row.key)} style={{ fontSize: '200%' }} />
       </span>
     );
   }
@@ -249,7 +249,7 @@ const ActionColumn = ({
       <EditOutlined
         disabled={editingKey !== ''}
         onClick={() => edit(row)}
-        style={{ marginRight: 8, fontSize: '150%' }}
+        style={{ marginRight: 8, fontSize: '200%' }}
       />
       <Popconfirm
         placement="top"
@@ -258,7 +258,7 @@ const ActionColumn = ({
         okText="Delete"
         okType="secondary"
         cancelText="Cancel">
-        <DeleteOutlined disabled={editingKey !== ''} style={{ fontSize: '150%' }} />
+        <DeleteOutlined disabled={editingKey !== ''} style={{ fontSize: '200%' }} />
       </Popconfirm>
     </span>
   );
