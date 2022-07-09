@@ -1,5 +1,5 @@
-import { Table, Typography, Popconfirm } from 'antd';
-import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined, FileAddOutlined, ClearOutlined } from '@ant-design/icons';
+import { Table, Typography, Popconfirm, Button, Icon } from 'antd';
+import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined, FileAddOutlined, ClearOutlined, RightOutlined, LeftOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import useAdd from '../../hooks/useAdd';
 import useDelete from '../../hooks/useDelete';
@@ -10,6 +10,7 @@ import { getAddNewRowUIData, NEW_RECORD_KEY, changingData } from './Inputs/mappe
 export default ({ schema, data, fields, route, commonTablesData, currentPage, isFetching }) => {
   const [editingKey, setEditingKey] = useState('');
   const [formValue, setFormValue] = useState({});
+  const [more, setMore] = useState(false)
   const isEditing = (row) => row.key === editingKey;
   const isNew = (row) => row.key === NEW_RECORD_KEY;
 
@@ -51,41 +52,57 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
     width: '10%',
     fixed: 'right',
     render: (_, record) => (
-      <ActionColumn
-        row={record}
-        save={saveRecord}
-        addRecord={addRecord}
-        edit={edit}
-        cancel={cancel}
-        editable={isEditing(record)}
-        editingKey={editingKey}
-        route={route}
-        deleteRecord={deleteRecord}
-        currentPage={currentPage}
-      />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+        <ActionColumn
+          row={record}
+          save={saveRecord}
+          addRecord={addRecord}
+          edit={edit}
+          cancel={cancel}
+          editable={isEditing(record)}
+          editingKey={editingKey}
+          route={route}
+          deleteRecord={deleteRecord}
+          currentPage={currentPage}
+        />
+        {route === '/poi/' && (!more ? <RightOutlined onClick={() => setMore(!more)} /> : <LeftOutlined onClick={() => setMore(!more)} />)}
+      </div>
     ),
   };
 
+  console.log(route)
   const columns = [
     ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }),
-    actionsColumn,
+    actionsColumn
   ];
 
   const dataSource = [getAddNewRowUIData(fields), ...changingData(data)];
 
   const getRowClassName = (record) => {
     const shouldCut =
-      route === '/poi/nearby/' && record.key === 'add_new_record' ? 'shouldCut' : '';
+      route === '/poi/search/' && record.key === 'add_new_record' ? 'shouldCut' : '';
     return `${shouldCut} bg-white`;
   };
-  // const filterdColumns = columns.filter(col => col.title !== "Age");
+  const filterdColumns = columns.filter(
+    col => col?.title !== 'Web-Site'
+      && col?.title !== 'Whatsapp'
+      && col?.title !== 'Telegram'
+      && col?.title !== 'Social-Media'
+      && col?.title !== 'Facebook Messenger'
+  );
+  const onColumns = () => {
+    if (route === '/poi/') {
+      return more ? columns : filterdColumns
+    }
+    return columns
+  }
 
   return (
     <Table
       rowClassName={getRowClassName}
       pagination={false}
       dataSource={dataSource}
-      columns={columns.slice(0, 14)}
+      columns={onColumns()}
       loading={isFetching}
       components={{
         body: {
@@ -93,6 +110,7 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
         },
       }}
     />
+
   );
 };
 

@@ -66,12 +66,11 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     },
     total,
   };
-  console.log(route)
   const pushRouter = () => {
     if (route === '/poi/') {
-      return '/nearby/'
+      return '/search/'
     }
-    if (route === '/poi/nearby/') {
+    if (route === '/poi/search/') {
       return '/poi'
     }
   }
@@ -92,7 +91,7 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
             </Button>
           }
         </div>
-        {route === '/poi/nearby/' &&
+        {route === '/poi/search/' &&
           <>
             <Search
               setSearchData={setSearchData}

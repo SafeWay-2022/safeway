@@ -171,9 +171,9 @@
     },
     {
       "id": 7,
-      "path": "/nearby",
-      "title": "Nearby",
-      "apiRoute": "/poi/nearby/",
+      "path": "/search",
+      "title": "Search",
+      "apiRoute": "/poi/search/",
       "fields": [
         {
           "title": "Name",
