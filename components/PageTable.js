@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Pagination, Skeleton } from 'antd';
+import { Pagination, Skeleton, Button, Radio } from 'antd';
+import { RollbackOutlined, SearchOutlined } from '@ant-design/icons';
 import { useQuery, useQueryClient } from 'react-query';
+import { useRouter } from 'next/router';
 import { PER_PAGE } from '../config';
 import { getTableFetch } from '../hooks/useGetTableData';
 import styles from '../styles/Home.module.css';
@@ -16,6 +18,7 @@ const MapPicker = dynamic(() => import('./ui-components/Inputs/MapPicker/MapPick
 
 export default function PageTable({ table: tableConfig, commonTables: commonTablesData }) {
   const { apiRoute: route, fields, schema = {} } = tableConfig;
+  const router = useRouter()
   const myFetch = getTableFetch(route);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(PER_PAGE);
@@ -63,43 +66,82 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
     },
     total,
   };
-
+  const pushRouter = () => {
+    if (route === '/poi/') {
+      return '/search/'
+    }
+    if (route === '/poi/search/') {
+      return '/poi'
+    }
+  }
   return (
     <div className={styles.container}>
       <main>
-        {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-        {route === '/poi/nearby/' &&
-          <Search
-            setSearchData={setSearchData}
-            refetch={refetch}
-            page={page}
-            setPage={setPage}
-            mapView={mapView}
-            setMapView={setMapView}
-            value={value}
-            setValue={setValue}
-          />
-        }
-        {!mapView ?
-          <EditableFormTable
-            route={route}
-            schema={schema}
-            fields={fields}
-            data={list}
-            commonTablesData={commonTablesData}
-            currentPage={page}
-            isFetching={isFetching}
-          />
-          :
-          <div style={{ height: '900px' }}>
-            <MapPicker
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+          {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
+          {route === '/poi/' &&
+            <>
+              <div>
+                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
+                <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
+              </div>
+              <Button
+                onClick={() => router.push(pushRouter())}
+                type="primary"
+                size="large"
+                icon={<SearchOutlined />}
+                style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
+              >
+                Filter
+              </Button>
+            </>
+          }
+        </div>
+        {
+          route === '/poi/search/' &&
+          <>
+            <Search
+              setSearchData={setSearchData}
+              refetch={refetch}
+              page={page}
+              setPage={setPage}
+              mapView={mapView}
+              setMapView={setMapView}
               value={value}
-              list={list}
-              setLimit={setLimit}
+              setValue={setValue}
+              component={<Button
+                type="primary"
+                size="large"
+                style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
+                icon={<RollbackOutlined />}
+                onClick={() => router.push(pushRouter())}>
+                <span>Back</span>
+              </Button>
+              }
             />
-          </div>
+          </>
         }
-      </main>
-    </div>
+        {
+          !mapView ?
+            <EditableFormTable
+              route={route}
+              schema={schema}
+              fields={fields}
+              data={list}
+              commonTablesData={commonTablesData}
+              currentPage={page}
+              isFetching={isFetching}
+            />
+            :
+            <div style={{ height: '900px' }}>
+              <MapPicker
+                value={value}
+                list={list}
+                setLimit={setLimit}
+              />
+            </div>
+        }
+      </main >
+    </div >
   );
 }

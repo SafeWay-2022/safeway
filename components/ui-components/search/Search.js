@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { inputsMapping } from '../Inputs/config'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, InputNumber, Select, Switch } from 'antd';
+import { Button, Checkbox, InputNumber, Select, Radio } from 'antd';
 
 const initTextState = {
     city: null,
@@ -14,7 +14,7 @@ const initCheckBox = {
     add_distance: null
 }
 
-const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapView, value, setValue }) => {
+const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapView, value, setValue, component }) => {
     const [country, setCountry] = useState(undefined)
     const [text, setText] = useState(initTextState)
     const [checkBox, setCheckbox] = useState(initCheckBox)
@@ -119,12 +119,11 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                     <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
                 </div>
                 <div style={{ marginLeft: 'auto' }}>
-                    <Switch
-                        style={{ background: mapView ? "blue" : 'grey' }}
-                        onChange={setMapView}
-                        checkedChildren="Table"
-                        unCheckedChildren="Map"
-                    />
+                    <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
+                    <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
+                </div>
+                <div style={{ marginLeft: 'auto' }}>
+                    {component}
                 </div>
 
             </div>
@@ -173,9 +172,11 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                     Clear
                 </Button>
             </div>
-            {page > 1 && <Button style={{ display: 'inline', marginRight: 5 }} onClick={() => setPage(page - 10)} type="secondary" size="default">
-                Previous page
-            </Button>}
+            {
+                page > 1 && <Button style={{ display: 'inline', marginRight: 5 }} onClick={() => setPage(page - 10)} type="secondary" size="default">
+                    Previous page
+                </Button>
+            }
             <Button style={{ display: 'inline' }} onClick={() => setPage(page + 10)} type="secondary" size="default">
                 Next page
             </Button>

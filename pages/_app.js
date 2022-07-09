@@ -39,30 +39,47 @@ const App = ({ children }) => {
   const getTitle = (id) => getTableById(tables, id)?.title;
 
   return (
-    <Layout style={{ height: '99vh' }} className="overflow-hidden">
+    <Layout style={{ height: '96vh' }} className="overflow-hidden">
       <Layout>
-        <Menu
-          mode="horizontal"
-          selectedKeys={[String(currentTable?.id)]}
-          style={{ justifyContent: 'center' }}
-        >
-          {menu.map((id) => (
-            <Menu.Item onClick={({ key }) => router.push(getHref(key))} key={id}>
-              {getTitle(id)}
-            </Menu.Item>
-          ))}
-
-          <Menu.Item style={{ transform: 'translateX(200%)' }} key="dcdcd">
-            <AccountMenu />
-          </Menu.Item>
-        </Menu>
-
         <Content className="h-full overflow-auto mt-4">{childrenWithProps}</Content>
         <Footer style={{ textAlign: 'center' }}>Safeway© 2022</Footer>
       </Layout>
-    </Layout>
+    </Layout >
   );
 };
+const Navigation = ({ route }) => {
+  const [menu] = useState([
+    { key: 'Points of interests', route: '/poi' },
+    { key: 'Organizations', route: '/org' },
+    { key: 'Users', route: '/users' },
+    { key: 'Categories', route: '/common' },
+    { key: 'Needs', route: '/need' },
+  ])
+  const router = useRouter()
+  return (
+    <>
+      <Menu
+        mode="horizontal"
+        defaultSelectedKeys={['Points of interests']}
+        style={{ justifyContent: 'center' }}
+      >
+        {menu.map((e) => (
+          <Menu.Item
+            key={e.key}
+            className={route === '/search' && e.key === 'Points of interest' && 'ant-menu-item-selected'}
+            onClick={() => router.push(e.route)}>
+            {e.key}
+          </Menu.Item>
+        ))}
+
+        <Menu.Item style={{ transform: 'translateX(200%)' }} key="dcdcd">
+          <AccountMenu />
+        </Menu.Item>
+      </Menu>
+
+    </>
+  )
+}
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -81,11 +98,15 @@ export default function MyApp({ Component, pageProps }) {
         {route.startsWith('/login') ? (
           <Component {...pageProps} />
         ) : (
-          <AuthGuard>
-            <App>
-              <Component {...pageProps} />
-            </App>
-          </AuthGuard>
+          <>
+            <Navigation route={route} />
+            <AuthGuard>
+              <App>
+                <Component {...pageProps} />
+              </App>
+            </AuthGuard>
+
+          </>
         )}
       </QueryClientProvider>
     </>
