@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pagination, Skeleton, Button } from 'antd';
+import { Pagination, Skeleton, Button, Radio } from 'antd';
 import { RollbackOutlined, SearchOutlined } from '@ant-design/icons';
 import { useQuery, useQueryClient } from 'react-query';
 import { useRouter } from 'next/router';
@@ -80,18 +80,25 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
           {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
           {route === '/poi/' &&
-            <Button
-              onClick={() => router.push(pushRouter())}
-              type="primary"
-              size="large"
-              icon={<SearchOutlined />}
-              style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
-            >
-              Filter
-            </Button>
+            <>
+              <div>
+                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
+                <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
+              </div>
+              <Button
+                onClick={() => router.push(pushRouter())}
+                type="primary"
+                size="large"
+                icon={<SearchOutlined />}
+                style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
+              >
+                Filter
+              </Button>
+            </>
           }
         </div>
-        {route === '/poi/search/' &&
+        {
+          route === '/poi/search/' &&
           <>
             <Search
               setSearchData={setSearchData}
@@ -114,26 +121,27 @@ export default function PageTable({ table: tableConfig, commonTables: commonTabl
             />
           </>
         }
-        {!mapView ?
-          <EditableFormTable
-            route={route}
-            schema={schema}
-            fields={fields}
-            data={list}
-            commonTablesData={commonTablesData}
-            currentPage={page}
-            isFetching={isFetching}
-          />
-          :
-          <div style={{ height: '900px' }}>
-            <MapPicker
-              value={value}
-              list={list}
-              setLimit={setLimit}
+        {
+          !mapView ?
+            <EditableFormTable
+              route={route}
+              schema={schema}
+              fields={fields}
+              data={list}
+              commonTablesData={commonTablesData}
+              currentPage={page}
+              isFetching={isFetching}
             />
-          </div>
+            :
+            <div style={{ height: '900px' }}>
+              <MapPicker
+                value={value}
+                list={list}
+                setLimit={setLimit}
+              />
+            </div>
         }
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }
