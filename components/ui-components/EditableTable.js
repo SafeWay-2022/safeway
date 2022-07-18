@@ -24,6 +24,7 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
   };
 
   const saveRecord = (row, mutate) => {
+    console.log(row)
     mutate({ ...row, ...formValue[row._id] });
     setEditingKey('');
   };
@@ -70,7 +71,6 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
     ),
   };
 
-  console.log(route)
   const columns = [
     ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }),
     actionsColumn
