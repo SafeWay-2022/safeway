@@ -10,7 +10,6 @@ const doFetch = async (url, data) =>
 
 export default function useUpdate({ url, mutationKey, tableKey, route }) {
   const queryClient = useQueryClient();
-  console.log(url)
   const { mutate, error, isError } = useMutation(
     (data) => doFetch(checkUrlOnSearchEdit(url), mapUIRowToServerData(data, route)),
     {

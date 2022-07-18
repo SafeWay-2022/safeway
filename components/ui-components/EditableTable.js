@@ -24,7 +24,6 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
   };
 
   const saveRecord = (row, mutate) => {
-    console.log(row)
     mutate({ ...row, ...formValue[row._id] });
     setEditingKey('');
   };
