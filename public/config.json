@@ -507,6 +507,20 @@
           "type": "boolean"
         },
         {
+          "title": "Managed Countries",
+          "dataIndex": "managed_countries",
+          "width": "5%",
+          "editable": true,
+          "type": "MULTIPLE_SELECT"
+        },
+        {
+          "title": "Managed Cities",
+          "dataIndex": "managed_cities",
+          "width": "5%",
+          "editable": true,
+          "type": "MULTIPLE_SELECT"
+        },
+        {
           "title": "Superuser",
           "dataIndex": "aaa_superuser",
           "width": "20%",
