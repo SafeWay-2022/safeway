@@ -70,7 +70,6 @@ export default ({ schema, data, fields, route, commonTablesData, currentPage, is
     ),
   };
 
-  console.log(route)
   const columns = [
     ...mapColumns(fields, { isEditing, isNew, handleFormChange, formValue, commonTablesData }),
     actionsColumn

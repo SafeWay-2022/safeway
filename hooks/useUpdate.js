@@ -3,16 +3,15 @@ import { useMutation, useQueryClient } from 'react-query';
 import { mapUIRowToServerData } from '../components/ui-components/Inputs/mappers';
 import { API_HOST } from '../config';
 import { getToken } from '../lib/auth';
-import { checkUrlOnNearbyEdit } from '../lib/helpers'
+import { checkUrlOnSearchEdit } from '../lib/helpers'
 
 const doFetch = async (url, data) =>
   axios.put(API_HOST + url, data, { headers: { Authorization: 'Bearer ' + getToken() } });
 
 export default function useUpdate({ url, mutationKey, tableKey, route }) {
   const queryClient = useQueryClient();
-
   const { mutate, error, isError } = useMutation(
-    (data) => doFetch(checkUrlOnNearbyEdit(url), mapUIRowToServerData(data, route)),
+    (data) => doFetch(checkUrlOnSearchEdit(url), mapUIRowToServerData(data, route)),
     {
       mutationKey,
 
