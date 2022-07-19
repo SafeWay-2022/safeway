@@ -31,7 +31,7 @@ export const mapInputPropsToGeo = ({ lg, lat, type }) => ({
 export const mapInputPropsToServerLatilong = ({ lg, lat, type }) => [+lat, +lg];
 
 export const mapServerRowToUIRow = (dataRow) => ({
-  key: dataRow._id,
+  key: dataRow._id ? dataRow._id : nanoid(),
   ...dataRow,
   geo: mapGeoToInputProps(dataRow.geo),
 });

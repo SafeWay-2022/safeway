@@ -25,8 +25,8 @@ export default function useAdd({ url, mutationKey, tableKey, route }) {
         const previousTable = queryClient.getQueryData(tableKey);
 
         queryClient.setQueryData(tableKey, (old) => {
-          const newList = [...old.list, newRow];
-          return {...old, list: newList};
+          const newList = old ? [...old?.list, newRow] : [newRow];
+          return { ...old, list: newList };
         });
 
         return { previousTable };
