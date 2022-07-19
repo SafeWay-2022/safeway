@@ -18,7 +18,7 @@ import Modal from '../../components/ui-components/Modal'
 import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
 import dynamic from 'next/dynamic';
 import { getToken } from '../../lib/auth';
-import { mapServerTableToUIData, mapGeoToInputProps } from '../../components/ui-components/Inputs/mappers';
+import { mapServerTableToUIData } from '../../components/ui-components/Inputs/mappers';
 import { nanoid } from 'nanoid';
 
 
@@ -117,10 +117,10 @@ const columns = [
         title: "Action",
         dataIndex: "",
         key: "x",
-        render: () => {
+        render: (record) => {
             return (
                 <div style={{ display: 'flex' }}>
-                    <Modal />
+                    <Modal record={record} title="Edit point" />
                     <DeleteOutlined style={{ fontSize: '200%' }} />
                 </div>
             )
