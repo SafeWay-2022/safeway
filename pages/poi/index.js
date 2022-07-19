@@ -4,17 +4,16 @@ import { Pagination, Skeleton, Button, Radio, Table, Checkbox, Tag } from 'antd'
 import {
     RollbackOutlined,
     SearchOutlined,
-    EditOutlined,
     DeleteOutlined,
     DownOutlined,
     UpOutlined
 } from '@ant-design/icons';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { PER_PAGE, API_HOST } from '../../config';
 import styles from '../../styles/Home.module.css';
 import Search from '../../components/ui-components/EditableTable'
-import Modal from '../../components/ui-components/Modal'
+import Modal from '../../components/ui-components/ModalPoi'
 import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
 import dynamic from 'next/dynamic';
 import { getToken } from '../../lib/auth';
