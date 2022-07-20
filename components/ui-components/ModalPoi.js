@@ -37,7 +37,10 @@ const updatePoint = async (id, body) => {
                 url: body.url,
                 approved: body.approved,
                 active: body.active,
-                // geo: { type: body.geo.type, coordinates: [body.geo.lg, body.geo.lat] }
+                latilong: [body.geo.lg, body.geo.lat],
+                name: body.name,
+                messenger: body.messenger
+
             }, {
             headers: {
                 Authorization: `Bearer ${getToken()}`,
