@@ -27,7 +27,18 @@ const updatePoint = async (id, body) => {
     delete body.key
     console.log(body)
     try {
-        await axios.put(API_HOST + `/poi/${id}`, body, {
+        await axios.put(API_HOST + `/poi/${id}`,
+            {
+                description: body.description,
+                categories: body.categories,
+                organizations: body.organizations,
+                phone: body.phone,
+                email: body.email,
+                url: body.url,
+                approved: body.approved,
+                active: body.active,
+                // geo: { type: body.geo.type, coordinates: [body.geo.lg, body.geo.lat] }
+            }, {
             headers: {
                 Authorization: `Bearer ${getToken()}`,
             },
@@ -99,8 +110,8 @@ const ModalComponent = ({ record, refetch, title }) => {
                         <SelectMultiple value={state.categories} onChange={e => setState(p => ({ ...p, categories: e }))} />
                     </div>
                     <div >
-                        <div>ORGANIZATION</div>
-                        <InputText value={state.organization} onChange={e => setState(p => ({ ...p, organization: e.target.value }))} />
+                        <div>ORGANIZATIONS</div>
+                        <SelectMultiple value={state.organizations} onChange={e => setState(p => ({ ...p, organizations: e }))} />
                     </div>
                 </div>
                 <div style={{ display: 'flex' }}>
