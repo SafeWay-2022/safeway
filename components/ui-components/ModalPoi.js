@@ -22,12 +22,14 @@ const updatePoint = async (id, body) => {
     delete body.active_at
     delete body.active_by
     delete body.admin
+    delete body.author
+    delete body.icon
+    delete body.key
     console.log(body)
     try {
-        await axios.put(API_HOST + `/poi?=id${id}`, body, {
+        await axios.put(API_HOST + `/poi/${id}`, body, {
             headers: {
                 Authorization: `Bearer ${getToken()}`,
-                method: 'PUT',
             },
         })
         // await refetch()
