@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import axios from 'axios'
 import { Pagination, Skeleton, Button, Radio, Table, Checkbox, Tag } from 'antd';
 import {
     RollbackOutlined,
@@ -9,16 +8,14 @@ import {
     UpOutlined
 } from '@ant-design/icons';
 import { useQuery } from 'react-query';
-import { useRouter } from 'next/router';
-import { PER_PAGE, API_HOST } from '../../config';
+import { PER_PAGE } from '../../config';
 import styles from '../../styles/Home.module.css';
-import Search from '../../components/ui-components/EditableTable'
+import Search from '../../components/ui-components/search'
 import Modal from '../../components/ui-components/ModalPoi'
 import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
 import dynamic from 'next/dynamic';
-import { getToken } from '../../lib/auth';
-import { mapServerTableToUIData } from '../../components/ui-components/Inputs/mappers';
 import { nanoid } from 'nanoid';
+import { updatePoint, createPoint, getTableFetch } from '../../lib/helpers';
 
 
 
@@ -27,30 +24,7 @@ const MapPicker = dynamic(() => import('../../components/ui-components/Inputs/Ma
     ssr: false,
 });
 
-const getTableFetch =
-    (url) =>
-        async (params) => {
-            const result = await axios(API_HOST + url, {
-                params,
-                headers: {
-                    Authorization: `Bearer ${getToken()}`,
-                },
-            });
 
-            const { data, status } = result;
-
-            if (status === 401) {
-                return typeof window !== 'undefined' && (window.location.href = '/login');
-            }
-
-            const dataArray = Array.isArray(data) ? data : data.items;
-
-            return {
-                total: data?.total,
-                skip: data?.skip,
-                list: mapServerTableToUIData(dataArray),
-            };
-        };
 
 
 
@@ -59,12 +33,11 @@ const getTableFetch =
 
 
 export default function PageTable() {
-    const [tableConfig] = useState({
+    const [tableConfig, setTableConfig] = useState({
         route: '/poi/'
     })
     const { route } = tableConfig;
     const myFetch = getTableFetch(route)
-    const router = useRouter()
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(PER_PAGE);
     const [searchData, setSearchData] = useState({})
@@ -180,7 +153,7 @@ export default function PageTable() {
             render: (record) => {
                 return (
                     <div style={{ display: 'flex' }}>
-                        <Modal record={record} refetch={refetch} title="Edit point" />
+                        <Modal record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" />
                         <DeleteOutlined style={{ fontSize: '150%' }} />
                     </div>
                 )
@@ -322,7 +295,7 @@ export default function PageTable() {
                                 <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
                             </div>
                             <Button
-                                onClick={() => router.push(pushRouter())}
+                                onClick={() => setTableConfig({ route: '/poi/search/' })}
                                 type="primary"
                                 size="large"
                                 icon={<SearchOutlined />}
@@ -350,7 +323,7 @@ export default function PageTable() {
                                 size="large"
                                 style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
                                 icon={<RollbackOutlined />}
-                                onClick={() => router.push(pushRouter())}>
+                                onClick={() => setTableConfig({ route: '/poi/' })}>
                                 <span>Back</span>
                             </Button>
                             }

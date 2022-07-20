@@ -8,52 +8,12 @@ import SelectCountry from './Inputs/SelectCountry'
 import SelectMultiple from './Inputs/SelectMultiple'
 import InputPhone from './Inputs/InputPhone'
 import InputEmail from './Inputs/InputEmail'
-import { API_HOST } from '../../config';
-import { getToken } from '../../lib/auth';
-import useUpdate from '../../hooks/useUpdate';
 
 
-const updatePoint = async (id, body) => {
-    delete body.approved_at
-    delete body.created_at
-    delete body.updated_at
-    delete body.approved_by
-    delete body._id
-    delete body.active_at
-    delete body.active_by
-    delete body.admin
-    delete body.author
-    delete body.icon
-    delete body.key
-    console.log(body)
-    try {
-        await axios.put(API_HOST + `/poi/${id}`,
-            {
-                description: body.description,
-                categories: body.categories,
-                organizations: body.organizations,
-                phone: body.phone,
-                email: body.email,
-                url: body.url,
-                approved: body.approved,
-                active: body.active,
-                latilong: [body.geo.lg, body.geo.lat],
-                name: body.name,
-                messenger: body.messenger
-
-            }, {
-            headers: {
-                Authorization: `Bearer ${getToken()}`,
-            },
-        })
-        // await refetch()
-    } catch (e) {
-        throw e
-    }
-}
 
 
-const ModalComponent = ({ record, refetch, title }) => {
+
+const ModalComponent = ({ record, refetch, title, doFetch }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [state, setState] = useState(record)
     const { TextArea } = Input;
@@ -65,7 +25,7 @@ const ModalComponent = ({ record, refetch, title }) => {
 
     const handleOk = () => {
 
-        updatePoint(record._id, state)
+        doFetch(record._id, state, refetch)
         setIsModalVisible(false);
     };
 
