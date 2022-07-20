@@ -6,6 +6,9 @@ const nextConfig = {
     loader: "imgix",
     path: "/",
   },
+
+
 };
 
-module.exports = nextConfig;
+
+module.exports = nextConfig

@@ -1,24 +1,55 @@
+import React, { useState } from 'react';
+import axios from 'axios'
 import { Modal, Checkbox, Input } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
 import InputText from './Inputs/InputText'
 import Geolocation from './Inputs/MapPicker/GeoLocation'
 import SelectCountry from './Inputs/SelectCountry'
 import SelectMultiple from './Inputs/SelectMultiple'
 import InputPhone from './Inputs/InputPhone'
 import InputEmail from './Inputs/InputEmail'
+import { API_HOST } from '../../config';
+import { getToken } from '../../lib/auth';
+import useUpdate from '../../hooks/useUpdate';
 
-const ModalComponent = ({ record, title }) => {
+
+const updatePoint = async (id, body) => {
+    delete body.approved_at
+    delete body.created_at
+    delete body.updated_at
+    delete body.approved_by
+    delete body._id
+    delete body.active_at
+    delete body.active_by
+    delete body.admin
+    console.log(body)
+    try {
+        await axios.put(API_HOST + `/poi?=id${id}`, body, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`,
+                method: 'PUT',
+            },
+        })
+        // await refetch()
+    } catch (e) {
+        throw e
+    }
+}
+
+
+const ModalComponent = ({ record, refetch, title }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [state, setState] = useState(record)
     const { TextArea } = Input;
+
 
     const showModal = () => {
         setIsModalVisible(true);
     };
 
     const handleOk = () => {
-        console.log(state)
+
+        updatePoint(record._id, state)
         setIsModalVisible(false);
     };
 
@@ -28,7 +59,7 @@ const ModalComponent = ({ record, title }) => {
 
     return (
         <>
-            <EditOutlined style={{ fontSize: '200%' }} onClick={showModal} />
+            <EditOutlined style={{ fontSize: '150%' }} onClick={showModal} />
             <Modal width={1900} title={title} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
                     <div style={{ marginRight: 10 }}>

@@ -27,108 +27,6 @@ const MapPicker = dynamic(() => import('../../components/ui-components/Inputs/Ma
     ssr: false,
 });
 
-const columns = [
-    {
-        title: "Approved",
-        dataIndex: "approved",
-        render: (bool) => {
-            return (
-                <Checkbox checked={bool} />
-            )
-        }
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        render: (name) => {
-            return (
-                <span>{name}</span>
-            )
-        }
-    },
-    {
-        title: "Map",
-        dataIndex: "geo",
-        render: (coordinates) => {
-            return (
-                <GeoLocation readonly={true} withoutInput={true} value={coordinates} />
-            )
-        }
-    },
-    {
-        title: "Country",
-        dataIndex: "country",
-        render: (country) => {
-            return <span>{country}</span>
-        }
-    },
-    {
-        title: "City",
-        dataIndex: "city",
-        render: (city) => {
-            return <span>{city}</span>
-        }
-    },
-    {
-        title: "Address",
-        dataIndex: "address",
-        render: (address) => {
-            return <span>{address}</span>
-        }
-    },
-    {
-        title: "Categories",
-        dataIndex: "categories",
-        render: (categories) => {
-            return (
-                <>
-                    {categories?.map(e => (<Tag key={nanoid()} color="blue">{e}</Tag>))}
-                </>
-            )
-        }
-    },
-    {
-        title: "Organizations",
-        dataIndex: "organizations",
-        render: (organizations) => {
-            return (
-                <>
-                    {organizations?.map(e => (<Tag key={nanoid()} color="green">{e}</Tag>))}
-                </>
-            )
-        }
-    },
-    {
-        title: "Contact",
-        dataIndex: "contact_person",
-        render: (contact) => {
-            return <Tag>{contact}</Tag>
-        }
-    },
-    {
-        title: "Active",
-        dataIndex: "active",
-        render: (bool) => {
-            return <Checkbox checked={bool} />
-        }
-    },
-    {
-        title: "Action",
-        dataIndex: "",
-        key: "x",
-        render: (record) => {
-            return (
-                <div style={{ display: 'flex' }}>
-                    <Modal record={record} title="Edit point" />
-                    <DeleteOutlined style={{ fontSize: '200%' }} />
-                </div>
-            )
-        }
-    },
-
-
-];
-
 const getTableFetch =
     (url) =>
         async (params) => {
@@ -156,6 +54,10 @@ const getTableFetch =
 
 
 
+
+
+
+
 export default function PageTable() {
     const [tableConfig] = useState({
         route: '/poi/'
@@ -173,6 +75,7 @@ export default function PageTable() {
         data: tableData,
         error,
         isLoading,
+        isFetching,
         refetch,
     } = useQuery([route, page, limit], () => myFetch(
         {
@@ -185,6 +88,107 @@ export default function PageTable() {
         staleTime: 15000,
         refetchInterval: 0,
     });
+    const columns = [
+        {
+            title: "Approved",
+            dataIndex: "approved",
+            render: (bool) => {
+                return (
+                    <Checkbox checked={bool} />
+                )
+            }
+        },
+        {
+            title: "Name",
+            dataIndex: "name",
+            render: (name) => {
+                return (
+                    <span>{name}</span>
+                )
+            }
+        },
+        {
+            title: "Map",
+            dataIndex: "geo",
+            render: (coordinates) => {
+                return (
+                    <GeoLocation readonly={true} withoutInput={true} value={coordinates} />
+                )
+            }
+        },
+        {
+            title: "Country",
+            dataIndex: "country",
+            render: (country) => {
+                return <span>{country}</span>
+            }
+        },
+        {
+            title: "City",
+            dataIndex: "city",
+            render: (city) => {
+                return <span>{city}</span>
+            }
+        },
+        {
+            title: "Address",
+            dataIndex: "address",
+            render: (address) => {
+                return <span>{address}</span>
+            }
+        },
+        {
+            title: "Categories",
+            dataIndex: "categories",
+            render: (categories) => {
+                return (
+                    <>
+                        {categories?.map(e => (<Tag key={nanoid()} color="blue">{e}</Tag>))}
+                    </>
+                )
+            }
+        },
+        {
+            title: "Organizations",
+            dataIndex: "organizations",
+            render: (organizations) => {
+                return (
+                    <>
+                        {organizations?.map(e => (<Tag key={nanoid()} color="green">{e}</Tag>))}
+                    </>
+                )
+            }
+        },
+        {
+            title: "Contact",
+            dataIndex: "contact_person",
+            render: (contact) => {
+                return <Tag>{contact}</Tag>
+            }
+        },
+        {
+            title: "Active",
+            dataIndex: "active",
+            render: (bool) => {
+                return <Checkbox checked={bool} />
+            }
+        },
+        {
+            title: "Action",
+            dataIndex: "",
+            key: "x",
+            render: (record) => {
+                return (
+                    <div style={{ display: 'flex' }}>
+                        <Modal record={record} refetch={refetch} title="Edit point" />
+                        <DeleteOutlined style={{ fontSize: '150%' }} />
+                    </div>
+                )
+            }
+        },
+
+
+    ];
     const ExpandedRowRender = ({ data }) => {
         const columns = [
             {
@@ -356,14 +360,14 @@ export default function PageTable() {
                 {
                     !mapView ?
                         <Table
-
+                            loading={isFetching}
                             columns={columns}
                             dataSource={tableData?.list}
                             expandIcon={({ expanded, onExpand, record }) =>
                                 expanded ? (
-                                    <UpOutlined style={{ fontSize: '200%', float: 'right' }} onClick={e => onExpand(record, e)} />
+                                    <UpOutlined style={{ fontSize: '150%', float: 'right' }} onClick={e => onExpand(record, e)} />
                                 ) : (
-                                    <DownOutlined style={{ fontSize: '200%' }} onClick={e => onExpand(record, e)} />
+                                    <DownOutlined style={{ fontSize: '150%' }} onClick={e => onExpand(record, e)} />
                                 )
                             }
 
