@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { inputsMapping } from '../Inputs/config'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, InputNumber, Select, Radio } from 'antd';
+import { Button, Checkbox, InputNumber, Select, Radio, message } from 'antd';
 
 const initTextState = {
     city: null,
     organizations: null,
     categories: null,
     author: null,
-    admin: null
+    admin: null,
+    name: null,
 }
 const initCheckBox = {
     add_distance: null
@@ -26,7 +27,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
     const Input = inputsMapping.string
 
     const onChangeText = (e) => {
-        setText(prev => ({ ...prev, [e.target.name]: e.target.value }))
+        setText(prev => ({ ...prev, [e.target.name]: e.target.value ? e.target.value : null }))
     }
 
     const onChangeCheckBox = (e) => {
@@ -48,6 +49,10 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
     }
 
     const onSearch = () => {
+        if (!value.lat || !value.lg) {
+            message.error('Coordinates is required');
+            return
+        }
         new Promise((resolve) => {
             resolve()
         })
@@ -69,6 +74,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
         setPage(0)
         setActive(null)
         setApproved(null)
+
     }
 
     return (
@@ -79,6 +85,9 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                 </div>
                 <div style={{ marginRight: 10 }}>
                     <SelectCountry value={country} onChange={setCountry} />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <Input value={text.name} onChange={onChangeText} name='name' placeholder="name" style={{ width: '100px' }} />
                 </div>
                 <div style={{ marginRight: 10 }}>
                     <InputNumber

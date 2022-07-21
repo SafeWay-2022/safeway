@@ -39,7 +39,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
     };
 
     const onFinish = () => {
-        if (!state.name && !state.geo.lt) {
+        if (!state.name || !state.geo.lt) {
             message.error('Name and coordinates is required');
             return
         }

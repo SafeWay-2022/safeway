@@ -61,6 +61,130 @@ export default function PageTable() {
         staleTime: 15000,
         refetchInterval: 0,
     });
+
+    const filterColumns = [
+        {
+            title: "Name",
+            dataIndex: "name",
+            render: (name) => {
+                return (
+                    <span>{name}</span>
+                )
+            }
+        },
+        {
+            title: "Approved",
+            dataIndex: "approved",
+            render: (bool) => {
+                return (
+                    <Checkbox checked={bool} />
+                )
+            }
+        },
+
+        {
+            title: "Country",
+            dataIndex: "country",
+            render: (country) => {
+                return <span>{country}</span>
+            }
+        },
+        {
+            title: "City",
+            dataIndex: "city",
+            render: (city) => {
+                return <span>{city}</span>
+            }
+        },
+        {
+            title: "Address",
+            dataIndex: "address",
+            render: (address) => {
+                return <span>{address}</span>
+            }
+        },
+        {
+            title: "Categories",
+            dataIndex: "categories",
+            render: (categories) => {
+                return (
+                    <>
+                        {categories?.map(e => (<Tag key={nanoid()} color="blue">{e}</Tag>))}
+                    </>
+                )
+            }
+        },
+        {
+            title: "Organizations",
+            dataIndex: "organizations",
+            render: (organizations) => {
+                return (
+                    <>
+                        {organizations?.map(e => (<Tag key={nanoid()} color="green">{e}</Tag>))}
+                    </>
+                )
+            }
+        },
+        {
+            title: "Phone",
+            dataIndex: "phone",
+            render: (Phone) => {
+                return <span>{Phone}</span>
+            }
+        },
+        {
+            title: "Distance (KM)",
+            dataIndex: "distance_km",
+            render: (distance) => {
+                return <span>{distance?.toFixed(3)}</span>
+            }
+
+        },
+        {
+            title: "Description",
+            dataIndex: "description",
+            render: (description) => {
+                return (
+                    <span>{description}</span>
+                )
+            }
+        },
+        {
+            title: "Active",
+            dataIndex: "active",
+            render: (bool) => {
+                return <Checkbox checked={bool} />
+            }
+        },
+        {
+            title: "Activated at",
+            dataIndex: "active_at",
+            render: (bool) => {
+                return <Checkbox checked={bool} />
+            }
+        },
+        {
+            title: "Action",
+            dataIndex: "",
+            key: "x",
+            render: (record) => {
+                return (
+                    <div style={{ display: 'flex' }}>
+                        <Modal isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" />
+                        <Popconfirm
+                            placement="top"
+                            title="Do you really want to delete this item?"
+                            onConfirm={() => deletePoint(record._id, refetch)}
+                            okText="Delete"
+                            okType="secondary"
+                            cancelText="Cancel">
+                            <DeleteOutlined style={{ fontSize: '150%', cursor: 'pointer' }} />
+                        </Popconfirm>
+                    </div>
+                )
+            }
+        },
+    ]
     const columns = [
         {
             title: "Approved",
@@ -276,14 +400,7 @@ export default function PageTable() {
         },
         total,
     };
-    const pushRouter = () => {
-        if (route === '/poi/') {
-            return '/search/'
-        }
-        if (route === '/poi/search/') {
-            return '/poi'
-        }
-    }
+
 
     return (
         <div className={styles.container}>
@@ -335,26 +452,40 @@ export default function PageTable() {
                 }
                 {
                     !mapView ?
-                        <Table
-                            loading={isFetching}
-                            columns={columns}
-                            dataSource={tableData?.list}
-                            expandIcon={({ expanded, onExpand, record }) =>
-                                expanded ? (
-                                    <UpOutlined style={{ fontSize: '150%', float: 'right' }} onClick={e => onExpand(record, e)} />
-                                ) : (
-                                    <DownOutlined style={{ fontSize: '150%' }} onClick={e => onExpand(record, e)} />
-                                )
+                        <>
+                            {route === '/poi/' &&
+                                <Table
+                                    loading={isFetching}
+                                    columns={columns}
+                                    dataSource={tableData?.list}
+                                    expandIcon={({ expanded, onExpand, record }) =>
+                                        expanded ? (
+                                            <UpOutlined style={{ fontSize: '150%', float: 'right' }} onClick={e => onExpand(record, e)} />
+                                        ) : (
+                                            <DownOutlined style={{ fontSize: '150%' }} onClick={e => onExpand(record, e)} />
+                                        )
+                                    }
+
+                                    expandable={{
+                                        expandedRowRender: record => (
+                                            <ExpandedRowRender data={record} />
+                                        ),
+                                        expandIconColumnIndex: 11
+                                    }}
+                                    pagination={false}
+                                />
+                            }
+                            {route === '/poi/search/' &&
+                                <Table
+                                    loading={isFetching}
+                                    columns={filterColumns}
+                                    dataSource={tableData?.list}
+                                    pagination={false}
+                                />
+
                             }
 
-                            expandable={{
-                                expandedRowRender: record => (
-                                    <ExpandedRowRender data={record} />
-                                ),
-                                expandIconColumnIndex: 11
-                            }}
-                            pagination={false}
-                        />
+                        </>
                         :
                         <div style={{ height: '900px' }}>
                             <MapPicker
