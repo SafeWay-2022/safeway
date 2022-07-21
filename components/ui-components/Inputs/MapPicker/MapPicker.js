@@ -8,6 +8,8 @@ import {
     Circle,
     useMapEvents
 } from 'react-leaflet';
+import ModalComponent from '../../ModalPoi';
+import { updatePoint } from '../../../../lib/helpers'
 
 
 function MyComponent({ setLimit }) {
@@ -37,7 +39,7 @@ function MyComponent({ setLimit }) {
 }
 
 
-const MapPicker = ({ list, value, setLimit }) => {
+const MapPicker = ({ list, value, setLimit, refetch }) => {
     const [map, setMap] = useState(null);
 
     const center = !value.length > 0 ? { lat: list[0]?.geo.lat, lng: list[0]?.geo.lg } : { lat: value.lat, lng: value.lg }
@@ -81,6 +83,7 @@ const MapPicker = ({ list, value, setLimit }) => {
                                         </ul>
                                     </div>}
                             </span>
+                            <ModalComponent isTable={true} record={elem} refetch={refetch} doFetch={updatePoint} title="Edit point" />
                         </Popup>
                         <Circle
                             center={{ lat: elem.geo.lat, lng: elem.geo.lg }}

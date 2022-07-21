@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pagination, Skeleton, Button, Radio, Table, Checkbox, Tag } from 'antd';
+import { Pagination, Skeleton, Button, Radio, Table, Checkbox, Tag, Popconfirm } from 'antd';
 import {
     RollbackOutlined,
     SearchOutlined,
@@ -154,7 +154,15 @@ export default function PageTable() {
                 return (
                     <div style={{ display: 'flex' }}>
                         <Modal isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" />
-                        <DeleteOutlined onClick={() => deletePoint(record._id, refetch)} style={{ fontSize: '150%', cursor: 'pointer' }} />
+                        <Popconfirm
+                            placement="top"
+                            title="Do you really want to delete this item?"
+                            onConfirm={() => deletePoint(record._id, refetch)}
+                            okText="Delete"
+                            okType="secondary"
+                            cancelText="Cancel">
+                            <DeleteOutlined style={{ fontSize: '150%', cursor: 'pointer' }} />
+                        </Popconfirm>
                     </div>
                 )
             }
@@ -353,6 +361,7 @@ export default function PageTable() {
                                 value={value}
                                 list={list}
                                 setLimit={setLimit}
+                                refetch={refetch}
                             />
                         </div>
                 }
