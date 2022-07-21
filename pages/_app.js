@@ -1,4 +1,4 @@
-import { Layout, Skeleton } from 'antd';
+import { Layout, Skeleton, Menu } from 'antd';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,7 +9,7 @@ import { getTableById, getTableByRoute, withProps } from '../lib/helpers';
 import AccountMenu from '../components/ui-components/dropdown';
 import AuthGuard from '../components/AuthGuard';
 import '../styles/globals.css';
-import { Menu } from 'antd';
+
 
 const { Content, Footer } = Layout;
 
@@ -105,7 +105,6 @@ export default function MyApp({ Component, pageProps }) {
                 <Component {...pageProps} />
               </App>
             </AuthGuard>
-
           </>
         )}
       </QueryClientProvider>

@@ -5,7 +5,7 @@ import {
     SearchOutlined,
     DeleteOutlined,
     DownOutlined,
-    UpOutlined
+    UpOutlined,
 } from '@ant-design/icons';
 import { useQuery } from 'react-query';
 import { PER_PAGE } from '../../config';
@@ -15,7 +15,7 @@ import Modal from '../../components/ui-components/ModalPoi'
 import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
 import dynamic from 'next/dynamic';
 import { nanoid } from 'nanoid';
-import { updatePoint, createPoint, getTableFetch } from '../../lib/helpers';
+import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
 
 
 
@@ -153,8 +153,8 @@ export default function PageTable() {
             render: (record) => {
                 return (
                     <div style={{ display: 'flex' }}>
-                        <Modal record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" />
-                        <DeleteOutlined style={{ fontSize: '150%' }} />
+                        <Modal isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" />
+                        <DeleteOutlined onClick={() => deletePoint(record._id, refetch)} style={{ fontSize: '150%', cursor: 'pointer' }} />
                     </div>
                 )
             }
@@ -232,12 +232,6 @@ export default function PageTable() {
                     )
                 }
             },
-
-            {
-                title: "Facebook Messenger",
-                dataIndex: "messenger",
-                render: (mess) => (<span>{mess}</span>)
-            },
             {
                 title: "Telegram",
                 dataIndex: "telegram",
@@ -294,6 +288,7 @@ export default function PageTable() {
                                 <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
                                 <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
                             </div>
+                            <Modal isTable={false} record={initialPoint} refetch={refetch} doFetch={createPoint} title="Create point" />
                             <Button
                                 onClick={() => setTableConfig({ route: '/poi/search/' })}
                                 type="primary"
