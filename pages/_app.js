@@ -9,6 +9,7 @@ import { getTableById, getTableByRoute, withProps } from '../lib/helpers';
 import AccountMenu from '../components/ui-components/dropdown';
 import AuthGuard from '../components/AuthGuard';
 import '../styles/globals.css';
+import ImageComponent from '../components/ui-components/Image'
 
 
 const { Content, Footer } = Layout;
@@ -61,12 +62,14 @@ const Navigation = ({ route }) => {
       <Menu
         mode="horizontal"
         defaultSelectedKeys={['Points of interests']}
-        style={{ justifyContent: 'center' }}
+        style={{ paddingLeft: '250px' }}
       >
+        <ImageComponent src="/logoSafe.svg" alt="logoSafe" width="80px" height="50px" />
+        <div style={{ marginRight: '300px' }}></div>
         {menu.map((e) => (
           <Menu.Item
             key={e.key}
-            className={route === '/search' && e.key === 'Points of interest' && 'ant-menu-item-selected'}
+            className="menu-item"
             onClick={() => router.push(e.route)}>
             {e.key}
           </Menu.Item>

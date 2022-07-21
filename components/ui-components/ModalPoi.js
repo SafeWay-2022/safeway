@@ -52,7 +52,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
 
     return (
         <>
-            {isTable ? <EditOutlined style={{ fontSize: '150%' }} onClick={showModal} /> : <Button style={{ background: "#1890ff", color: 'white' }} onClick={showModal}> Create</Button>}
+            {isTable ? <EditOutlined style={{ fontSize: '150%' }} onClick={showModal} /> : <Button style={{ background: "#1B3284", color: 'white' }} onClick={showModal}>Create point</Button>}
 
             <Modal width={1900} title={title} visible={isModalVisible} footer={null} onCancel={() => setIsModalVisible(false)}>
                 <Form

@@ -16,7 +16,7 @@ import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLoca
 import dynamic from 'next/dynamic';
 import { nanoid } from 'nanoid';
 import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
-
+import ImageComponent from '../../components/ui-components/Image';
 
 
 
@@ -410,7 +410,9 @@ export default function PageTable() {
                     {route === '/poi/' &&
                         <>
                             <div>
-                                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
+                                <Radio.Button style={!mapView ? { backgroundColor: '#6461BC' } : {}} onClick={() => setMapView(false)} value="Table">
+
+                                    Table <ImageComponent src='/table.svg' alt="table" width="20px" height="20px" /></Radio.Button>
                                 <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
                             </div>
                             <Modal isTable={false} record={initialPoint} refetch={refetch} doFetch={createPoint} title="Create point" />
@@ -419,9 +421,9 @@ export default function PageTable() {
                                 type="primary"
                                 size="large"
                                 icon={<SearchOutlined />}
-                                style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
+                                style={{ background: "#6461BC", display: 'flex', alignItems: 'center' }}
                             >
-                                Filter
+                                Search
                             </Button>
                         </>
                     }
@@ -441,7 +443,7 @@ export default function PageTable() {
                             component={<Button
                                 type="primary"
                                 size="large"
-                                style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
+                                style={{ background: "#6461BC", display: 'flex', alignItems: 'center' }}
                                 icon={<RollbackOutlined />}
                                 onClick={() => setTableConfig({ route: '/poi/' })}>
                                 <span>Back</span>
