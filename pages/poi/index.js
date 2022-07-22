@@ -410,9 +410,9 @@ export default function PageTable() {
                     {route === '/poi/' &&
                         <>
                             <div>
-                                <Radio.Button style={!mapView ? { backgroundColor: '#6461BC' } : {}} onClick={() => setMapView(false)} value="Table">
+                                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">
 
-                                    Table <ImageComponent src='/table.svg' alt="table" width="20px" height="20px" /></Radio.Button>
+                                    Table</Radio.Button>
                                 <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
                             </div>
                             <Modal isTable={false} record={initialPoint} refetch={refetch} doFetch={createPoint} title="Create point" />
@@ -421,7 +421,7 @@ export default function PageTable() {
                                 type="primary"
                                 size="large"
                                 icon={<SearchOutlined />}
-                                style={{ background: "#6461BC", display: 'flex', alignItems: 'center' }}
+                                style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
                             >
                                 Search
                             </Button>
@@ -443,7 +443,7 @@ export default function PageTable() {
                             component={<Button
                                 type="primary"
                                 size="large"
-                                style={{ background: "#6461BC", display: 'flex', alignItems: 'center' }}
+                                style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
                                 icon={<RollbackOutlined />}
                                 onClick={() => setTableConfig({ route: '/poi/' })}>
                                 <span>Back</span>
@@ -472,7 +472,6 @@ export default function PageTable() {
                                         expandedRowRender: record => (
                                             <ExpandedRowRender data={record} />
                                         ),
-                                        expandIconColumnIndex: 11
                                     }}
                                     pagination={false}
                                 />

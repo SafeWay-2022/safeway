@@ -39,8 +39,8 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
     };
 
     const onFinish = () => {
-        if (!state.name || !state.geo.lt) {
-            message.error('Name and coordinates is required');
+        if (!state.geo.lg || !state.email || !state.name) {
+            message.error("Name , email and coordinates is required")
             return
         }
         doFetch(record._id, state)
@@ -52,12 +52,11 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
 
     return (
         <>
-            {isTable ? <EditOutlined style={{ fontSize: '150%' }} onClick={showModal} /> : <Button style={{ background: "#1B3284", color: 'white' }} onClick={showModal}>Create point</Button>}
+            {isTable ? <EditOutlined style={{ fontSize: '150%' }} onClick={showModal} /> : <Button size="large" style={{ background: "#1890ff", color: 'white' }} onClick={showModal}>Create point</Button>}
 
             <Modal width={1900} title={title} visible={isModalVisible} footer={null} onCancel={() => setIsModalVisible(false)}>
                 <Form
                     {...layout}
-                    initialValues={{ remember: true }}
                     onFinish={onFinish}
                     name="nest-messages"
                     validateMessages={validateMessages}
@@ -76,7 +75,6 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                     </div>}
                     <div style={{ display: 'flex', alignItems: 'baseline' }}>
                         <Form.Item label="NAME" labelCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Please input name!' }]}
                         >
 
                             <InputText value={state.name} onChange={e => setState(p => ({ ...p, name: e.target.value }))} />
@@ -119,7 +117,16 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
 
                                 <SelectMultiple value={state.languages} onChange={e => setState(p => ({ ...p, languages: e }))} />
                             </Form.Item>
-                            <Form.Item label="WEB-SITE" labelCol={{ span: 24 }}>
+                            <Form.Item
+                                label="WEB-SITE"
+                                labelCol={{ span: 24 }}
+                                name={['poi_url', 'url']}
+                                rules={[
+                                    {
+                                        type: 'url',
+                                    }
+                                ]}
+                            >
                                 <Input value={state.url} onChange={e => setState(p => ({ ...p, url: e.target.value }))} />
                             </Form.Item>
                             <Form.Item label="INPUT PHONE" labelCol={{ span: 24 }}>
@@ -128,11 +135,11 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                             <Form.Item
                                 label="INPUT EMAIL"
                                 labelCol={{ span: 24 }}
-                                name={['user', 'email']}
+                                name={['poi_email', 'email']}
                                 rules={[
                                     {
                                         type: 'email',
-                                    },
+                                    }
                                 ]}
                             >
                                 <Input value={state.email} onChange={e => setState(p => ({ ...p, email: e.target.value }))} />
@@ -156,7 +163,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'end' }}>
                         <Form.Item >
-                            <Button type="primary" style={{ background: 'blue' }} htmlType="submit">
+                            <Button type="primary" size="large" style={{ background: '#1890ff' }} htmlType="submit">
                                 Submit
                             </Button>
                         </Form.Item>

@@ -1,4 +1,4 @@
-import { Layout, Skeleton, Menu } from 'antd';
+import { Layout, Skeleton, Menu, Item } from 'antd';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -48,39 +48,24 @@ const App = ({ children }) => {
     </Layout >
   );
 };
-const Navigation = ({ route }) => {
+const Navigation = () => {
   const [menu] = useState([
-    { key: 'Points of interests', route: '/poi' },
-    { key: 'Organizations', route: '/org' },
-    { key: 'Users', route: '/users' },
-    { key: 'Categories', route: '/common' },
-    { key: 'Needs', route: '/need' },
+    { key: 'Points of interests', route: '/poi', label: <Link href="/poi">Points of interests</Link> },
+    { key: 'Organizations', route: '/org', label: <Link href="/org">Organizations</Link> },
+    { key: 'Users', route: '/users', label: <Link href="/users">Users</Link> },
+    { key: 'Categories', route: '/common', label: <Link href="/common">Categories</Link> },
+    { key: 'Needs', route: '/need', label: <Link href='/need'>Needs</Link> },
   ])
-  const router = useRouter()
   return (
-    <>
+    <div style={{ display: "flex", justifyContent: 'space-around', alignItems: 'center' }}>
+      <ImageComponent src="/logoSafe.svg" alt="logoSafe" width="80px" height="50px" />
       <Menu
         mode="horizontal"
+        items={menu}
         defaultSelectedKeys={['Points of interests']}
-        style={{ paddingLeft: '250px' }}
-      >
-        <ImageComponent src="/logoSafe.svg" alt="logoSafe" width="80px" height="50px" />
-        <div style={{ marginRight: '300px' }}></div>
-        {menu.map((e) => (
-          <Menu.Item
-            key={e.key}
-            className="menu-item"
-            onClick={() => router.push(e.route)}>
-            {e.key}
-          </Menu.Item>
-        ))}
-
-        <Menu.Item style={{ transform: 'translateX(200%)' }} key="dcdcd">
-          <AccountMenu />
-        </Menu.Item>
-      </Menu>
-
-    </>
+      />
+      <AccountMenu />
+    </div>
   )
 }
 
@@ -102,7 +87,7 @@ export default function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         ) : (
           <>
-            <Navigation route={route} />
+            <Navigation />
             <AuthGuard>
               <App>
                 <Component {...pageProps} />

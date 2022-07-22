@@ -134,9 +134,9 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                         }}
                         onChange={onChangeSelectApproved}
                     >
-                        <Option value="-">{null}</Option>
-                        <Option value="true">true</Option>
-                        <Option value="false">false</Option>
+                        <Select.Option value="-">{null}</Select.Option>
+                        <Select.Option value="true">true</Select.Option>
+                        <Select.Option value="false">false</Select.Option>
                     </Select>
 
                 </div>
@@ -149,9 +149,9 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                         }}
                         onChange={onChangeSelectActive}
                     >
-                        <Option value="-">{null}</Option>
-                        <Option value="true">true</Option>
-                        <Option value="false">false</Option>
+                        <Select.Option value="-">{null}</Select.Option>
+                        <Select.Option value="true">true</Select.Option>
+                        <Select.Option value="false">false</Select.Option>
                     </Select>
 
                 </div>
