@@ -12,6 +12,7 @@ import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
 import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
+import ModalOrg from '../../components/ui-components/ModalOrg'
 
 
 
@@ -123,7 +124,7 @@ export default function PageTable() {
             render: (record) => {
                 return (
                     <div style={{ display: 'flex' }}>
-                        {/* <Modal isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" /> */}
+                        <ModalOrg isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" />
                         <Popconfirm
                             placement="top"
                             title="Do you really want to delete this item?"

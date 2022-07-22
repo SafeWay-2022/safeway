@@ -40,13 +40,14 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
     };
 
     const onFinish = () => {
+        // console.log(state)
+        // if (!state.geo.lg || !state.email || !state.name) {
+        //     message.error("Name , email and coordinates is required")
+        //     return
+        // }
+        // doFetch(record._id, state)
+        // refetch()
         console.log(state)
-        if (!state.geo.lg || !state.email || !state.name) {
-            message.error("Name , email and coordinates is required")
-            return
-        }
-        doFetch(record._id, state)
-        refetch()
         setIsModalVisible(false);
     };
 

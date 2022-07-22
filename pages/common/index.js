@@ -52,7 +52,7 @@ export default function PageTable() {
             dataIndex: "category",
             render: (name) => {
                 return (
-                    <Tag style={{ fontSize: '14px' }}>{name}</Tag>
+                    <Tag color="blue" style={{ fontSize: '14px' }}>{name}</Tag>
                 )
             }
         },
@@ -60,14 +60,14 @@ export default function PageTable() {
             title: "Українська",
             dataIndex: "ua",
             render: (ukr) => {
-                return <span>{ukr}</span>
+                return <Tag color="geekblue" style={{ fontSize: '14px' }}>{ukr}</Tag>
             }
         },
         {
             title: "Русский",
             dataIndex: "ru",
             render: (ru) => {
-                return <span>{ru}</span>
+                return <Tag color="purple" style={{ fontSize: '14px' }}>{ru}</Tag>
             }
         },
         {
