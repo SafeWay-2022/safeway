@@ -7,11 +7,13 @@ import {
     DownOutlined,
     UpOutlined,
 } from '@ant-design/icons';
+import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
 import { useQuery } from 'react-query';
 import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
 import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
+
 
 
 
@@ -49,72 +51,33 @@ export default function PageTable() {
         {
             title: "Category",
             dataIndex: "category",
-            render: (name) => {
+            render: (category) => {
                 return (
-                    <Tag style={{ fontSize: '14px' }}>{name}</Tag>
+                    <Tag style={{ fontSize: '14px' }}>{category}</Tag>
                 )
             }
         },
         {
-            title: "Phone",
-            dataIndex: "phone",
-            render: (Phone) => {
-                return <span>{Phone}</span>
+            title: "Country",
+            dataIndex: "country",
+            render: (country) => {
+                return <Tag style={{ fontSize: '14px' }}>{country}</Tag>
             }
         },
         {
-            title: "Email",
-            dataIndex: "email",
-            render: (site) => {
-                return <span>{site}</span>
+            title: "Description",
+            dataIndex: "description",
+            render: (des) => {
+                return <span>{des}</span>
             }
         },
         {
-            title: "Managed cities",
-            dataIndex: "managed_cities",
-            render: (cities) => {
+            title: "Coordinates",
+            dataIndex: "geo",
+            width: '120px',
+            render: (coordinates) => {
                 return (
-                    <>
-                        {cities?.map(e => (<Tag key={nanoid()} color="green">{e}</Tag>))}
-                    </>
-                )
-            }
-        },
-        {
-            title: "Managed countries",
-            dataIndex: "managed_countries",
-            render: (cities) => {
-                return (
-                    <>
-                        {cities?.map(e => (<Tag key={nanoid()} color="green">{e}</Tag>))}
-                    </>
-                )
-            }
-        },
-        {
-            title: "Organization position",
-            dataIndex: "organization_position",
-            render: (position) => {
-                return (
-                    <span>{position}</span>
-                )
-            }
-        },
-        {
-            title: "Organization membership",
-            dataIndex: "organization_membership",
-            render: (position) => {
-                return (
-                    <span>{position}</span>
-                )
-            }
-        },
-        {
-            title: "Super user",
-            dataIndex: "superuser",
-            render: (position) => {
-                return (
-                    <span>{position}</span>
+                    <GeoLocation readonly={true} withoutInput={false} value={coordinates} />
                 )
             }
         },
