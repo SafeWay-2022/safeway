@@ -68,7 +68,7 @@ export default function PageTable() {
             dataIndex: "name",
             render: (name) => {
                 return (
-                    <span>{name}</span>
+                    <Tag style={{ fontSize: '14px' }}>{name}</Tag>
                 )
             }
         },
@@ -86,14 +86,14 @@ export default function PageTable() {
             title: "Country",
             dataIndex: "country",
             render: (country) => {
-                return <span>{country}</span>
+                return <Tag style={{ fontSize: '14px' }}>{country}</Tag>
             }
         },
         {
             title: "City",
             dataIndex: "city",
             render: (city) => {
-                return <span>{city}</span>
+                return <Tag style={{ fontSize: '14px' }}>{city}</Tag>
             }
         },
         {
@@ -217,14 +217,14 @@ export default function PageTable() {
             title: "Country",
             dataIndex: "country",
             render: (country) => {
-                return <span>{country}</span>
+                return <Tag>{country}</Tag>
             }
         },
         {
             title: "City",
             dataIndex: "city",
             render: (city) => {
-                return <span>{city}</span>
+                return <Tag>{city}</Tag>
             }
         },
         {
@@ -260,7 +260,7 @@ export default function PageTable() {
             title: "Contact",
             dataIndex: "contact_person",
             render: (contact) => {
-                return <Tag>{contact}</Tag>
+                return <Tag style={{ fontSize: '14px' }}>{contact}</Tag>
             }
         },
         {

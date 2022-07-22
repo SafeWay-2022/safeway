@@ -104,7 +104,7 @@ export default function PageTable() {
             title: "Contact",
             dataIndex: "contact_person",
             render: (contact) => {
-                return <Tag>{contact}</Tag>
+                return <Tag style={{ fontSize: '14px' }}>{contact}</Tag>
             }
         },
         {
