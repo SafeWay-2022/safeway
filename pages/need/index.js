@@ -17,7 +17,7 @@ import styles from '../../styles/Home.module.css';
 
 export default function PageTable() {
     const [tableConfig, setTableConfig] = useState({
-        route: '/users/'
+        route: '/need/'
     })
     const { route } = tableConfig;
     const myFetch = getTableFetch(route)
@@ -47,8 +47,8 @@ export default function PageTable() {
 
     const columns = [
         {
-            title: "Name",
-            dataIndex: "full_name",
+            title: "Category",
+            dataIndex: "category",
             render: (name) => {
                 return (
                     <Tag style={{ fontSize: '14px' }}>{name}</Tag>
