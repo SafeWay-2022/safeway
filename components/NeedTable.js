@@ -12,9 +12,11 @@ import styles from '../styles/Home.module.css';
 import ModalNeed from './ui-components/ModalNeed'
 import { defaultGeolocationProps } from './ui-components/Inputs/mappers'
 import SearchNeeds from './ui-components/search/SearchNeeds'
-import MapPicker from './ui-components/Inputs/MapPicker/NeedsPicker';
+import dynamic from 'next/dynamic';
 
-
+const MapPicker = dynamic(() => import('./ui-components/Inputs/MapPicker/NeedsPicker'), {
+    ssr: false,
+});
 
 
 export default function PageTable() {

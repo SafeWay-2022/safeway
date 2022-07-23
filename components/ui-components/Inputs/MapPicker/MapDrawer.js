@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 
-const Map = ({ center, updatePosition, readonly, label }) => {
+const Map = ({ center, updatePosition, readonly }) => {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
