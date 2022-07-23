@@ -1,11 +1,11 @@
-import { Layout, Skeleton, Menu, Item } from 'antd';
+import { Layout, Skeleton, Menu } from 'antd';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import useConfig from '../hooks/useConfig';
-import { getTableById, getTableByRoute, withProps } from '../lib/helpers';
+import { getTableByRoute, withProps } from '../lib/helpers';
 import AccountMenu from '../components/ui-components/dropdown';
 import AuthGuard from '../components/AuthGuard';
 import '../styles/globals.css';
@@ -30,15 +30,8 @@ const App = ({ children }) => {
     return <Skeleton />;
   }
 
-  const getHref = (id) => {
-    if (getTableById(tables, id)?.path === '/nearby') {
-      return '/nearby/'
-    }
-    return getTableById(tables, id)?.apiRoute
-  };
   const currentTable = getTableByRoute(tables, route || defaultPath);
   const childrenWithProps = withProps({ children, currentTable, config, commonTables });
-  const getTitle = (id) => getTableById(tables, id)?.title;
 
   return (
     <Layout style={{ height: '96vh' }} className="overflow-hidden">

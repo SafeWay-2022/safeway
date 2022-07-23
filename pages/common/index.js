@@ -77,7 +77,7 @@ export default function PageTable() {
             render: (icon) => {
                 return (
                     <>
-                        {/* {icon && <img src={icon} alt="icon" width="50px" height="50px" />} */}
+                        {icon && <img src={icon} alt="icon" width="50px" height="50px" />}
                     </>
                 )
             }
