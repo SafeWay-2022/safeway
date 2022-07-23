@@ -127,14 +127,11 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                     <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
                 </div>
                 <div style={{ marginLeft: 'auto' }}>
-                    <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
-                    <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
-                </div>
-                <div style={{ marginLeft: 'auto' }}>
                     {component}
                 </div>
 
             </div>
+
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
                     <div style={{ marginRight: '5px' }}>Approved</div>
@@ -172,6 +169,10 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                     <span style={{ marginLeft: '5px' }}>Add distance</span>
                 </div>
             </div>
+            <div style={{ textAlign: 'end', marginBottom: '10px' }}>
+                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
+                <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
+            </div>
             <div style={{ textAlign: 'end', marginBottom: 5 }}>
                 <Button style={{ display: 'inline', marginRight: 10 }} onClick={onSearch} type="secondary" icon={<SearchOutlined />} size="default">
                     Search
@@ -179,6 +180,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                 <Button style={{ display: 'inline' }} onClick={onClear} type="secondary" size="default">
                     Clear
                 </Button>
+
             </div>
         </>
     )

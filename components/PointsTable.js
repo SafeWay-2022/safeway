@@ -405,9 +405,7 @@ export default function PageTable() {
                     {route === '/poi/' &&
                         <>
                             <div>
-                                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">
-
-                                    Table</Radio.Button>
+                                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
                                 <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
                             </div>
                             <Modal isTable={false} record={initialPoint} refetch={refetch} doFetch={createPoint} title="Create point" />
