@@ -12,6 +12,7 @@ import '../styles/globals.css';
 import ImageComponent from '../components/ui-components/Image'
 
 
+
 const { Content, Footer } = Layout;
 
 const App = ({ children }) => {

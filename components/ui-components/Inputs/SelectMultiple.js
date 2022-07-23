@@ -1,9 +1,10 @@
 import { Select, Tag } from 'antd';
 import React from 'react';
+import { nanoid } from 'nanoid';
 
 const { Option } = Select;
 
-function SelectMultiple({ options = [], value, placeholder, onChange = () => {} }) {
+function SelectMultiple({ options = [], value, placeholder, onChange = () => { } }) {
   return (
     <Select
       mode="tags"
@@ -30,7 +31,7 @@ function SelectMultipleReadonly({ value }) {
       {value &&
         value.map((option) => {
           return (
-            <Tag className=" text-ellipsis overflow-hidden" color="processing">
+            <Tag key={nanoid()} className=" text-ellipsis overflow-hidden" color="processing">
               {option}
             </Tag>
           );
