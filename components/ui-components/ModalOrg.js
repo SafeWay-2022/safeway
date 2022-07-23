@@ -38,15 +38,21 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
         setIsModalVisible(true);
     };
 
-    const onFinish = () => {
-        // console.log(state)
-        // if (!state.geo.lg || !state.email || !state.name) {
-        //     message.error("Name , email and coordinates is required")
-        //     return
-        // }
-        doFetch(record._id, state)
-        refetch()
-        setIsModalVisible(false);
+    const onFinish = async () => {
+        if (!state.name) {
+            message.warn("Name is required")
+            return
+        }
+        try {
+            await doFetch(record._id, state)
+            setIsModalVisible(false);
+            refetch()
+        }
+        catch (e) {
+            message.error(e.message)
+        }
+
+
     };
 
 
@@ -70,11 +76,6 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                         <div style={{ margin: '0px 10px 0px 0px' }}>
                             <Form.Item label="APPROVED" labelCol={{ span: 20 }} >
                                 <Checkbox checked={state.approved} onClick={() => setState(p => ({ ...p, approved: !p.approved }))} />
-                            </Form.Item>
-                        </div>
-                        <div>
-                            <Form.Item label="ACTIVE" labelCol={{ span: 20 }}>
-                                <Checkbox checked={state.active} onClick={() => setState(p => ({ ...p, active: !p.active }))} />
                             </Form.Item>
                         </div>
                     </div>}

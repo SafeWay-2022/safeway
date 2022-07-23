@@ -11,7 +11,7 @@ import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLoca
 import { useQuery } from 'react-query';
 import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
-import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
+import { updatePoint, createPoint, getTableFetch, initialPoint, createNeed } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
 import ModalNeed from '../../components/ui-components/ModalNeed'
 import { defaultGeolocationProps } from '../../components/ui-components/Inputs/mappers'
@@ -127,8 +127,8 @@ export default function PageTable() {
                     {route === '/need/' && <Button
                         onClick={() => {
                             setSearchData({
-                                latitude: 50.000000,
-                                longitude: 50.00000
+                                latitude: 50,
+                                longitude: 50
                             })
                             setTableConfig({ route: '/need/nearby/' })
                         }}
@@ -154,7 +154,7 @@ export default function PageTable() {
                         </Button>
                     }
 
-                    <ModalNeed isTable={false} record={{}} refetch={refetch} doFetch={{}} title="Create need" />
+                    <ModalNeed isTable={false} record={{}} refetch={refetch} doFetch={createNeed} title="Create need" />
 
 
                 </div>

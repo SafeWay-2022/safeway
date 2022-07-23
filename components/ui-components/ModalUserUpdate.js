@@ -67,10 +67,10 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                     validateMessages={validateMessages}
                 >
                     <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-around' }}>
-                        <Form.Item label="NAME" labelCol={{ span: 24 }}
+                        <Form.Item label="FULL NAME" labelCol={{ span: 24 }}
                         >
 
-                            <InputText placeholder="Enter name" value={state.name} onChange={e => setState(p => ({ ...p, name: e.target.value }))} />
+                            <InputText placeholder="Enter name" value={state.full_name} onChange={e => setState(p => ({ ...p, full_name: e.target.value }))} />
                         </Form.Item>
 
                         <Form.Item label="PHONE" labelCol={{ span: 24 }}>

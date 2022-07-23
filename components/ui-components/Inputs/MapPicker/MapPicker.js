@@ -65,6 +65,24 @@ const MapPicker = ({ list, value, setLimit, refetch, }) => {
                         key={elem?.key || i}
                         position={{ lat: elem.geo.lat, lng: elem.geo.lg }}
                     >
+                        <Popup>
+                            <div style={{ display: 'flex' }}>
+                                <div>
+                                    <div>{elem?.name} </div>
+                                    <div>{elem?.country}  <span>{elem.city}</span></div>
+                                    <div>{elem?.address}</div>
+                                    <div>{elem?.contact_person}</div>
+                                    <div>{elem?.phone}</div>
+                                    <div>{elem?.open_hours}</div>
+                                    <div>{elem?.socialmedia}</div>
+                                    <div>{elem?.telegram}</div>
+                                    <div>{elem?.whatsapp}</div>
+                                </div>
+                                <div style={{ transform: 'translateY(80%)' }}>
+                                    <ModalComponent isTable={true} record={elem} refetch={refetch} doFetch={updatePoint} title="Information" />
+                                </div>
+                            </div>
+                        </Popup>
                         <Circle
                             center={{ lat: elem.geo.lat, lng: elem.geo.lg }}
                             color={handleColorsMapPoint(elem)}

@@ -38,16 +38,19 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
         setIsModalVisible(true);
     };
 
-    const onFinish = () => {
-        // console.log(state)
-        // if (!state.geo.lg || !state.email || !state.name) {
-        //     message.error("Name , email and coordinates is required")
-        //     return
-        // }
-        // doFetch(record._id, state)
-        // refetch()
-        setIsModalVisible(false);
+    const onFinish = async () => {
+        try {
+            await doFetch(record._id, state)
+            setIsModalVisible(false);
+            refetch()
+        }
+        catch (e) {
+            message.error(e.message)
+        }
+
+
     };
+
 
 
 

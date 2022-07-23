@@ -66,30 +66,12 @@ const MapPicker = ({ list, value, setLimit, refetch, }) => {
                         position={{ lat: elem.geo.lat, lng: elem.geo.lg }}
                     >
                         <Popup closeButton={false}>
-                            <span>
-                                {elem?.name && <> Name: {elem?.name}<br /></>}
-                                {elem?.address && <> Address: {elem?.address}<br /></>}
-                                {elem?.distance_km && <> Distance: {Number(elem.distance_km).toFixed(3)} km<br /></>}
-                                {elem?.phone && <> Phone: {elem.phone}<br /></>}
-                                {elem?.telegram && <> Telegram: {elem.telegram}<br /></>}
-                                {elem?.whatsapp && <> Whatsapp: {elem.whatsapp}<br /></>}
-                                {elem?.categories?.length > 0 &&
-                                    <div style={{ display: 'flex' }}>
-                                        Categories:
-                                        <ul>
-                                            {elem?.categories?.map((elem, i) => {
-                                                return (<li key={i}>{elem}</li>)
-
-                                            })}
-                                        </ul>
-                                    </div>}
-                            </span>
-                            <ModalComponent isTable={true} record={elem} refetch={refetch} doFetch={updatePoint} title="Edit point" />
+                            <div>{elem.category}</div>
+                            <div>{elem.description}</div>
+                            <div>{elem.country}</div>
                         </Popup>
                         <Circle
                             center={{ lat: elem.geo.lat, lng: elem.geo.lg }}
-                            // color={handleColorsMapPoint(elem)}
-                            // fillColor={handleColorsMapPoint(elem)}
                             radius={200} />
                     </Marker>
                 )

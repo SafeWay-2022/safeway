@@ -10,7 +10,7 @@ import {
 import { useQuery } from 'react-query';
 import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
-import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
+import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint, createCommon } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
 import ModalCommon from '../../components/ui-components/ModalCommon'
 
@@ -142,7 +142,7 @@ export default function PageTable() {
             <main>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-                    <ModalCommon isTable={false} record={{}} refetch={refetch} doFetch={{}} title="Edit category" />
+                    <ModalCommon isTable={false} record={{}} refetch={refetch} doFetch={createCommon} title="Create category" />
                 </div>
                 <Table
                     loading={isFetching}
