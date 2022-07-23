@@ -22,6 +22,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
     const [max_distance, setDistance] = useState(null)
     const [approved, setApproved] = useState(null)
     const [active, setActive] = useState(null)
+    const [name, setName] = useState(null)
     const InputGeolocation = inputsMapping.geo
     const SelectCountry = inputsMapping.country
     const Input = inputsMapping.string
@@ -47,6 +48,13 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
         }
         setActive(e)
     }
+    const onChangeName = e => {
+        if (e.target.value) {
+            setName(e.target.value)
+        } else {
+            setName(null)
+        }
+    }
 
     const onSearch = () => {
         if (!value.lat || !value.lg) {
@@ -58,7 +66,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
         })
             .then(() => setSearchData({
                 approved, active, country, max_distance, ...text, ...checkBox, latitude: value.lat,
-                longitude: value.lg
+                longitude: value.lg, name
             }))
             .then(() => refetch())
             .catch(e => console.log(e))
@@ -74,7 +82,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
         setPage(0)
         setActive(null)
         setApproved(null)
-
+        setName(null)
     }
 
     return (
@@ -99,6 +107,9 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                         type="number"
                         style={{ width: '120px' }}
                     />
+                </div>
+                <div style={{ marginRight: 10 }}>
+                    <Input value={name} onChange={onChangeName} name='name' placeholder="Name" style={{ width: '100px' }} />
                 </div>
                 <div style={{ marginRight: 10 }}>
                     <Input value={text.city} onChange={onChangeText} name='city' placeholder="City" style={{ width: '100px' }} />

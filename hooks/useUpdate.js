@@ -20,7 +20,6 @@ export default function useUpdate({ url, mutationKey, tableKey, route }) {
         await queryClient.cancelQueries(mutationKey);
 
         const previousTable = queryClient.getQueryData(tableKey);
-
         queryClient.setQueryData(tableKey, (old) => {
           const newList = old?.list?.map((dataRow) =>
             dataRow._id === newRow._id ? newRow : dataRow,
