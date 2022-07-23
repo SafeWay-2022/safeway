@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { Pagination, Skeleton, Button, Radio, Table, Checkbox, Tag, Popconfirm } from 'antd';
+import { Pagination, Skeleton, Table, Checkbox, Tag, Popconfirm } from 'antd';
 import {
-    RollbackOutlined,
-    SearchOutlined,
     DeleteOutlined,
     DownOutlined,
     UpOutlined,
@@ -10,7 +8,7 @@ import {
 import { useQuery } from 'react-query';
 import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
-import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
+import { getTableFetch, initialOrg, createOrg, updateOrg, deleteOrg } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
 import ModalOrg from '../../components/ui-components/ModalOrg'
 
@@ -124,11 +122,11 @@ export default function PageTable() {
             render: (record) => {
                 return (
                     <div style={{ display: 'flex' }}>
-                        <ModalOrg isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" />
+                        <ModalOrg isTable={true} record={record} refetch={refetch} doFetch={updateOrg} title="Edit organization" />
                         <Popconfirm
                             placement="top"
                             title="Do you really want to delete this item?"
-                            onConfirm={() => deletePoint(record._id, refetch)}
+                            onConfirm={() => deleteOrg(record._id, refetch)}
                             okText="Delete"
                             okType="secondary"
                             cancelText="Cancel">
@@ -206,7 +204,7 @@ export default function PageTable() {
             <main>
 
                 {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-
+                <ModalOrg isTable={false} record={initialOrg} refetch={refetch} doFetch={createOrg} title="Create organization" />
                 <Table
                     loading={isFetching}
                     columns={columns}

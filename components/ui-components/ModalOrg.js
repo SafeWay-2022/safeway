@@ -36,7 +36,6 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
 
     const showModal = () => {
         setIsModalVisible(true);
-        console.log(state)
     };
 
     const onFinish = () => {
@@ -45,9 +44,8 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
         //     message.error("Name , email and coordinates is required")
         //     return
         // }
-        // doFetch(record._id, state)
-        // refetch()
-        console.log(state)
+        doFetch(record._id, state)
+        refetch()
         setIsModalVisible(false);
     };
 
@@ -80,15 +78,11 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                             </Form.Item>
                         </div>
                     </div>}
-                    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-around' }}>
                         <Form.Item label="NAME" labelCol={{ span: 24 }}
                         >
 
                             <InputText value={state.name} onChange={e => setState(p => ({ ...p, name: e.target.value }))} />
-                        </Form.Item>
-
-                        <Form.Item label="COORDINATES" labelCol={{ span: 24 }}>
-                            <Geolocation value={state.geo} onChange={e => setState(p => ({ ...p, geo: e }))} />
                         </Form.Item>
 
                         <Form.Item label="COUNTRY" labelCol={{ span: 24 }}>
@@ -103,71 +97,66 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                             <InputText value={state.address} onChange={e => setState(p => ({ ...p, address: e.target.value }))} />
                         </Form.Item>
 
+
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-around' }}>
+
                         <Form.Item label="CATEGORIES" labelCol={{ span: 24 }}>
                             <SelectMultiple value={state.categories} onChange={e => setState(p => ({ ...p, categories: e }))} />
                         </Form.Item>
 
-                        <Form.Item label="ORGANIZATIONS" labelCol={{ span: 24 }}>
-                            <SelectMultiple value={state.organizations} onChange={e => setState(p => ({ ...p, organizations: e }))} />
+                        <Form.Item label="MEMBERS" labelCol={{ span: 24 }}>
+                            <SelectMultiple value={state.members} onChange={e => setState(p => ({ ...p, members: e }))} />
+                        </Form.Item>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-around' }}>
+                        <Form.Item label="CONTACT PERSON" labelCol={{ span: 24 }}>
+                            <InputText value={state.contact_person} onChange={e => setState(p => ({ ...p, contact_person: e.target.value }))} />
+                        </Form.Item>
+                        <Form.Item
+                            label="WEB-SITE"
+                            labelCol={{ span: 24 }}
+                            name={'url'}
+                            rules={[
+                                {
+                                    type: 'url'
+                                }
+                            ]}
+                        >
+                            <Input value={state.url} onChange={e => setState(p => ({ ...p, url: e.target.value }))} />
+                        </Form.Item>
+                        <Form.Item label="INPUT PHONE" labelCol={{ span: 24 }}>
+                            <InputPhone value={state.phone} onChange={e => setState(p => ({ ...p, phone: e.target.value }))} />
+                        </Form.Item>
+                        <Form.Item
+                            label="INPUT EMAIL"
+                            labelCol={{ span: 24 }}
+                            name='email'
+                            rules={[
+                                {
+                                    type: 'email',
+                                }
+                            ]}
+                        >
+                            <Input value={state.email} onChange={e => setState(p => ({ ...p, email: e.target.value }))} />
                         </Form.Item>
 
                     </div>
-                    <div style={{ display: 'flex' }}>
-                        <Form.Item label="DESCRIPTION" labelCol={{ span: 24 }}>
-                            <TextArea style={{ width: '282px', height: '200px' }} value={state.description} onChange={e => setState(p => ({ ...p, description: e.target.value }))} />
+                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'baseline' }}>
+                        <Form.Item label="ADMIN" labelCol={{ span: 24 }}>
+                            <InputText value={state.admin} onChange={e => setState(p => ({ ...p, admin: e.target.value }))} />
                         </Form.Item>
-                        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-                            <Form.Item label="CONTACT PERSON" labelCol={{ span: 24 }}>
-                                <InputText style={{ width: '200px' }} value={state.contact_person} onChange={e => setState(p => ({ ...p, contact_person: e.target.value }))} />
-                            </Form.Item>
-                            <Form.Item label="LANGUAGES" labelCol={{ span: 24 }}>
-
-                                <SelectMultiple value={state.languages} onChange={e => setState(p => ({ ...p, languages: e }))} />
-                            </Form.Item>
-                            <Form.Item
-                                label="WEB-SITE"
-                                labelCol={{ span: 24 }}
-                                name={'url'}
-                                rules={[
-                                    {
-                                        type: 'url'
-                                    }
-                                ]}
-                            >
-                                <Input value={state.url} onChange={e => setState(p => ({ ...p, url: e.target.value }))} />
-                            </Form.Item>
-                            <Form.Item label="INPUT PHONE" labelCol={{ span: 24 }}>
-                                <InputPhone value={state.phone} onChange={e => setState(p => ({ ...p, phone: e.target.value }))} />
-                            </Form.Item>
-                            <Form.Item
-                                label="INPUT EMAIL"
-                                labelCol={{ span: 24 }}
-                                name='email'
-                                rules={[
-                                    {
-                                        type: 'email',
-                                    }
-                                ]}
-                            >
-                                <Input value={state.email} onChange={e => setState(p => ({ ...p, email: e.target.value }))} />
-                            </Form.Item>
-                            <Form.Item label="ADMIN" labelCol={{ span: 24 }}>
-                                <InputText value={state.admin} onChange={e => setState(p => ({ ...p, admin: e.target.value }))} />
-                            </Form.Item>
-                            <Form.Item label="OPEN HOURS" labelCol={{ span: 24 }}>
-                                <InputText value={state.open_hours} onChange={e => setState(p => ({ ...p, open_hours: e.target.value }))} />
-                            </Form.Item>
-                            <Form.Item label="SOCIAL-MEDIA" labelCol={{ span: 24 }}>
-                                <InputText value={state.socialmedia} onChange={e => setState(p => ({ ...p, socialmedia: e.target.value }))} />
-                            </Form.Item>
-                            <Form.Item label="TELEGRAM" labelCol={{ span: 24 }}>
-                                <InputText value={state.telegram} onChange={e => setState(p => ({ ...p, telegram: e.target.value }))} />
-                            </Form.Item>
-                            <Form.Item label="WHATSAPP" labelCol={{ span: 24 }}>
-                                <InputText style={{ width: '200px' }} value={state.whatsapp} onChange={e => setState(p => ({ ...p, whatsapp: e.target.value }))} />
-                            </Form.Item>
-                        </div>
+                        <Form.Item label="SOCIAL-MEDIA" labelCol={{ span: 24 }}>
+                            <InputText value={state.socialmedia} onChange={e => setState(p => ({ ...p, socialmedia: e.target.value }))} />
+                        </Form.Item>
+                        <Form.Item label="TELEGRAM" labelCol={{ span: 24 }}>
+                            <InputText value={state.telegram} onChange={e => setState(p => ({ ...p, telegram: e.target.value }))} />
+                        </Form.Item>
+                        <Form.Item label="WHATSAPP" labelCol={{ span: 24 }}>
+                            <InputText value={state.whatsapp} onChange={e => setState(p => ({ ...p, whatsapp: e.target.value }))} />
+                        </Form.Item>
                     </div>
+
                     <div style={{ display: 'flex', justifyContent: 'end' }}>
                         <Form.Item >
                             <Button type="primary" size="large" style={{ background: '#1890ff' }} htmlType="submit">
