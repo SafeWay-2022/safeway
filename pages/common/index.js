@@ -12,6 +12,7 @@ import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
 import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
+import ModalCommon from '../../components/ui-components/ModalCommon'
 
 
 
@@ -95,11 +96,11 @@ export default function PageTable() {
             render: (record) => {
                 return (
                     <div style={{ display: 'flex' }}>
-                        {/* <Modal isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" /> */}
+                        <ModalCommon isTable={true} record={record} refetch={refetch} doFetch={{}} title="Edit category" />
                         <Popconfirm
                             placement="top"
                             title="Do you really want to delete this item?"
-                            onConfirm={() => deletePoint(record._id, refetch)}
+                            // onConfirm={() => deletePoint(record._id, refetch)}
                             okText="Delete"
                             okType="secondary"
                             cancelText="Cancel">
@@ -139,9 +140,10 @@ export default function PageTable() {
     return (
         <div className={styles.container}>
             <main>
-
-                {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
+                    <ModalCommon isTable={false} record={{}} refetch={refetch} doFetch={{}} title="Edit category" />
+                </div>
                 <Table
                     loading={isFetching}
                     columns={columns}

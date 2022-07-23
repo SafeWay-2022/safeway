@@ -16,7 +16,7 @@ import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLoca
 import dynamic from 'next/dynamic';
 import { nanoid } from 'nanoid';
 import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
-import ImageComponent from '../../components/ui-components/Image';
+
 
 
 

@@ -53,9 +53,9 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
 
     return (
         <>
-            {isTable ? <EditOutlined style={{ fontSize: '150%' }} onClick={showModal} /> : <Button size="large" style={{ background: "#1890ff", color: 'white' }} onClick={showModal}>Create point</Button>}
+            {isTable ? <EditOutlined style={{ fontSize: '150%' }} onClick={showModal} /> : <Button size="large" style={{ background: "#1890ff", color: 'white' }} onClick={showModal}>Create organization</Button>}
 
-            <Modal width={1900} title={title} visible={isModalVisible} footer={null} onCancel={() => setIsModalVisible(false)}>
+            <Modal width={1000} title={title} visible={isModalVisible} footer={null} onCancel={() => setIsModalVisible(false)}>
                 <Form
                     {...layout}
                     onFinish={onFinish}
@@ -82,7 +82,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                         <Form.Item label="NAME" labelCol={{ span: 24 }}
                         >
 
-                            <InputText value={state.name} onChange={e => setState(p => ({ ...p, name: e.target.value }))} />
+                            <InputText placeholder="Enter name" value={state.name} onChange={e => setState(p => ({ ...p, name: e.target.value }))} />
                         </Form.Item>
 
                         <Form.Item label="COUNTRY" labelCol={{ span: 24 }}>
@@ -90,28 +90,19 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                         </Form.Item>
 
                         <Form.Item label="CITY" labelCol={{ span: 24 }}>
-                            <InputText value={state.city} onChange={e => setState(p => ({ ...p, city: e.target.value }))} />
+                            <InputText placeholder="Enter city" value={state.city} onChange={e => setState(p => ({ ...p, city: e.target.value }))} />
                         </Form.Item>
 
                         <Form.Item label="ADDRESS" labelCol={{ span: 24 }}>
-                            <InputText value={state.address} onChange={e => setState(p => ({ ...p, address: e.target.value }))} />
+                            <InputText placeholder="Enter address" value={state.address} onChange={e => setState(p => ({ ...p, address: e.target.value }))} />
                         </Form.Item>
 
 
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-around' }}>
 
-                        <Form.Item label="CATEGORIES" labelCol={{ span: 24 }}>
-                            <SelectMultiple value={state.categories} onChange={e => setState(p => ({ ...p, categories: e }))} />
-                        </Form.Item>
-
-                        <Form.Item label="MEMBERS" labelCol={{ span: 24 }}>
-                            <SelectMultiple value={state.members} onChange={e => setState(p => ({ ...p, members: e }))} />
-                        </Form.Item>
-                    </div>
                     <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-around' }}>
                         <Form.Item label="CONTACT PERSON" labelCol={{ span: 24 }}>
-                            <InputText value={state.contact_person} onChange={e => setState(p => ({ ...p, contact_person: e.target.value }))} />
+                            <InputText placeholder="Enter contact person" value={state.contact_person} onChange={e => setState(p => ({ ...p, contact_person: e.target.value }))} />
                         </Form.Item>
                         <Form.Item
                             label="WEB-SITE"
@@ -123,7 +114,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                                 }
                             ]}
                         >
-                            <Input value={state.url} onChange={e => setState(p => ({ ...p, url: e.target.value }))} />
+                            <Input placeholder="Enter url" value={state.url} onChange={e => setState(p => ({ ...p, url: e.target.value }))} />
                         </Form.Item>
                         <Form.Item label="INPUT PHONE" labelCol={{ span: 24 }}>
                             <InputPhone value={state.phone} onChange={e => setState(p => ({ ...p, phone: e.target.value }))} />
@@ -138,22 +129,32 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                                 }
                             ]}
                         >
-                            <Input value={state.email} onChange={e => setState(p => ({ ...p, email: e.target.value }))} />
+                            <Input placeholder="Enter email" value={state.email} onChange={e => setState(p => ({ ...p, email: e.target.value }))} />
                         </Form.Item>
 
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'baseline' }}>
                         <Form.Item label="ADMIN" labelCol={{ span: 24 }}>
-                            <InputText value={state.admin} onChange={e => setState(p => ({ ...p, admin: e.target.value }))} />
+                            <InputText placeholder="Who admin" value={state.admin} onChange={e => setState(p => ({ ...p, admin: e.target.value }))} />
                         </Form.Item>
                         <Form.Item label="SOCIAL-MEDIA" labelCol={{ span: 24 }}>
-                            <InputText value={state.socialmedia} onChange={e => setState(p => ({ ...p, socialmedia: e.target.value }))} />
+                            <InputText placeholder="Enter social media" value={state.socialmedia} onChange={e => setState(p => ({ ...p, socialmedia: e.target.value }))} />
                         </Form.Item>
                         <Form.Item label="TELEGRAM" labelCol={{ span: 24 }}>
-                            <InputText value={state.telegram} onChange={e => setState(p => ({ ...p, telegram: e.target.value }))} />
+                            <InputText placeholder="@example" value={state.telegram} onChange={e => setState(p => ({ ...p, telegram: e.target.value }))} />
                         </Form.Item>
                         <Form.Item label="WHATSAPP" labelCol={{ span: 24 }}>
-                            <InputText value={state.whatsapp} onChange={e => setState(p => ({ ...p, whatsapp: e.target.value }))} />
+                            <InputText placeholder="Enter whatsapp" value={state.whatsapp} onChange={e => setState(p => ({ ...p, whatsapp: e.target.value }))} />
+                        </Form.Item>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-around' }}>
+
+                        <Form.Item label="CATEGORIES" labelCol={{ span: 24 }}>
+                            <SelectMultiple value={state.categories} onChange={e => setState(p => ({ ...p, categories: e }))} />
+                        </Form.Item>
+
+                        <Form.Item label="MEMBERS" labelCol={{ span: 24 }}>
+                            <SelectMultiple value={state.members} onChange={e => setState(p => ({ ...p, members: e }))} />
                         </Form.Item>
                     </div>
 

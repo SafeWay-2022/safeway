@@ -13,6 +13,10 @@ import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
 import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
+import ModalNeed from '../../components/ui-components/ModalNeed'
+import { defaultGeolocationProps } from '../../components/ui-components/Inputs/mappers'
+import SearchNeeds from '../../components/ui-components/search/SearchNeeds'
+import MapPicker from '../../components/ui-components/Inputs/MapPicker/NeedsPicker';
 
 
 
@@ -77,28 +81,7 @@ export default function PageTable() {
             width: '120px',
             render: (coordinates) => {
                 return (
-                    <GeoLocation readonly={true} withoutInput={false} value={coordinates} />
-                )
-            }
-        },
-        {
-            title: "Action",
-            dataIndex: "",
-            key: "x",
-            render: (record) => {
-                return (
-                    <div style={{ display: 'flex' }}>
-                        {/* <Modal isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" /> */}
-                        <Popconfirm
-                            placement="top"
-                            title="Do you really want to delete this item?"
-                            onConfirm={() => deletePoint(record._id, refetch)}
-                            okText="Delete"
-                            okType="secondary"
-                            cancelText="Cancel">
-                            <DeleteOutlined style={{ fontSize: '150%', cursor: 'pointer' }} />
-                        </Popconfirm>
-                    </div>
+                    <GeoLocation readonly={true} withoutInput={false} value={coordinates ? coordinates : defaultGeolocationProps} />
                 )
             }
         },
@@ -132,15 +115,84 @@ export default function PageTable() {
     return (
         <div className={styles.container}>
             <main>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
 
-                {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
+                    <div>
+                        <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">
 
-                <Table
-                    loading={isFetching}
-                    columns={columns}
-                    dataSource={tableData?.list}
-                    pagination={false}
-                />
+                            Table</Radio.Button>
+                        <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
+                    </div>
+                    {route === '/need/' && <Button
+                        onClick={() => {
+                            setSearchData({
+                                latitude: 50.000000,
+                                longitude: 50.00000
+                            })
+                            setTableConfig({ route: '/need/nearby/' })
+                        }}
+                        type="primary"
+                        size="large"
+                        icon={<SearchOutlined />}
+                        style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
+                    >
+                        Search
+                    </Button>}
+                    {route === '/need/nearby/' &&
+
+                        <Button
+                            type="primary"
+                            size="large"
+                            style={{ background: "#1890ff", display: 'flex', alignItems: 'center' }}
+                            icon={<RollbackOutlined />}
+                            onClick={() => {
+                                setSearchData({})
+                                setTableConfig({ route: '/need/' })
+                            }}>
+                            <span>Back</span>
+                        </Button>
+                    }
+
+                    <ModalNeed isTable={false} record={{}} refetch={refetch} doFetch={{}} title="Create need" />
+
+
+                </div>
+                {
+                    route === '/need/nearby/' &&
+                    <>
+                        <SearchNeeds
+                            setSearchData={setSearchData}
+                            refetch={refetch}
+                            page={page}
+                            setPage={setPage}
+                            value={value}
+                            setValue={setValue}
+                        />
+                    </>
+                }
+                {!mapView ?
+                    <Table
+                        loading={isFetching}
+                        columns={columns}
+                        dataSource={tableData?.list}
+                        pagination={false}
+                        isNeeds={true}
+                    />
+                    :
+
+                    <div style={{ height: '900px' }}>
+                        <MapPicker
+                            value={value}
+                            list={list}
+                            setLimit={setLimit}
+                        />
+                    </div>
+
+                }
+
+
+
 
             </main >
         </div >

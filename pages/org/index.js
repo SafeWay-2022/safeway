@@ -202,9 +202,10 @@ export default function PageTable() {
     return (
         <div className={styles.container}>
             <main>
-
-                {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-                <ModalOrg isTable={false} record={initialOrg} refetch={refetch} doFetch={createOrg} title="Create organization" />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
+                    <ModalOrg isTable={false} record={initialOrg} refetch={refetch} doFetch={createOrg} title="Create organization" />
+                </div>
                 <Table
                     loading={isFetching}
                     columns={columns}

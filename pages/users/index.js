@@ -12,6 +12,11 @@ import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
 import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
+import ModalUser from '../../components/ui-components/ModalUserUpdate'
+import ModalUserCreate from '../../components/ui-components/ModalUserCreate'
+import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
+import { defaultGeolocationProps } from '../../components/ui-components/Inputs/mappers'
+
 
 
 
@@ -94,27 +99,29 @@ export default function PageTable() {
         {
             title: "Organization position",
             dataIndex: "organization_position",
-            render: (position) => {
+            render: (coordinates) => {
                 return (
-                    <span>{position}</span>
+                    <GeoLocation readonly={true} withoutInput={true} value={coordinates ? coordinates : defaultGeolocationProps} />
                 )
             }
         },
         {
             title: "Organization membership",
             dataIndex: "organization_membership",
-            render: (position) => {
+            render: (cities) => {
                 return (
-                    <span>{position}</span>
+                    <>
+                        {cities?.map(e => (<Tag key={nanoid()} color="blue">{e}</Tag>))}
+                    </>
                 )
             }
         },
         {
             title: "Super user",
             dataIndex: "superuser",
-            render: (position) => {
+            render: (bool) => {
                 return (
-                    <span>{position}</span>
+                    <Checkbox checked={bool} />
                 )
             }
         },
@@ -125,11 +132,11 @@ export default function PageTable() {
             render: (record) => {
                 return (
                     <div style={{ display: 'flex' }}>
-                        {/* <Modal isTable={true} record={record} refetch={refetch} doFetch={updatePoint} title="Edit point" /> */}
+                        <ModalUser isTable={true} record={record} refetch={refetch} doFetch={() => { }} title="Edit user" />
                         <Popconfirm
                             placement="top"
                             title="Do you really want to delete this item?"
-                            onConfirm={() => deletePoint(record._id, refetch)}
+                            // onConfirm={() => deletePoint(record._id, refetch)}
                             okText="Delete"
                             okType="secondary"
                             cancelText="Cancel">
@@ -169,9 +176,10 @@ export default function PageTable() {
     return (
         <div className={styles.container}>
             <main>
-
-                {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-
+                <div style={{ display: 'flex', justifyContent: "space-between" }}>
+                    {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
+                    <ModalUserCreate isTable={false} record={{}} refetch={refetch} doFetch={() => { }} title="Create user" />
+                </div>
                 <Table
                     loading={isFetching}
                     columns={columns}
