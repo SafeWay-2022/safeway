@@ -6,11 +6,11 @@ import {
     UpOutlined,
 } from '@ant-design/icons';
 import { useQuery } from 'react-query';
-import { PER_PAGE } from '../../config';
+import { PER_PAGE } from '../config';
 import { nanoid } from 'nanoid';
-import { getTableFetch, createOrg, updateOrg, deleteOrg } from '../../lib/helpers';
-import styles from '../../styles/Home.module.css';
-import ModalOrg from '../../components/ui-components/ModalOrg'
+import { getTableFetch, createOrg, updateOrg, deleteOrg } from '../lib/helpers';
+import styles from '../styles/Home.module.css';
+import ModalOrg from './ui-components/ModalOrg'
 
 
 
@@ -183,7 +183,7 @@ export default function PageTable() {
     if (isLoading) {
         return <Skeleton />;
     }
-    const { list = [], skip = 0, total = 0 } = tableData;
+    const { total = 0 } = tableData;
     const pagination = {
         pageSize: limit,
         onChange: (currentPage, limit) => {

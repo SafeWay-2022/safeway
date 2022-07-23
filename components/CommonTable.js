@@ -1,24 +1,19 @@
 import { useState } from 'react';
-import { Pagination, Skeleton, Table, Checkbox, Tag, Popconfirm } from 'antd';
+import { Pagination, Skeleton, Table, Tag, Popconfirm } from 'antd';
 import {
     DeleteOutlined,
 } from '@ant-design/icons';
 import { useQuery } from 'react-query';
-import { PER_PAGE } from '../../config';
-import { nanoid } from 'nanoid';
-import { getTableFetch, registerUser } from '../../lib/helpers';
-import styles from '../../styles/Home.module.css';
-import ModalUser from '../../components/ui-components/ModalUserUpdate'
-import ModalUserCreate from '../../components/ui-components/ModalUserCreate'
-import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
-import { defaultGeolocationProps } from '../../components/ui-components/Inputs/mappers'
-
+import { PER_PAGE } from '../config';
+import { getTableFetch, createCommon } from '../lib/helpers';
+import styles from '../styles/Home.module.css';
+import ModalCommon from './ui-components/ModalCommon'
 
 
 
 export default function PageTable() {
     const [tableConfig] = useState({
-        route: '/users/'
+        route: '/common/'
     })
     const { route } = tableConfig;
     const myFetch = getTableFetch(route)
@@ -44,78 +39,46 @@ export default function PageTable() {
         refetchInterval: 0,
     });
 
+
     const columns = [
         {
-            title: "Name",
-            dataIndex: "full_name",
+            title: "Category",
+            dataIndex: "category",
             render: (name) => {
                 return (
-                    <Tag style={{ fontSize: '14px' }}>{name}</Tag>
+                    <Tag color="blue" style={{ fontSize: '14px' }}>{name}</Tag>
                 )
             }
         },
         {
-            title: "Phone",
-            dataIndex: "phone",
-            render: (Phone) => {
-                return <span>{Phone}</span>
+            title: "Українська",
+            dataIndex: "ua",
+            render: (ukr) => {
+                return <Tag color="geekblue" style={{ fontSize: '14px' }}>{ukr}</Tag>
             }
         },
         {
-            title: "Email",
-            dataIndex: "email",
-            render: (site) => {
-                return <span>{site}</span>
+            title: "Русский",
+            dataIndex: "ru",
+            render: (ru) => {
+                return <Tag color="purple" style={{ fontSize: '14px' }}>{ru}</Tag>
             }
         },
         {
-            title: "Managed cities",
-            dataIndex: "managed_cities",
-            render: (cities) => {
+            title: "Description",
+            dataIndex: "description",
+            render: (description) => {
+                return <span>{description}</span>
+            }
+        },
+        {
+            title: "Icon",
+            dataIndex: "icon",
+            render: (icon) => {
                 return (
                     <>
-                        {cities?.map(e => (<Tag key={nanoid()} color="green">{e}</Tag>))}
+                        {icon && <img src={icon} alt="icon" width="50px" height="50px" />}
                     </>
-                )
-            }
-        },
-        {
-            title: "Managed countries",
-            dataIndex: "managed_countries",
-            render: (cities) => {
-                return (
-                    <>
-                        {cities?.map(e => (<Tag key={nanoid()} color="green">{e}</Tag>))}
-                    </>
-                )
-            }
-        },
-        {
-            title: "Organization position",
-            dataIndex: "organization_position",
-            render: (coordinates) => {
-                return (
-                    <GeoLocation readonly={true} withoutInput={true} value={coordinates ? coordinates : defaultGeolocationProps} />
-                )
-            }
-        },
-        {
-            title: "Organization membership",
-            dataIndex: "organization_membership",
-            render: (cities) => {
-                return (
-                    <>
-                        {cities?.map(e => (<Tag key={nanoid()} color="blue">{e}</Tag>))}
-                    </>
-                )
-            }
-        },
-        {
-            title: "Super user",
-            dataIndex: "superuser",
-            render: (bool) => {
-                return (
-                    <Checkbox checked={bool} />
                 )
             }
         },
@@ -126,7 +89,7 @@ export default function PageTable() {
             render: (record) => {
                 return (
                     <div style={{ display: 'flex' }}>
-                        <ModalUser isTable={true} record={record} refetch={refetch} doFetch={() => { }} title="Edit user" />
+                        <ModalCommon isTable={true} record={record} refetch={refetch} doFetch={{}} title="Edit category" />
                         <Popconfirm
                             placement="top"
                             title="Do you really want to delete this item?"
@@ -152,7 +115,7 @@ export default function PageTable() {
     if (isLoading) {
         return <Skeleton />;
     }
-    const { list = [], skip = 0, total = 0 } = tableData;
+    const { total = 0 } = tableData;
     const pagination = {
         pageSize: limit,
         onChange: (currentPage, limit) => {
@@ -170,9 +133,9 @@ export default function PageTable() {
     return (
         <div className={styles.container}>
             <main>
-                <div style={{ display: 'flex', justifyContent: "space-between" }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-                    <ModalUserCreate isTable={false} record={{}} refetch={refetch} doFetch={registerUser} title="Create user" />
+                    <ModalCommon isTable={false} record={{}} refetch={refetch} doFetch={createCommon} title="Create category" />
                 </div>
                 <Table
                     loading={isFetching}
@@ -180,7 +143,6 @@ export default function PageTable() {
                     dataSource={tableData?.list}
                     pagination={false}
                 />
-
             </main >
         </div >
     );

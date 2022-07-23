@@ -8,26 +8,21 @@ import {
     UpOutlined,
 } from '@ant-design/icons';
 import { useQuery } from 'react-query';
-import { PER_PAGE } from '../../config';
-import styles from '../../styles/Home.module.css';
-import Search from '../../components/ui-components/search'
-import Modal from '../../components/ui-components/ModalPoi'
-import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
+import { PER_PAGE } from '../config';
+import styles from '../styles/Home.module.css';
+import Search from './ui-components/search'
+import Modal from './ui-components/ModalPoi'
+import GeoLocation from './ui-components/Inputs/MapPicker/GeoLocation';
 import dynamic from 'next/dynamic';
 import { nanoid } from 'nanoid';
-import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
+import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../lib/helpers';
 
 
 
 
-const MapPicker = dynamic(() => import('../../components/ui-components/Inputs/MapPicker/MapPicker'), {
+const MapPicker = dynamic(() => import('./ui-components/Inputs/MapPicker/MapPicker'), {
     ssr: false,
 });
-
-
-
-
-
 
 
 
@@ -387,7 +382,7 @@ export default function PageTable() {
     if (isLoading) {
         return <Skeleton />;
     }
-    const { list = [], skip = 0, total = 0 } = tableData;
+    const { list = [], total = 0 } = tableData;
     const pagination = {
         pageSize: limit,
         onChange: (currentPage, limit) => {

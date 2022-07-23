@@ -3,19 +3,16 @@ import { Pagination, Skeleton, Button, Radio, Table, Tag } from 'antd';
 import {
     RollbackOutlined,
     SearchOutlined,
-    DeleteOutlined,
-    DownOutlined,
-    UpOutlined,
 } from '@ant-design/icons';
-import GeoLocation from '../../components/ui-components/Inputs/MapPicker/GeoLocation';
+import GeoLocation from './ui-components/Inputs/MapPicker/GeoLocation';
 import { useQuery } from 'react-query';
-import { PER_PAGE } from '../../config';
-import { getTableFetch, createNeed } from '../../lib/helpers';
-import styles from '../../styles/Home.module.css';
-import ModalNeed from '../../components/ui-components/ModalNeed'
-import { defaultGeolocationProps } from '../../components/ui-components/Inputs/mappers'
-import SearchNeeds from '../../components/ui-components/search/SearchNeeds'
-import MapPicker from '../../components/ui-components/Inputs/MapPicker/NeedsPicker';
+import { PER_PAGE } from '../config';
+import { getTableFetch, createNeed } from '../lib/helpers';
+import styles from '../styles/Home.module.css';
+import ModalNeed from './ui-components/ModalNeed'
+import { defaultGeolocationProps } from './ui-components/Inputs/mappers'
+import SearchNeeds from './ui-components/search/SearchNeeds'
+import MapPicker from './ui-components/Inputs/MapPicker/NeedsPicker';
 
 
 
@@ -96,7 +93,7 @@ export default function PageTable() {
     if (isLoading) {
         return <Skeleton />;
     }
-    const { list = [], skip = 0, total = 0 } = tableData;
+    const { list = [], total = 0 } = tableData;
     const pagination = {
         pageSize: limit,
         onChange: (currentPage, limit) => {

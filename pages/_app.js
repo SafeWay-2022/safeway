@@ -20,7 +20,7 @@ const App = ({ children }) => {
   const { asPath: route } = router;
 
   const { data: config = {}, commonTables, isLoading, isError, error } = useConfig();
-  const { menu = [], tables = [], defaultPath = '' } = config;
+  const { tables = [], defaultPath = '' } = config;
 
   if (isError) {
     return <h1>Error getting application config:{JSON.stringify(error)}</h1>;
