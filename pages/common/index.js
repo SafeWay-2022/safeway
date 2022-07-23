@@ -1,32 +1,25 @@
 import { useState } from 'react';
-import { Pagination, Skeleton, Button, Radio, Table, Checkbox, Tag, Popconfirm } from 'antd';
+import { Pagination, Skeleton, Table, Tag, Popconfirm } from 'antd';
 import {
-    RollbackOutlined,
-    SearchOutlined,
     DeleteOutlined,
-    DownOutlined,
-    UpOutlined,
 } from '@ant-design/icons';
 import { useQuery } from 'react-query';
 import { PER_PAGE } from '../../config';
-import { nanoid } from 'nanoid';
-import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint, createCommon } from '../../lib/helpers';
+import { getTableFetch, createCommon } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
 import ModalCommon from '../../components/ui-components/ModalCommon'
 
 
 
 export default function PageTable() {
-    const [tableConfig, setTableConfig] = useState({
+    const [tableConfig] = useState({
         route: '/common/'
     })
     const { route } = tableConfig;
     const myFetch = getTableFetch(route)
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(PER_PAGE);
-    const [searchData, setSearchData] = useState({})
-    const [mapView, setMapView] = useState(false)
-    const [value, setValue] = useState({})
+    const [searchData] = useState({})
 
     const {
         data: tableData,

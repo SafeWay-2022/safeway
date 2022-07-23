@@ -1,16 +1,12 @@
 import { useState } from 'react';
-import { Pagination, Skeleton, Button, Radio, Table, Checkbox, Tag, Popconfirm } from 'antd';
+import { Pagination, Skeleton, Table, Checkbox, Tag, Popconfirm } from 'antd';
 import {
-    RollbackOutlined,
-    SearchOutlined,
     DeleteOutlined,
-    DownOutlined,
-    UpOutlined,
 } from '@ant-design/icons';
 import { useQuery } from 'react-query';
 import { PER_PAGE } from '../../config';
 import { nanoid } from 'nanoid';
-import { updatePoint, createPoint, getTableFetch, initialPoint, deletePoint } from '../../lib/helpers';
+import { getTableFetch, registerUser } from '../../lib/helpers';
 import styles from '../../styles/Home.module.css';
 import ModalUser from '../../components/ui-components/ModalUserUpdate'
 import ModalUserCreate from '../../components/ui-components/ModalUserCreate'
@@ -21,16 +17,14 @@ import { defaultGeolocationProps } from '../../components/ui-components/Inputs/m
 
 
 export default function PageTable() {
-    const [tableConfig, setTableConfig] = useState({
+    const [tableConfig] = useState({
         route: '/users/'
     })
     const { route } = tableConfig;
     const myFetch = getTableFetch(route)
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(PER_PAGE);
-    const [searchData, setSearchData] = useState({})
-    const [mapView, setMapView] = useState(false)
-    const [value, setValue] = useState({})
+    const [searchData] = useState({})
 
     const {
         data: tableData,
@@ -178,7 +172,7 @@ export default function PageTable() {
             <main>
                 <div style={{ display: 'flex', justifyContent: "space-between" }}>
                     {total > 0 && <Pagination style={{ display: 'inline' }} {...pagination} />}
-                    <ModalUserCreate isTable={false} record={{}} refetch={refetch} doFetch={() => { }} title="Create user" />
+                    <ModalUserCreate isTable={false} record={{}} refetch={refetch} doFetch={registerUser} title="Create user" />
                 </div>
                 <Table
                     loading={isFetching}
