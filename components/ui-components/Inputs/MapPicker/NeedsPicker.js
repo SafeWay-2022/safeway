@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { handleColorsMapPoint } from '../../../../lib/helpers'
 import {
     MapContainer,
     Marker,
@@ -8,8 +7,6 @@ import {
     Circle,
     useMapEvents
 } from 'react-leaflet';
-import ModalComponent from '../../ModalPoi';
-import { updatePoint } from '../../../../lib/helpers'
 
 
 function MyComponent({ setLimit }) {

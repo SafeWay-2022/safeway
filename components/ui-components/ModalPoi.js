@@ -36,7 +36,6 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
 
     const showModal = () => {
         setIsModalVisible(true);
-        console.log(state)
     };
 
 

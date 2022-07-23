@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
-import { Modal, Checkbox, Input, Form, Button, message } from 'antd';
+import { Modal, Input, Form, Button, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import InputText from './Inputs/InputText'
-import Geolocation from './Inputs/MapPicker/GeoLocation'
-import SelectCountry from './Inputs/SelectCountry'
-import SelectMultiple from './Inputs/SelectMultiple'
-import InputPhone from './Inputs/InputPhone'
 
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
 
 const validateMessages = {
     required: '${label} is required!',

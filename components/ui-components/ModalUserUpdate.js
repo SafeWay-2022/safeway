@@ -3,7 +3,6 @@ import { Modal, Checkbox, Input, Form, Button, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import InputText from './Inputs/InputText'
 import Geolocation from './Inputs/MapPicker/GeoLocation'
-import SelectCountry from './Inputs/SelectCountry'
 import SelectMultiple from './Inputs/SelectMultiple'
 import InputPhone from './Inputs/InputPhone'
 
@@ -31,7 +30,6 @@ const validateMessages = {
 const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [state, setState] = useState(record)
-    const { TextArea } = Input;
 
 
     const showModal = () => {
@@ -39,14 +37,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
     };
 
     const onFinish = () => {
-        // console.log(state)
-        // if (!state.geo.lg || !state.email || !state.name) {
-        //     message.error("Name , email and coordinates is required")
-        //     return
-        // }
-        // doFetch(record._id, state)
-        // refetch()
-        setIsModalVisible(false);
+
     };
 
 
