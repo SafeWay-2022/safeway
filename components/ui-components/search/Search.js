@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { inputsMapping } from '../Inputs/config'
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, InputNumber, Select, Radio } from 'antd';
+import { Button, Checkbox, InputNumber, Select, Radio, message } from 'antd';
 
 const initTextState = {
     city: null,
     organizations: null,
     categories: null,
     author: null,
-    admin: null
+    admin: null,
+    name: null,
 }
 const initCheckBox = {
     add_distance: null
@@ -27,7 +28,7 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
     const Input = inputsMapping.string
 
     const onChangeText = (e) => {
-        setText(prev => ({ ...prev, [e.target.name]: e.target.value }))
+        setText(prev => ({ ...prev, [e.target.name]: e.target.value ? e.target.value : null }))
     }
 
     const onChangeCheckBox = (e) => {
@@ -56,6 +57,10 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
     }
 
     const onSearch = () => {
+        if (!value.lat || !value.lg) {
+            message.error('Coordinates is required');
+            return
+        }
         new Promise((resolve) => {
             resolve()
         })
@@ -90,6 +95,9 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                     <SelectCountry value={country} onChange={setCountry} />
                 </div>
                 <div style={{ marginRight: 10 }}>
+                    <Input value={text.name} onChange={onChangeText} name='name' placeholder="name" style={{ width: '100px' }} />
+                </div>
+                <div style={{ marginRight: 10 }}>
                     <InputNumber
                         value={max_distance}
                         parser={x => Number(x).toFixed(3)}
@@ -119,14 +127,11 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                     <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
                 </div>
                 <div style={{ marginLeft: 'auto' }}>
-                    <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
-                    <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
-                </div>
-                <div style={{ marginLeft: 'auto' }}>
                     {component}
                 </div>
 
             </div>
+
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
                     <div style={{ marginRight: '5px' }}>Approved</div>
@@ -137,9 +142,9 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                         }}
                         onChange={onChangeSelectApproved}
                     >
-                        <Option value="-">{null}</Option>
-                        <Option value="true">true</Option>
-                        <Option value="false">false</Option>
+                        <Select.Option value="-">{null}</Select.Option>
+                        <Select.Option value="true">true</Select.Option>
+                        <Select.Option value="false">false</Select.Option>
                     </Select>
 
                 </div>
@@ -152,9 +157,9 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                         }}
                         onChange={onChangeSelectActive}
                     >
-                        <Option value="-">{null}</Option>
-                        <Option value="true">true</Option>
-                        <Option value="false">false</Option>
+                        <Select.Option value="-">{null}</Select.Option>
+                        <Select.Option value="true">true</Select.Option>
+                        <Select.Option value="false">false</Select.Option>
                     </Select>
 
                 </div>
@@ -164,6 +169,10 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                     <span style={{ marginLeft: '5px' }}>Add distance</span>
                 </div>
             </div>
+            <div style={{ textAlign: 'end', marginBottom: '10px' }}>
+                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
+                <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
+            </div>
             <div style={{ textAlign: 'end', marginBottom: 5 }}>
                 <Button style={{ display: 'inline', marginRight: 10 }} onClick={onSearch} type="secondary" icon={<SearchOutlined />} size="default">
                     Search
@@ -171,16 +180,8 @@ const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapVie
                 <Button style={{ display: 'inline' }} onClick={onClear} type="secondary" size="default">
                     Clear
                 </Button>
-            </div>
-            {
-                page > 1 && <Button style={{ display: 'inline', marginRight: 5 }} onClick={() => setPage(page - 10)} type="secondary" size="default">
-                    Previous page
-                </Button>
-            }
-            <Button style={{ display: 'inline' }} onClick={() => setPage(page + 10)} type="secondary" size="default">
-                Next page
-            </Button>
 
+            </div>
         </>
     )
 }

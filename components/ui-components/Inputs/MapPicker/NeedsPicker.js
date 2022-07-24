@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
-import { handleColorsMapPoint } from '../../../../lib/helpers'
 import {
     MapContainer,
     Marker,
@@ -9,8 +8,6 @@ import {
     Circle,
     useMapEvents
 } from 'react-leaflet';
-import ModalComponent from '../../ModalPoi';
-import { updatePoint } from '../../../../lib/helpers'
 
 
 function MyComponent({ setLimit }) {
@@ -63,31 +60,16 @@ const MapPicker = ({ list, value, setLimit, refetch, }) => {
             {list?.map((elem, i) => {
                 return (
                     <Marker
-                        key={elem?.key || i}
+                        key={elem.key}
                         position={{ lat: elem.geo.lat, lng: elem.geo.lg }}
                     >
-                        <Popup>
-                            <div style={{ display: 'flex' }}>
-                                <div>
-                                    <div>{elem?.name} </div>
-                                    <div>{elem?.country}  <span>{elem.city}</span></div>
-                                    <div>{elem?.address}</div>
-                                    <div>{elem?.contact_person}</div>
-                                    <div>{elem?.phone}</div>
-                                    <div>{elem?.open_hours}</div>
-                                    <div>{elem?.socialmedia}</div>
-                                    <div>{elem?.telegram}</div>
-                                    <div>{elem?.whatsapp}</div>
-                                </div>
-                                <div style={{ transform: 'translateY(80%)' }}>
-                                    <ModalComponent isTable={true} record={elem} refetch={refetch} doFetch={updatePoint} title="Information" />
-                                </div>
-                            </div>
+                        <Popup closeButton={false}>
+                            <div>{elem.category}</div>
+                            <div>{elem.description}</div>
+                            <div>{elem.country}</div>
                         </Popup>
                         <Circle
                             center={{ lat: elem.geo.lat, lng: elem.geo.lg }}
-                            color={handleColorsMapPoint(elem)}
-                            fillColor={handleColorsMapPoint(elem)}
                             radius={200} />
                     </Marker>
                 )

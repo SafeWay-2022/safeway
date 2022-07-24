@@ -1,15 +1,17 @@
-import { Layout, Skeleton } from 'antd';
+import { Layout, Skeleton, Menu } from 'antd';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import useConfig from '../hooks/useConfig';
-import { getTableById, getTableByRoute, withProps } from '../lib/helpers';
+import { getTableByRoute, withProps } from '../lib/helpers';
 import AccountMenu from '../components/ui-components/dropdown';
 import AuthGuard from '../components/AuthGuard';
 import '../styles/globals.css';
-import { Menu } from 'antd';
+import ImageComponent from '../components/ui-components/Image'
+
+
 
 const { Content, Footer } = Layout;
 
@@ -18,7 +20,7 @@ const App = ({ children }) => {
   const { asPath: route } = router;
 
   const { data: config = {}, commonTables, isLoading, isError, error } = useConfig();
-  const { menu = [], tables = [], defaultPath = '' } = config;
+  const { tables = [], defaultPath = '' } = config;
 
   if (isError) {
     return <h1>Error getting application config:{JSON.stringify(error)}</h1>;
@@ -28,15 +30,8 @@ const App = ({ children }) => {
     return <Skeleton />;
   }
 
-  const getHref = (id) => {
-    if (getTableById(tables, id)?.path === '/nearby') {
-      return '/nearby/'
-    }
-    return getTableById(tables, id)?.apiRoute
-  };
   const currentTable = getTableByRoute(tables, route || defaultPath);
   const childrenWithProps = withProps({ children, currentTable, config, commonTables });
-  const getTitle = (id) => getTableById(tables, id)?.title;
 
   return (
     <Layout style={{ height: '96vh' }} className="overflow-hidden">
@@ -47,37 +42,24 @@ const App = ({ children }) => {
     </Layout >
   );
 };
-const Navigation = ({ route }) => {
+const Navigation = () => {
   const [menu] = useState([
-    { key: 'Points of interests', route: '/poi' },
-    { key: 'Organizations', route: '/org' },
-    { key: 'Users', route: '/users' },
-    { key: 'Categories', route: '/common' },
-    { key: 'Needs', route: '/need' },
+    { key: 'Points of interests', route: '/poi', label: <Link href="/poi">Points of interests</Link> },
+    { key: 'Organizations', route: '/org', label: <Link href="/org">Organizations</Link> },
+    { key: 'Users', route: '/users', label: <Link href="/users">Users</Link> },
+    { key: 'Categories', route: '/common', label: <Link href="/common">Categories</Link> },
+    { key: 'Needs', route: '/need', label: <Link href='/need'>Needs</Link> },
   ])
-  const router = useRouter()
   return (
-    <>
+    <div style={{ display: "flex", justifyContent: 'space-around', alignItems: 'center' }}>
+      <ImageComponent src="/logoSafe.svg" alt="logoSafe" width="80px" height="50px" />
       <Menu
         mode="horizontal"
+        items={menu}
         defaultSelectedKeys={['Points of interests']}
-        style={{ justifyContent: 'center' }}
-      >
-        {menu.map((e) => (
-          <Menu.Item
-            key={e.key}
-            className={route === '/search' && e.key === 'Points of interest' && 'ant-menu-item-selected'}
-            onClick={() => router.push(e.route)}>
-            {e.key}
-          </Menu.Item>
-        ))}
-
-        <Menu.Item style={{ transform: 'translateX(200%)' }} key="dcdcd">
-          <AccountMenu />
-        </Menu.Item>
-      </Menu>
-
-    </>
+      />
+      <AccountMenu />
+    </div>
   )
 }
 
@@ -99,13 +81,12 @@ export default function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         ) : (
           <>
-            <Navigation route={route} />
+            <Navigation />
             <AuthGuard>
               <App>
                 <Component {...pageProps} />
               </App>
             </AuthGuard>
-
           </>
         )}
       </QueryClientProvider>

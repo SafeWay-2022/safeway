@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pagination, Skeleton, Button, Radio } from 'antd';
 import { RollbackOutlined, SearchOutlined } from '@ant-design/icons';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { PER_PAGE } from '../config';
 import { getTableFetch } from '../hooks/useGetTableData';
@@ -14,9 +14,8 @@ const MapPicker = dynamic(() => import('./ui-components/Inputs/MapPicker/MapPick
   ssr: false,
 });
 
-//export default (url, skip) => useQuery([url, { url, skip }], fetchData2);
 
-export default function PageTable({ table: tableConfig, commonTables: commonTablesData }) {
+export default function PageTable({ table: tableConfig, commonTables: commonTablesData, MapPiker }) {
   const { apiRoute: route, fields, schema = {} } = tableConfig;
   const router = useRouter()
   const myFetch = getTableFetch(route);

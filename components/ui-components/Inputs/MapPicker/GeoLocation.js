@@ -9,7 +9,7 @@ const MapDrawerNoSSR = dynamic(() => import('./MapDrawer'), {
 
 const defaultCoord = [52.214, 21.027];
 
-function GeoLocation({ value, onChange = () => {}, readonly, label }) {
+function GeoLocation({ value, onChange = () => { }, readonly, label, withoutInput = false }) {
   const [valueBeforeDrawerOpen, setValueBeforeDrawerOpen] = useState({ lat, lg });
   const { lat, lg, type } = value;
   const [isVisibleDrawer, setIsVisibleDrawer] = useState(false);
@@ -78,25 +78,28 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
   return (
     <>
       <div
-        className="grid grid-rows-2 grid-flow-col gap-2 2xl:grid-rows-1"
-        style={{ minWidth: '260px' }}
+        className="grid grid-rows-2 grid-flow-col gap-[2 2xl:grid-rows-1"
+        style={!withoutInput ? { minWidth: '260px' } : {}}
       >
-        <Input
-          className="row-span-1"
-          type="number"
-          value={lat}
-          onChange={(e) => handleChange('lat')(e.target.value)}
-          {...inputProps}
-          placeholder={readonly ? '' : 'Enter latitude'}
-        />
-        <Input
-          className="row-span-1"
-          type="number"
-          value={lg}
-          onChange={(e) => handleChange('lg')(e.target.value)}
-          {...inputProps}
-          placeholder={readonly ? '' : 'Enter longitude'}
-        />
+        {!withoutInput &&
+          <>
+            <Input
+              className="row-span-1"
+              type="number"
+              value={lat}
+              onChange={(e) => handleChange('lat')(e.target.value)}
+              {...inputProps}
+              placeholder={readonly ? '' : 'Enter latitude'}
+            />
+            <Input
+              className="row-span-1"
+              type="number"
+              value={lg}
+              onChange={(e) => handleChange('lg')(e.target.value)}
+              {...inputProps}
+              placeholder={readonly ? '' : 'Enter longitude'}
+            />
+          </>}
         <Tooltip title="select on the map">
           <Button
             className="row-span-2 2xl:row-span-1"
@@ -105,6 +108,7 @@ function GeoLocation({ value, onChange = () => {}, readonly, label }) {
           />
         </Tooltip>
       </div>
+
       <Drawer
         title={drawerTitle}
         placement="left"

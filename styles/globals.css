@@ -20,6 +20,11 @@ a {
 * {
   box-sizing: border-box;
 }
-.shouldCut {
-  display: none;
+
+.menu-item {
+  color: #1b3284;
+}
+
+.menu-item:hover {
+  color: #1b3284;
 }
