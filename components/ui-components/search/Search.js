@@ -1,190 +1,269 @@
-import { useState } from 'react'
-import { inputsMapping } from '../Inputs/config'
+import { useState } from 'react';
+import { inputsMapping } from '../Inputs/config';
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Checkbox, InputNumber, Select, Radio, message } from 'antd';
+import ImageComponent from '../Image';
 
 const initTextState = {
-    city: null,
-    organizations: null,
-    categories: null,
-    author: null,
-    admin: null,
-    name: null,
-}
+  city: null,
+  organizations: null,
+  categories: null,
+  author: null,
+  admin: null,
+  name: null,
+};
 const initCheckBox = {
-    add_distance: null
-}
+  add_distance: null,
+};
 
-const SearchQuery = ({ setSearchData, refetch, page, setPage, setMapView, mapView, value, setValue, component }) => {
-    const [country, setCountry] = useState(undefined)
-    const [text, setText] = useState(initTextState)
-    const [checkBox, setCheckbox] = useState(initCheckBox)
-    const [max_distance, setDistance] = useState(null)
-    const [approved, setApproved] = useState(null)
-    const [active, setActive] = useState(null)
-    const [name, setName] = useState(null)
-    const InputGeolocation = inputsMapping.geo
-    const SelectCountry = inputsMapping.country
-    const Input = inputsMapping.string
+const SearchQuery = ({
+  setSearchData,
+  refetch,
+  page,
+  setPage,
+  setMapView,
+  mapView,
+  value,
+  setValue,
+  component,
+}) => {
+  const [country, setCountry] = useState(undefined);
+  const [text, setText] = useState(initTextState);
+  const [checkBox, setCheckbox] = useState(initCheckBox);
+  const [max_distance, setDistance] = useState(null);
+  const [approved, setApproved] = useState(null);
+  const [active, setActive] = useState(null);
+  const [name, setName] = useState(null);
+  const InputGeolocation = inputsMapping.geo;
+  const SelectCountry = inputsMapping.country;
+  const Input = inputsMapping.string;
 
-    const onChangeText = (e) => {
-        setText(prev => ({ ...prev, [e.target.name]: e.target.value ? e.target.value : null }))
+  const onChangeText = (e) => {
+    setText((prev) => ({ ...prev, [e.target.name]: e.target.value ? e.target.value : null }));
+  };
+
+  const onChangeCheckBox = () => {
+    setCheckbox({ add_distance: !checkBox.add_distance });
+  };
+  const onChangeSelectApproved = (e) => {
+    if (e === '-') {
+      setApproved(null);
+      return;
     }
-
-    const onChangeCheckBox = (e) => {
-        setCheckbox(prev => ({ ...prev, [e.target.name]: !prev[e.target.name] }))
+    setApproved(e);
+  };
+  const onChangeSelectActive = (e) => {
+    if (e === '-') {
+      setActive(null);
+      return;
     }
-    const onChangeSelectApproved = (e) => {
-        if (e === '-') {
-            setApproved(null)
-            return
-        }
-        setApproved(e)
+    setActive(e);
+  };
+  const onChangeName = (e) => {
+    if (e.target.value) {
+      setName(e.target.value);
+    } else {
+      setName(null);
     }
-    const onChangeSelectActive = (e) => {
-        if (e === '-') {
-            setActive(null)
-            return
-        }
-        setActive(e)
+  };
+
+  const onSearch = () => {
+    if (!value.lat || !value.lg) {
+      message.error('Coordinates is required');
+      return;
     }
-    const onChangeName = e => {
-        if (e.target.value) {
-            setName(e.target.value)
-        } else {
-            setName(null)
-        }
-    }
+    new Promise((resolve) => {
+      resolve();
+    })
+      .then(() =>
+        setSearchData({
+          approved,
+          active,
+          country,
+          max_distance,
+          ...text,
+          ...checkBox,
+          latitude: value.lat,
+          longitude: value.lg,
+          name,
+        }),
+      )
+      .then(() => refetch())
+      .catch((e) => console.log(e));
+  };
 
-    const onSearch = () => {
-        if (!value.lat || !value.lg) {
-            message.error('Coordinates is required');
-            return
-        }
-        new Promise((resolve) => {
-            resolve()
-        })
-            .then(() => setSearchData({
-                approved, active, country, max_distance, ...text, ...checkBox, latitude: value.lat,
-                longitude: value.lg, name
-            }))
-            .then(() => refetch())
-            .catch(e => console.log(e))
-    }
+  const onClear = () => {
+    setCountry(undefined);
+    setValue({});
+    setSearchData({});
+    setDistance(null);
+    setText(initTextState);
+    setCheckbox(initCheckBox);
+    setPage(0);
+    setActive(null);
+    setApproved(null);
+    setName(null);
+  };
 
-    const onClear = () => {
-        setCountry(undefined)
-        setValue({})
-        setSearchData({})
-        setDistance(null)
-        setText(initTextState)
-        setCheckbox(initCheckBox)
-        setPage(0)
-        setActive(null)
-        setApproved(null)
-        setName(null)
-    }
+  return (
+    <>
+      <div style={{ display: 'flex', alightItems: 'center', marginBottom: 10 }}>
+        <div style={{ marginRight: 10 }}>
+          <InputGeolocation value={value} onChange={setValue} />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <SelectCountry value={country} onChange={setCountry} />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <Input
+            value={text.name}
+            onChange={onChangeText}
+            name="name"
+            placeholder="name"
+            style={{ width: '100px' }}
+          />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <InputNumber
+            value={max_distance}
+            parser={(x) => Number(x).toFixed(3)}
+            onChange={setDistance}
+            name="max_distance"
+            placeholder="Max distance"
+            type="number"
+            style={{ width: '120px' }}
+          />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <Input
+            value={name}
+            onChange={onChangeName}
+            name="name"
+            placeholder="Name"
+            style={{ width: '100px' }}
+          />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <Input
+            value={text.city}
+            onChange={onChangeText}
+            name="city"
+            placeholder="City"
+            style={{ width: '100px' }}
+          />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <Input
+            value={text.categories}
+            onChange={onChangeText}
+            name="categories"
+            placeholder="Categories"
+            style={{ width: '120px' }}
+          />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <Input
+            value={text.organizations}
+            onChange={onChangeText}
+            name="organizations"
+            placeholder="Organizations"
+            style={{ width: '120px' }}
+          />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <Input
+            value={text.author}
+            onChange={onChangeText}
+            name="author"
+            placeholder="Author"
+            style={{ width: '100px' }}
+          />
+        </div>
+        <div style={{ marginRight: 10 }}>
+          <Input
+            value={text.admin}
+            onChange={onChangeText}
+            name="admin"
+            placeholder="Admin"
+            style={{ width: '100px' }}
+          />
+        </div>
+        <div style={{ marginLeft: 'auto' }}>{component}</div>
+      </div>
+      <div style={{ textAlign: 'start', marginBottom: '10px' }}>
+        <Radio.Button
+          style={!mapView ? { backgroundColor: '#4742DD', color: 'white' } : {}}
+          onClick={() => setMapView(false)}
+          value="Table"
+        >
+          Table
+        </Radio.Button>
+        <Radio.Button
+          style={mapView ? { backgroundColor: '#4742DD', color: 'white' } : {}}
+          onClick={() => setMapView(true)}
+          value="Map"
+        >
+          Map
+        </Radio.Button>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+          <div style={{ marginRight: '5px' }}>Approved</div>
+          <Select
+            defaultValue="-"
+            style={{
+              width: 80,
+            }}
+            onChange={onChangeSelectApproved}
+          >
+            <Select.Option value="-">{null}</Select.Option>
+            <Select.Option value="true">true</Select.Option>
+            <Select.Option value="false">false</Select.Option>
+          </Select>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+          <div style={{ marginRight: '5px' }}>Active</div>
+          <Select
+            defaultValue="-"
+            style={{
+              width: 80,
+            }}
+            onChange={onChangeSelectActive}
+          >
+            <Select.Option value="-">{null}</Select.Option>
+            <Select.Option value="true">true</Select.Option>
+            <Select.Option value="false">false</Select.Option>
+          </Select>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+          <span style={{ cursor: 'pointer' }} onClick={onChangeCheckBox} name="add_distance">
+            <ImageComponent
+              src={checkBox.add_distance ? '/checked.svg' : '/not_checked.svg'}
+              alt="checkbox"
+              width="25px"
+              height="25px"
+            />
+          </span>
+          <span style={{ marginLeft: '5px' }}>Add distance</span>
+        </div>
+      </div>
 
-    return (
-        <>
-            <div style={{ display: 'flex', alightItems: 'center', marginBottom: 10 }}>
-                <div style={{ marginRight: 10 }}>
-                    <InputGeolocation value={value} onChange={setValue} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <SelectCountry value={country} onChange={setCountry} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <Input value={text.name} onChange={onChangeText} name='name' placeholder="name" style={{ width: '100px' }} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <InputNumber
-                        value={max_distance}
-                        parser={x => Number(x).toFixed(3)}
-                        onChange={setDistance}
-                        name='max_distance'
-                        placeholder="Max distance"
-                        type="number"
-                        style={{ width: '120px' }}
-                    />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <Input value={name} onChange={onChangeName} name='name' placeholder="Name" style={{ width: '100px' }} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <Input value={text.city} onChange={onChangeText} name='city' placeholder="City" style={{ width: '100px' }} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <Input value={text.categories} onChange={onChangeText} name='categories' placeholder="Categories" style={{ width: '120px' }} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <Input value={text.organizations} onChange={onChangeText} name='organizations' placeholder="Organizations" style={{ width: '120px' }} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <Input value={text.author} onChange={onChangeText} name='author' placeholder="Author" style={{ width: '100px' }} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                    <Input value={text.admin} onChange={onChangeText} name='admin' placeholder="Admin" style={{ width: '100px' }} />
-                </div>
-                <div style={{ marginLeft: 'auto' }}>
-                    {component}
-                </div>
+      <div style={{ textAlign: 'end', marginBottom: 5 }}>
+        <Button
+          style={{ display: 'inline', marginRight: 10 }}
+          onClick={onSearch}
+          type="secondary"
+          icon={<SearchOutlined />}
+          size="default"
+        >
+          Search
+        </Button>
+        <Button style={{ display: 'inline' }} onClick={onClear} type="secondary" size="default">
+          Clear
+        </Button>
+      </div>
+    </>
+  );
+};
 
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
-                    <div style={{ marginRight: '5px' }}>Approved</div>
-                    <Select
-                        defaultValue="-"
-                        style={{
-                            width: 80,
-                        }}
-                        onChange={onChangeSelectApproved}
-                    >
-                        <Select.Option value="-">{null}</Select.Option>
-                        <Select.Option value="true">true</Select.Option>
-                        <Select.Option value="false">false</Select.Option>
-                    </Select>
-
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
-                    <div style={{ marginRight: '5px' }}>Active</div>
-                    <Select
-                        defaultValue="-"
-                        style={{
-                            width: 80,
-                        }}
-                        onChange={onChangeSelectActive}
-                    >
-                        <Select.Option value="-">{null}</Select.Option>
-                        <Select.Option value="true">true</Select.Option>
-                        <Select.Option value="false">false</Select.Option>
-                    </Select>
-
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }} >
-
-                    <Checkbox checked={checkBox.add_distance} onChange={onChangeCheckBox} name='add_distance' />
-                    <span style={{ marginLeft: '5px' }}>Add distance</span>
-                </div>
-            </div>
-            <div style={{ textAlign: 'end', marginBottom: '10px' }}>
-                <Radio.Button style={!mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(false)} value="Table">Table</Radio.Button>
-                <Radio.Button style={mapView ? { backgroundColor: '#1890ff' } : {}} onClick={() => setMapView(true)} value="Map">Map</Radio.Button>
-            </div>
-            <div style={{ textAlign: 'end', marginBottom: 5 }}>
-                <Button style={{ display: 'inline', marginRight: 10 }} onClick={onSearch} type="secondary" icon={<SearchOutlined />} size="default">
-                    Search
-                </Button>
-                <Button style={{ display: 'inline' }} onClick={onClear} type="secondary" size="default">
-                    Clear
-                </Button>
-
-            </div>
-        </>
-    )
-}
-
-export default SearchQuery
-
+export default SearchQuery;
