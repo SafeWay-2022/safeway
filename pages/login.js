@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Layout, Button, Form, Input } from 'antd';
 import { login } from '../lib/auth';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const { Content } = Layout;
 
@@ -71,6 +72,7 @@ const App = () => {
             <Button type="secondary" htmlType="submit">
               Submit
             </Button>
+            <div style={{ fontSize: '14px', margin: 10, cursor: 'pointer' }}>Forgot Password</div>
           </div>
         </Form>
       </Content>

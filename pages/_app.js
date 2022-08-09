@@ -9,9 +9,7 @@ import { getTableByRoute, withProps } from '../lib/helpers';
 import AccountMenu from '../components/ui-components/dropdown';
 import AuthGuard from '../components/AuthGuard';
 import '../styles/globals.css';
-import ImageComponent from '../components/ui-components/Image'
-
-
+import ImageComponent from '../components/ui-components/Image';
 
 const { Content, Footer } = Layout;
 
@@ -39,29 +37,29 @@ const App = ({ children }) => {
         <Content className="h-full overflow-auto mt-4">{childrenWithProps}</Content>
         <Footer style={{ textAlign: 'center' }}>Safeway© 2022</Footer>
       </Layout>
-    </Layout >
+    </Layout>
   );
 };
 const Navigation = () => {
   const [menu] = useState([
-    { key: 'Points of interests', route: '/poi', label: <Link href="/poi">Points of interests</Link> },
+    {
+      key: 'Points of interests',
+      route: '/poi',
+      label: <Link href="/poi">Points of interests</Link>,
+    },
     { key: 'Organizations', route: '/org', label: <Link href="/org">Organizations</Link> },
     { key: 'Users', route: '/users', label: <Link href="/users">Users</Link> },
     { key: 'Categories', route: '/common', label: <Link href="/common">Categories</Link> },
-    { key: 'Needs', route: '/need', label: <Link href='/need'>Needs</Link> },
-  ])
+    { key: 'Needs', route: '/need', label: <Link href="/need">Needs</Link> },
+  ]);
   return (
-    <div style={{ display: "flex", justifyContent: 'space-around', alignItems: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
       <ImageComponent src="/logoSafe.svg" alt="logoSafe" width="80px" height="50px" />
-      <Menu
-        mode="horizontal"
-        items={menu}
-        defaultSelectedKeys={['Points of interests']}
-      />
+      <Menu mode="horizontal" items={menu} defaultSelectedKeys={['Points of interests']} />
       <AccountMenu />
     </div>
-  )
-}
+  );
+};
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
