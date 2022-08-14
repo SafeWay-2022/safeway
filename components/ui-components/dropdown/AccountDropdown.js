@@ -256,12 +256,12 @@ const menu = (
         key: '1',
       },
       {
-        label: <Logout />,
-        key: '3',
-      },
-      {
         label: <ResetPass />,
         key: '4',
+      },
+      {
+        label: <Logout />,
+        key: '3',
       },
     ]}
   />

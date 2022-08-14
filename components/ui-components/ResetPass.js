@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Input, Form, Button, message } from 'antd';
 import InputText from './Inputs/InputText';
+import { changePasswordRequest } from '../../lib/helpers';
 
 const ModalComponent = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -8,6 +9,13 @@ const ModalComponent = () => {
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+  const onFinish = async () => {
+    try {
+      await changePasswordRequest(state);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -20,7 +28,23 @@ const ModalComponent = () => {
         footer={null}
         onCancel={() => setIsModalVisible(false)}
       >
-        <Form>
+        <Form onFinish={onFinish}>
+          <Form.Item
+            label="CURRENT PASSWORD"
+            labelCol={{ span: 24 }}
+            name="current_password"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <InputText
+              placeholder="Current password"
+              value={state?.current_password}
+              onChange={(e) => setState((p) => ({ ...p, current_password: e.target.value }))}
+            />
+          </Form.Item>
           <Form.Item
             label="NEW PASSWORD"
             labelCol={{ span: 24 }}
