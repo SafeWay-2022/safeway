@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, Checkbox, Input, Form, Button, message } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { Modal, Input, Form, Button, message } from 'antd';
 import InputText from './Inputs/InputText';
 import Geolocation from './Inputs/MapPicker/GeoLocation';
 import SelectCountry from './Inputs/SelectCountry';
 import SelectMultiple from './Inputs/SelectMultiple';
 import InputPhone from './Inputs/InputPhone';
+import SelectCategory from './Inputs/SelectCategory';
 import ImageComponent from './Image';
-
+import { initialPoint } from '../../lib/helpers';
 const layout = {
   labelCol: {
     span: 8,
@@ -31,26 +31,49 @@ const validateMessages = {
 const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [state, setState] = useState(record);
+  const [category, setCategory] = useState('');
   const { TextArea } = Input;
+
+  const onPropsItem = (bool, name) => {
+    if (name === 'email') {
+      return {
+        name,
+        rules: [
+          {
+            type: name,
+            required: bool,
+          },
+        ],
+      };
+    } else if (bool) {
+      return {
+        name,
+        rules: [
+          {
+            required: bool,
+          },
+        ],
+      };
+    } else {
+      return {};
+    }
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const onFinish = async () => {
-    if (!state.geo.lg || !state.email || !state.name) {
-      message.error('Name , email and coordinates is required');
-      return;
-    }
     try {
-      await doFetch(record._id, state);
+      const response = await doFetch(record._id, state);
+      console.log(response);
       await refetch();
       setIsModalVisible(false);
+      setState(initialPoint);
     } catch (e) {
       message.error(e.message);
     }
   };
-
   return (
     <>
       {isTable ? (
@@ -117,7 +140,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
             </div>
           )}
           <div style={{ display: 'flex', alignItems: 'baseline' }}>
-            <Form.Item label="NAME" labelCol={{ span: 24 }}>
+            <Form.Item label="NAME" labelCol={{ span: 24 }} {...onPropsItem(!isTable, 'name')}>
               <InputText
                 placeholder="Enter Name"
                 value={state.name}
@@ -132,7 +155,11 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
               />
             </Form.Item>
 
-            <Form.Item label="COUNTRY" labelCol={{ span: 24 }}>
+            <Form.Item
+              label="COUNTRY"
+              labelCol={{ span: 24 }}
+              {...onPropsItem(!isTable, 'country')}
+            >
               <SelectCountry
                 value={state.country}
                 onChange={(e) => setState((p) => ({ ...p, country: e }))}
@@ -205,12 +232,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
               <Form.Item
                 label="INPUT EMAIL"
                 labelCol={{ span: 24 }}
-                name="email"
-                rules={[
-                  {
-                    type: 'email',
-                  },
-                ]}
+                {...onPropsItem(!isTable, 'email')}
               >
                 <Input
                   placeholder="Enter email"
@@ -246,7 +268,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                   onChange={(e) => setState((p) => ({ ...p, telegram: e.target.value }))}
                 />
               </Form.Item>
-              <Form.Item label="WHATSAPP" labelCol={{ span: 24 }}>
+              <Form.Item style={{ width: '324px' }} label="WHATSAPP" labelCol={{ span: 24 }}>
                 <InputText
                   placeholder="Enter whatsapp"
                   value={state.whatsapp}
@@ -256,10 +278,21 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
             </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <Form.Item label="CATEGORIES" labelCol={{ span: 24 }}>
+            <Form.Item style={{ maxWidth: 220 }} label="CATEGORIES" labelCol={{ span: 24 }}>
+              <SelectCategory
+                value={category}
+                onChange={(e) => {
+                  setCategory(e);
+                  if (!state.categories.includes(e)) {
+                    setState((p) => ({ ...p, categories: [...p.categories, e] }));
+                  }
+                }}
+              />
               <SelectMultiple
                 value={state.categories}
-                onChange={(e) => setState((p) => ({ ...p, categories: e }))}
+                onChange={(e) => {
+                  setState((p) => ({ ...p, categories: e }));
+                }}
               />
             </Form.Item>
 
