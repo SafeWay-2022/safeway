@@ -28,12 +28,11 @@ const App = () => {
     setIsLoading(true);
     try {
       const result = await resetPasswordRequest(value);
-      console.log(result);
       if (result.data.includes('Please check your email')) {
         message.success(result.data);
         setIsForgotPassword(false);
       } else {
-        message.warning(result.data);
+        message.warning(result.data, 3);
       }
     } catch (e) {
       console.log(e);

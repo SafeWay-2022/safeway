@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Input, Form, Button, message } from 'antd';
+import { Modal, Input, Form, Button, message, Spin } from 'antd';
 import InputText from './Inputs/InputText';
 import Geolocation from './Inputs/MapPicker/GeoLocation';
 import SelectCountry from './Inputs/SelectCountry';
@@ -31,6 +31,7 @@ const validateMessages = {
 const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [state, setState] = useState(record);
+  const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState('');
   const { TextArea } = Input;
 
@@ -64,14 +65,17 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
   };
 
   const onFinish = async () => {
+    setIsLoading(true);
     try {
       const response = await doFetch(record._id, state);
-      console.log(response);
+      message.success(response?.data);
       await refetch();
       setIsModalVisible(false);
       setState(initialPoint);
     } catch (e) {
       message.error(e.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -317,7 +321,7 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
                 style={{ background: '#1B3284' }}
                 htmlType="submit"
               >
-                Submit
+                {isLoading ? <Spin size="small" /> : 'Submit'}
               </Button>
             </Form.Item>
           </div>

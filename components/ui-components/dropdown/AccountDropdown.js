@@ -8,7 +8,7 @@ import { Dropdown, Menu, Space, Avatar, Modal, Spin, Label } from 'antd';
 import InputEmail from '../Inputs/InputEmail';
 import InputPhone from '../Inputs/InputPhone';
 import InputText from '../Inputs/InputText';
-import ResetPass from '../ResetPass';
+import ChangePass from './ChangePass';
 
 const options = {
   headers: {
@@ -256,7 +256,7 @@ const menu = (
         key: '1',
       },
       {
-        label: <ResetPass />,
+        label: <ChangePass />,
         key: '4',
       },
       {
