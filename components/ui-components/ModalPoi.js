@@ -65,17 +65,21 @@ const ModalComponent = ({ record, refetch, title, doFetch, isTable }) => {
   };
 
   const onFinish = async () => {
-    setIsLoading(true);
-    try {
-      const response = await doFetch(record._id, state);
-      message.success(response?.data);
-      await refetch();
-      setIsModalVisible(false);
-      setState(initialPoint);
-    } catch (e) {
-      message.error(e.message);
-    } finally {
-      setIsLoading(false);
+    if ((state.geo.lat && state.geo.lg) || (state.address && state.city)) {
+      setIsLoading(true);
+      try {
+        const response = await doFetch(record._id, state);
+        message.success(response?.data);
+        await refetch();
+        setIsModalVisible(false);
+      } catch (e) {
+        message.error(e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      message.warning('Please select a location');
+      return;
     }
   };
   return (
