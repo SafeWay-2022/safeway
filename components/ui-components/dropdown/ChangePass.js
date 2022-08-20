@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
-import { Modal, Input, Form, Button, message } from 'antd';
-import InputText from './Inputs/InputText';
+import { Modal, Form, Button, message, Spin } from 'antd';
+import InputText from '../Inputs/InputText';
+import { changePasswordRequest } from '../../../lib/helpers';
 
-const ModalComponent = () => {
+const ChangePass = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [state, setState] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
+  const onFinish = async () => {
+    setIsLoading(true);
+    try {
+      const response = await changePasswordRequest(state);
+      if (response?.data === 'OK') {
+        message.success('Password changed successfully');
+        setIsModalVisible(false);
+        setState({});
+      } else {
+        message.warn(response?.data, 3);
+      }
+    } catch (e) {
+      message.error(e.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
-      <div onClick={showModal}>Reset Password</div>
+      <div onClick={showModal}>Change Password</div>
       <Modal
         width={400}
         title="Reset password"
@@ -20,7 +39,23 @@ const ModalComponent = () => {
         footer={null}
         onCancel={() => setIsModalVisible(false)}
       >
-        <Form>
+        <Form onFinish={onFinish}>
+          <Form.Item
+            label="CURRENT PASSWORD"
+            labelCol={{ span: 24 }}
+            name="current_password"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <InputText
+              placeholder="Current password"
+              value={state?.current_password}
+              onChange={(e) => setState((p) => ({ ...p, current_password: e.target.value }))}
+            />
+          </Form.Item>
           <Form.Item
             label="NEW PASSWORD"
             labelCol={{ span: 24 }}
@@ -40,7 +75,7 @@ const ModalComponent = () => {
           <Form.Item
             label="VERIFY PASSWORD"
             labelCol={{ span: 24 }}
-            name="verify_new_password"
+            name="verify_password"
             rules={[
               {
                 required: true,
@@ -49,8 +84,8 @@ const ModalComponent = () => {
           >
             <InputText
               placeholder="Enter password"
-              value={state?.verify_new_password}
-              onChange={(e) => setState((p) => ({ ...p, verify_new_password: e.target.value }))}
+              value={state?.verify_password}
+              onChange={(e) => setState((p) => ({ ...p, verify_password: e.target.value }))}
             />
           </Form.Item>
 
@@ -62,7 +97,7 @@ const ModalComponent = () => {
                 style={{ background: '#1B3284', color: 'white' }}
                 htmlType="submit"
               >
-                Submit
+                {isLoading ? <Spin size="small" /> : 'Submit'}
               </Button>
             </Form.Item>
           </div>
@@ -71,4 +106,4 @@ const ModalComponent = () => {
     </>
   );
 };
-export default ModalComponent;
+export default ChangePass;

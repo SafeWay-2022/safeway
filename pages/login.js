@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Button, Form, Input } from 'antd';
+import { Layout, Button, Form, Input, message, Spin } from 'antd';
 import { login } from '../lib/auth';
 import { resetPasswordRequest } from '../lib/helpers';
 import { useRouter } from 'next/router';
@@ -10,6 +10,7 @@ const App = () => {
   const router = useRouter();
   const [error, setError] = useState('');
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const onFinish = async (values) => {
     try {
       const result = await login(values);
@@ -24,12 +25,19 @@ const App = () => {
     console.log('Failed:', errorInfo);
   };
   const onForgotPassword = async (value) => {
-    console.log('value', value);
+    setIsLoading(true);
     try {
       const result = await resetPasswordRequest(value);
-      console.log(result);
+      if (result.data.includes('Please check your email')) {
+        message.success(result.data);
+        setIsForgotPassword(false);
+      } else {
+        message.warning(result.data, 3);
+      }
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,7 +111,7 @@ const App = () => {
           <div style={{ textAlign: 'center', fontSize: 24, margin: '20px 0' }}>
             <div style={{ color: 'red' }}>{error}</div>
             <Button type="secondary" htmlType="submit">
-              Submit
+              {isLoading ? <Spin size="small" /> : 'Submit'}
             </Button>
             <div
               onClick={() => setIsForgotPassword(!isForgotPassword)}
