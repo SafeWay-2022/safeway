@@ -26,12 +26,12 @@ const categories = [
   'LGBTQ+',
 ];
 
-function SelectCategory({ value = undefined, onChange = () => {} }) {
+function SelectCategory({ value = undefined, style = {}, onChange = () => {} }) {
   return (
     <Select
       showSearch
       value={value}
-      style={{ marginBottom: 10 }}
+      style={style}
       placeholder="Search to Select Category"
       optionFilterProp="children"
       onChange={onChange}

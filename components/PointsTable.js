@@ -1,12 +1,6 @@
 import { useState } from 'react';
-import { Pagination, Skeleton, Button, Radio, Table, Checkbox, Tag, Popconfirm } from 'antd';
-import {
-  RollbackOutlined,
-  SearchOutlined,
-  DeleteOutlined,
-  DownOutlined,
-  UpOutlined,
-} from '@ant-design/icons';
+import { Pagination, Skeleton, Button, Radio, Table, Tag, Popconfirm } from 'antd';
+import { RollbackOutlined, SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import { useQuery } from 'react-query';
 import { PER_PAGE } from '../config';
 import styles from '../styles/Home.module.css';
@@ -61,7 +55,7 @@ export default function PageTable() {
       title: 'Name',
       dataIndex: 'name',
       render: (name) => {
-        return <Tag style={{ fontSize: '14px' }}>{name}</Tag>;
+        return <span style={{ fontSize: '14px' }}>{name}</span>;
       },
     },
     {
@@ -509,7 +503,7 @@ export default function PageTable() {
               component={
                 <Button
                   type="primary"
-                  size="large"
+                  size="small"
                   style={{
                     backgroundColor: '#4742DD',
                     display: 'flex',
