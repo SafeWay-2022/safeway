@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { inputsMapping } from '../Inputs/config';
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, InputNumber, Select, Radio, message } from 'antd';
-import ImageComponent from '../Image';
+import { Button, InputNumber, Select, Radio, message } from 'antd';
+import SelectCategory from '../Inputs/SelectCategory';
+import SelectMultiple from '../Inputs/SelectMultiple';
 
 const initTextState = {
   city: null,
@@ -13,7 +14,7 @@ const initTextState = {
   name: null,
 };
 const initCheckBox = {
-  add_distance: null,
+  add_distance: true,
 };
 
 const SearchQuery = ({
@@ -28,6 +29,7 @@ const SearchQuery = ({
   component,
 }) => {
   const [country, setCountry] = useState(undefined);
+  const [categories, setCategories] = useState('');
   const [text, setText] = useState(initTextState);
   const [checkBox, setCheckbox] = useState(initCheckBox);
   const [max_distance, setDistance] = useState(null);
@@ -42,9 +44,9 @@ const SearchQuery = ({
     setText((prev) => ({ ...prev, [e.target.name]: e.target.value ? e.target.value : null }));
   };
 
-  const onChangeCheckBox = () => {
-    setCheckbox({ add_distance: !checkBox.add_distance });
-  };
+  // const onChangeCheckBox = () => {
+  //   setCheckbox({ add_distance: !checkBox.add_distance });
+  // };
   const onChangeSelectApproved = (e) => {
     if (e === '-') {
       setApproved(null);
@@ -68,10 +70,10 @@ const SearchQuery = ({
   };
 
   const onSearch = () => {
-    if (!value.lat || !value.lg) {
-      message.error('Coordinates is required');
-      return;
-    }
+    // if (!value.lat || !value.lg) {
+    //   message.error('Coordinates is required');
+    //   return;
+    // }
     new Promise((resolve) => {
       resolve();
     })
@@ -83,6 +85,7 @@ const SearchQuery = ({
           max_distance,
           ...text,
           ...checkBox,
+          categories,
           latitude: value.lat,
           longitude: value.lg,
           name,
@@ -103,11 +106,12 @@ const SearchQuery = ({
     setActive(null);
     setApproved(null);
     setName(null);
+    setCategories('');
   };
 
   return (
-    <>
-      <div style={{ display: 'flex', alightItems: 'center', marginBottom: 10 }}>
+    <div style={{ marginBottom: 5 }}>
+      <div style={{ display: 'flex', alightItems: 'center', marginBottom: 5 }}>
         <div style={{ marginRight: 10 }}>
           <InputGeolocation value={value} onChange={setValue} />
         </div>
@@ -153,12 +157,12 @@ const SearchQuery = ({
           />
         </div>
         <div style={{ marginRight: 10 }}>
-          <Input
-            value={text.categories}
-            onChange={onChangeText}
-            name="categories"
-            placeholder="Categories"
-            style={{ width: '120px' }}
+          <SelectCategory
+            value={categories ? categories : 'Select category'}
+            style={{ width: 150, ...(categories ? {} : { color: 'grey' }) }}
+            onChange={(e) => {
+              setCategories(e);
+            }}
           />
         </div>
         <div style={{ marginRight: 10 }}>
@@ -179,7 +183,7 @@ const SearchQuery = ({
             style={{ width: '100px' }}
           />
         </div>
-        <div style={{ marginRight: 10 }}>
+        <div style={{ marginRight: 100 }}>
           <Input
             value={text.admin}
             onChange={onChangeText}
@@ -188,27 +192,44 @@ const SearchQuery = ({
             style={{ width: '100px' }}
           />
         </div>
-        <div style={{ marginLeft: 'auto' }}>{component}</div>
+        <div>
+          <Button
+            style={{
+              backgroundColor: '#4742DD',
+            }}
+            onClick={onSearch}
+            type="secondary"
+            icon={<SearchOutlined />}
+            size="large"
+          >
+            Search
+          </Button>
+          <Button style={{ display: 'inline' }} onClick={onClear} type="secondary" size="large">
+            Clear
+          </Button>
+        </div>
       </div>
-      <div style={{ textAlign: 'start', marginBottom: '10px' }}>
-        <Radio.Button
-          style={!mapView ? { backgroundColor: '#4742DD', color: 'white' } : {}}
-          onClick={() => setMapView(false)}
-          value="Table"
-        >
-          Table
-        </Radio.Button>
-        <Radio.Button
-          style={mapView ? { backgroundColor: '#4742DD', color: 'white' } : {}}
-          onClick={() => setMapView(true)}
-          value="Map"
-        >
-          Map
-        </Radio.Button>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
-          <div style={{ marginRight: '5px' }}>Approved</div>
+
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ marginRight: 20 }}>{component}</div>
+        <div style={{ marginRight: '550px' }}>
+          <Radio.Button
+            style={!mapView ? { backgroundColor: '#4742DD', color: 'white' } : {}}
+            onClick={() => setMapView(false)}
+            value="Table"
+          >
+            Table
+          </Radio.Button>
+          <Radio.Button
+            style={mapView ? { backgroundColor: '#4742DD', color: 'white' } : {}}
+            onClick={() => setMapView(true)}
+            value="Map"
+          >
+            Map
+          </Radio.Button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginRight: 10 }}>
+          <span style={{ marginRight: '5px' }}>Approved</span>
           <Select
             defaultValue="-"
             style={{
@@ -221,7 +242,7 @@ const SearchQuery = ({
             <Select.Option value="false">false</Select.Option>
           </Select>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginRight: 600 }}>
           <div style={{ marginRight: '5px' }}>Active</div>
           <Select
             defaultValue="-"
@@ -235,7 +256,7 @@ const SearchQuery = ({
             <Select.Option value="false">false</Select.Option>
           </Select>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
+        {/* <div style={{ display: 'flex', alignItems: 'center', marginRight: 20 }}>
           <span style={{ cursor: 'pointer' }} onClick={onChangeCheckBox} name="add_distance">
             <ImageComponent
               src={checkBox.add_distance ? '/checked.svg' : '/not_checked.svg'}
@@ -245,24 +266,9 @@ const SearchQuery = ({
             />
           </span>
           <span style={{ marginLeft: '5px' }}>Add distance</span>
-        </div>
+        </div> */}
       </div>
-
-      <div style={{ textAlign: 'end', marginBottom: 5 }}>
-        <Button
-          style={{ display: 'inline', marginRight: 10 }}
-          onClick={onSearch}
-          type="secondary"
-          icon={<SearchOutlined />}
-          size="default"
-        >
-          Search
-        </Button>
-        <Button style={{ display: 'inline' }} onClick={onClear} type="secondary" size="default">
-          Clear
-        </Button>
-      </div>
-    </>
+    </div>
   );
 };
 
